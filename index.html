@@ -364,16 +364,11 @@
             gap: 12px;
         }
 
-        .donate-line {
-            width: 94vw;
-            max-width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg,
-                    transparent 0%, rgba(74, 21, 21, 0.3) 5%, rgba(139, 58, 58, 0.6) 15%,
-                    #a84d6b 50%, rgba(139, 58, 58, 0.6) 85%, rgba(74, 21, 21, 0.3) 95%, transparent 100%);
-        }
-
         .donate-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
             font-family: 'Press Start 2P', monospace;
             font-size: 11px;
             color: #a27791;
@@ -390,6 +385,7 @@
             font-family: 'Tiny5', monospace;
             font-size: 16px;
             color: #a27791;
+            letter-spacing: 0;
         }
 
         /* ===== NAVIGATION ITEMS с pixel-canvas анимацией ===== */
@@ -757,13 +753,9 @@
             padding: 0 !important;
         }
 
-        .journal-footer .donate-line {
-            width: 28px;
-            height: 1px;
-        }
-
         .journal-footer .donate-label {
             font-size: 10px;
+            gap: 2px;
         }
 
         .journal-footer .donate-sub {
@@ -773,10 +765,6 @@
         @media (max-width: 480px) {
             .journal-wrapper {
                 padding-bottom: 56px;
-            }
-
-            .journal-footer .donate-line {
-                display: none;
             }
         }
     </style>
@@ -989,9 +977,10 @@
          ========================================================= -->
     <div class="journal-page journal-footer" id="sec-donate" data-page="footer">
         <div class="page-content">
-            <div class="donate-line"></div>
-            <div class="donate-label" id="donateBtn">DONATE</div>
-            <div class="donate-sub">monobank</div>
+            <div class="donate-label" id="donateBtn" data-modal-trigger="donateDisclaimerModal">
+                <span>DONATE</span>
+                <span class="donate-sub">monobank</span>
+            </div>
         </div>
     </div>
 
@@ -1137,6 +1126,22 @@
         </div>
     </div>
 
+    <div id="donateDisclaimerModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">monobank</span>
+                <button class="modal-close-btn" data-modal="donateDisclaimerModal">✜</button>
+            </div>
+            <div class="modal-inner" style="display:flex;flex-direction:column;align-items:center;">
+                <p class="text-secondary" style="margin-bottom:20px;">support the project</p>
+                <button class="universal-btn" data-href="https://send.monobank.ua/jar/4cEfvsYmBh"
+                    data-modal-close="donateDisclaimerModal">
+                    <span class="btn-inner"><span>ENTER</span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- TWITTER MODAL — carousel moved here -->
     <div id="twitterModal" class="modal-overlay">
         <div class="modal-content">
@@ -1264,12 +1269,6 @@
                     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     document.getElementById('contentsModal')?.classList.remove('active');
                 });
-            });
-
-            // ===== DONATE =====
-            document.getElementById('donateBtn')?.addEventListener('click', () => {
-                navigator.clipboard.writeText('5375 4141 1023 8683').catch(() => { });
-                window.location.href = 'https://send.monobank.ua/jar/8q9Kk2hkDV';
             });
 
             // ===== FONT MODAL (legacy trigger, kept intact even though the
