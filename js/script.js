@@ -1292,10 +1292,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== DISCLAIMER BUTTONS =====
     document.querySelectorAll('[data-href]').forEach(btn => {
         btn.addEventListener('click', function () {
-            window.open(this.dataset.href, '_blank');
             const modalToClose = this.dataset.modalClose;
             if (modalToClose) closeModal(modalToClose);
-            else closeModal('disclaimerModal');
+            // Top-level navigation (not window.open) so mobile browsers/webviews
+            // reliably hand universal links (e.g. the monobank jar link) off to
+            // the native app when it's installed, instead of silently no-oping.
+            window.location.href = this.dataset.href;
         });
     });
 
