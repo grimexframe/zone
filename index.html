@@ -453,9 +453,10 @@
             }
 
             .art-feed-row {
-                flex-wrap: nowrap;
+                flex-wrap: wrap;
                 gap: 12px;
                 align-items: center;
+                justify-content: center;
             }
 
             .art-block {
@@ -466,6 +467,10 @@
             .archive-block {
                 flex: 0 0 20vw;
                 width: 20vw;
+            }
+
+            .paint-cell {
+                margin-top: 4px;
             }
 
             .archive-img {
@@ -609,8 +614,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             cursor: pointer;
+            flex: 0 0 100%;
+            margin-top: 12px;
         }
 
         .paint-trigger-img {
