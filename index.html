@@ -37,6 +37,23 @@
             overflow-x: hidden;
         }
 
+        /* ===== DOUBLE-TAP ZOOM GUARD ===== */
+        /* Prevents mobile browsers from zooming in on rapid double-taps
+           (viewport meta alone doesn't reliably stop this on all browsers). */
+        html,
+        body {
+            touch-action: manipulation;
+        }
+
+        button,
+        a,
+        .universal-btn,
+        .donate-label,
+        [data-modal-trigger],
+        [data-href] {
+            touch-action: manipulation;
+        }
+
         .top-panel {
             align-items: center;
         }

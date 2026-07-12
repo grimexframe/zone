@@ -1289,6 +1289,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== ESCAPE =====
     document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); });
 
+    // ===== DOUBLE-TAP ZOOM GUARD (JS fallback) =====
+    // Some mobile browsers still zoom on a fast double-tap even with
+    // `touch-action: manipulation` + viewport `user-scalable=no`, so block
+    // the second tap's default action if it lands within 300ms of the last one.
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) e.preventDefault();
+        lastTouchEnd = now;
+    }, { passive: false });
+
     // ===== DISCLAIMER BUTTONS =====
     document.querySelectorAll('[data-href]').forEach(btn => {
         btn.addEventListener('click', function () {
