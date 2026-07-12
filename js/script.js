@@ -1270,7 +1270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); }));
 
     // ===== МОДАЛКА "ЗМІСТ" =====
-    document.getElementById('contentsBtn').addEventListener('click', () => openModal('contentsModal'));
+    document.getElementById('contentsBtn')?.addEventListener('click', () => openModal('contentsModal'));
     document.querySelectorAll('.contents-item').forEach(item => {
         item.addEventListener('click', () => {
             const page = item.dataset.page;
