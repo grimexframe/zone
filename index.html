@@ -479,6 +479,245 @@
                 height: 80px;
             }
         }
+
+        /* =========================================================
+           ============  NEW: TAB ARCHITECTURE (LAB / INFO)  ========
+           ========================================================= */
+
+        .tab-btn-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tab-btn {
+            font-size: 14px !important;
+            padding: 6px 14px;
+            opacity: 0.55;
+            border-bottom: 2px solid transparent;
+            transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .tab-btn.active {
+            opacity: 1;
+            border-bottom: 2px solid #a84d6b;
+            color: #ffb7c7 !important;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* ===== INFO TAB: hashtags ===== */
+        #sec-info-tags .page-content {
+            align-items: center;
+            gap: 14px;
+        }
+
+        .info-tag-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .info-hashtag {
+            font-family: 'Tiny5', monospace;
+            font-size: 17px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px 12px;
+            border: 1px solid #79434a;
+            background: transparent;
+            transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .info-hashtag:hover {
+            color: #fff;
+            border-color: #ffb7c7;
+            background: #1a1a2a;
+        }
+
+        /* ===== INFO TAB: social grid (adapted from .icon-strip / .icon-action) ===== */
+        #sec-info-social .page-content {
+            align-items: center;
+        }
+
+        .icon-strip {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 14px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .icon-action {
+            border: 2px solid transparent;
+            border-image: linear-gradient(135deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 10px 6px;
+            width: 78px;
+            appearance: none;
+            -webkit-appearance: none;
+            font: inherit;
+            text-decoration: none;
+        }
+
+        .icon-action-glyph {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            color: #ffb7c7;
+        }
+
+        .icon-action img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .icon-action-label {
+            font-family: 'Tiny5', monospace;
+            font-size: 13px;
+            color: var(--text-primary);
+            text-transform: lowercase;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .icon-action {
+                width: 68px;
+                padding: 8px 4px;
+            }
+        }
+
+        /* ===== LAB TAB: art + paint combined row ===== */
+        .paint-cell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .paint-trigger-img {
+            width: 72px;
+            height: 72px;
+            image-rendering: pixelated;
+        }
+
+        /* ===== LAB TAB: Soundstyler ===== */
+        #sec-soundstyler .page-content {
+            align-items: center;
+        }
+
+        .text-synth-block {
+            width: min(100%, 420px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 0 auto;
+        }
+
+        .tts-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .text-synth-block .styler-input {
+            width: 100%;
+        }
+
+        /* ===== LAB TAB: Constructor ===== */
+        #sec-constructor .page-content {
+            align-items: center;
+        }
+
+        .constructor-panel {
+            width: min(100%, 420px);
+            border: 2px solid transparent;
+            border-image: linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
+            background: #000;
+            padding: 18px 16px 20px;
+            margin: 0 auto;
+        }
+
+        .constructor-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .merch-constructor {
+            text-align: center;
+        }
+
+        .tshirt-preview {
+            position: relative;
+            width: min(200px, 60vw);
+            margin: 0 auto 16px;
+        }
+
+        .tshirt-preview img {
+            width: 100%;
+            display: block;
+        }
+
+        #printCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+        }
+
+        .constructor-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-label {
+            display: inline-block;
+            padding: 10px 18px;
+            background: #000;
+            border: 2px dashed #888;
+            cursor: pointer;
+        }
+
+        .upload-label span {
+            font-family: 'Tiny5', monospace;
+            color: #888;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        /* ===== FOOTER (always-visible DONATE) ===== */
+        .journal-footer {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -490,8 +729,10 @@
             <div class="panel-views">views: <span class="panel-views-value" id="viewsCount">...</span></div>
         </div>
         <div class="panel-center">
-            <button class="panel-btn text-primary" id="contentsBtn"
-                style="font-size: 18px;"><span>NAVIGATION</span></button>
+            <div class="tab-btn-row">
+                <button class="panel-btn tab-btn text-primary" id="tabBtnLab" data-tab="lab"><span>LAB</span></button>
+                <button class="panel-btn tab-btn text-primary active" id="tabBtnInfo" data-tab="info"><span>INFO</span></button>
+            </div>
         </div>
         <div class="panel-right">
             <div class="panel-spacer" aria-hidden="true"></div>
@@ -499,197 +740,197 @@
     </div>
 
     <div class="journal-wrapper">
-        <div class="journal-vertical" id="journalVertical">
 
-            <!-- 1. RSS TICKER -->
-            <div class="journal-page" id="sec-ticker" data-page="1">
-                <div class="page-content">
-                    <div class="ticker-wrapper">
-                        <div class="ticker" id="rssTicker">MORSTRIX</div>
-                    </div>
-                </div>
-            </div>
+        <!-- =========================================================
+             TAB: INFO (active by default)
+             ========================================================= -->
+        <div class="tab-panel active" id="tab-info" data-tab-panel="info">
+            <div class="journal-vertical">
 
-            <!-- 2. AUTO CAROUSEL -->
-            <div class="journal-page" id="sec-carousel" data-page="2">
-                <div class="page-content">
-                    <div class="carousel-section">
-                        <div class="carousel" id="mainCarousel">
-                            <img src="assets/mx1.jpg" class="active">
-                            <img src="assets/mx2.jpg">
+                <!-- HASHTAGS -->
+                <div class="journal-page" id="sec-info-tags" data-page="info-1">
+                    <div class="page-content">
+                        <div class="info-tag-row">
+                            <span class="info-hashtag" data-modal-trigger="fontInfoModal">#design</span>
+                            <span class="info-hashtag" data-modal-trigger="tagDevelopmentModal">#development</span>
                         </div>
-                        <div class="hashtag-row"><span class="hashtag text-secondary">#layoutporn</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. TWITTER -->
-            <div class="journal-page" id="sec-twitter" data-page="3">
-                <div class="page-content">
-                    <div class="twitter-section">
-                        <img src="assets/twit.png" class="x-btn-img" id="twitterBtn">
-                        <span class="twitter-label text-primary">twitter</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. ART -->
-            <div class="journal-page" id="sec-art" data-page="4">
-                <div class="page-content">
-                    <div class="art-feed-row">
-                        <div class="art-block">
-                            <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
-                        </div>
-                        <div class="archive-block text-primary" id="archiveBtn">
-                            <img src="assets/archive.png" alt="Archive" class="archive-img">
-                            <span class="archive-label">feed</span>
+                        <div class="info-tag-row">
+                            <span class="info-hashtag" data-modal-trigger="tagDiygearModal">#diygear</span>
+                            <span class="info-hashtag" data-modal-trigger="tagTattooModal">#tattoo</span>
+                            <span class="info-hashtag" data-modal-trigger="tagBarberingModal">#barbering</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 5. PAINT -->
-            <div class="journal-page" id="sec-paint" data-page="5">
-                <div class="page-content">
-                    <div class="paint-cell">
-                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
-                        <span class="control-label text-primary">paint</span>
+                <!-- SOCIAL GRID -->
+                <div class="journal-page" id="sec-info-social" data-page="info-2">
+                    <div class="page-content">
+                        <div class="icon-strip">
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">in</span>
+                                <span class="icon-action-label">linkedin</span>
+                            </a>
+                            <button class="icon-action" type="button" id="twitterBtn" data-modal-trigger="twitterModal">
+                                <img src="assets/twit.png" alt="Twitter / X">
+                                <span class="icon-action-label">twitter</span>
+                            </button>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">gh</span>
+                                <span class="icon-action-label">github</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">be</span>
+                                <span class="icon-action-label">behance</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">pi</span>
+                                <span class="icon-action-label">pinterest</span>
+                            </a>
+                            <button class="icon-action" type="button" id="telegramBtn" data-modal-trigger="telegramModal">
+                                <span class="icon-action-glyph">tg</span>
+                                <span class="icon-action-label">telegram</span>
+                            </button>
+                            <a href="#" class="icon-action">
+                                <img src="assets/insta.png" alt="Instagram">
+                                <span class="icon-action-label">insta</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">th</span>
+                                <span class="icon-action-label">threads</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">tt</span>
+                                <span class="icon-action-label">tiktok</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">yt</span>
+                                <span class="icon-action-label">youtube</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 6. BEHANCE + FONT -->
-            <div class="journal-page" id="sec-behance-font" data-page="6">
-                <div class="page-content">
-                    <img src="assets/f1.jpg" alt="Preview" class="behance-font-preview">
-                    <p class="brandbook-desc">
-                        поплава раннього вебу
-                    </p>
-                    <div class="behance-font-row">
-                        <button id="behanceBtn" class="universal-btn">
-                            <span class="btn-inner"><span>BEHANCE</span></span>
-                        </button>
-                        <button id="fontModalBtn" class="universal-btn">
-                            <span class="btn-inner"><span>FONT</span></span>
-                        </button>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             TAB: LAB (hidden by default)
+             ========================================================= -->
+        <div class="tab-panel" id="tab-lab" data-tab-panel="lab">
+            <div class="journal-vertical" id="journalVertical">
+
+                <!-- 1. RSS TICKER -->
+                <div class="journal-page" id="sec-ticker" data-page="1">
+                    <div class="page-content">
+                        <div class="ticker-wrapper">
+                            <div class="ticker" id="rssTicker">MORSTRIX</div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- 7. STYLER -->
-            <div class="journal-page" id="sec-styler" data-page="7">
-                <div class="page-content">
-                    <div class="styler-embedded">
-                        <input type="text" id="fontInputEmbedded" class="styler-input" placeholder="TYPE TEXT">
-                        <div class="styler-preview" id="stylerPreviewEmbedded"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 8. FORUM -->
-            <div class="journal-page" id="sec-forum" data-page="8">
-                <div class="page-content forum-support-layout">
-                    <div class="forum-embedded">
-                        <div class="forum-tabs-panel-embedded">
-                            <div class="forum-tab active" data-tab="wellness">
-                                <img src="assets/forum/wellness.svg" alt="wellness">
+                <!-- 2. ART + PAINT -->
+                <div class="journal-page" id="sec-art" data-page="2">
+                    <div class="page-content">
+                        <div class="art-feed-row">
+                            <div class="art-block">
+                                <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
                             </div>
-                            <div class="forum-tab" data-tab="design">
-                                <img src="assets/forum/design.svg" alt="design">
+                            <div class="archive-block text-primary" id="archiveBtn">
+                                <img src="assets/archive.png" alt="Archive" class="archive-img">
+                                <span class="archive-label">feed</span>
                             </div>
-                            <div class="forum-tab" data-tab="diygear">
-                                <img src="assets/forum/diygear.svg" alt="diygear">
-                            </div>
-                            <div class="forum-tab" data-tab="itai">
-                                <img src="assets/forum/it.svg" alt="it">
-                            </div>
-                            <div class="forum-tab" data-tab="money">
-                                <img src="assets/forum/money.svg" alt="money">
-                            </div>
-                            <div class="forum-tab" data-tab="radio">
-                                <img src="assets/forum/radio.svg" alt="radio">
-                            </div>
-                            <div class="forum-tab" data-tab="tattoo">
-                                <img src="assets/forum/tattoo.svg" alt="tattoo">
-                            </div>
-                            <div class="forum-tab" data-tab="travel">
-                                <img src="assets/forum/travel.svg" alt="travel">
+                            <div class="paint-cell">
+                                <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
+                                <span class="control-label text-primary">paint</span>
                             </div>
                         </div>
-                        <div class="forum-content-embedded">
-                            <h3 id="forumTitleEmbedded" class="text-primary">WELLNESS</h3>
+                    </div>
+                </div>
 
-                            <!-- WELLNESS DRUM (shown only for wellness tab) -->
-                            <div class="wellness-drum-wrap" id="wellnessDrumWrap">
-                                <div class="drum-scene">
-                                    <div class="drum-cylinder" id="drumCylinder"></div>
+                <!-- 3. STYLER -->
+                <div class="journal-page" id="sec-styler" data-page="3">
+                    <div class="page-content">
+                        <div class="styler-embedded">
+                            <input type="text" id="fontInputEmbedded" class="styler-input" placeholder="TYPE TEXT">
+                            <div class="styler-preview" id="stylerPreviewEmbedded"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. SOUNDSTYLER -->
+                <div class="journal-page" id="sec-soundstyler" data-page="4">
+                    <div class="page-content">
+                        <div class="text-synth-block">
+                            <div class="tts-title">Text Synth</div>
+                            <input type="text" id="ttsTextInput" class="styler-input" placeholder="TYPE TEXT">
+                            <select id="ttsVoiceSelect" class="styler-input"></select>
+                            <button class="universal-btn" id="ttsSpeakBtn" type="button">
+                                <span class="btn-inner"><span>SPEAK</span></span>
+                            </button>
+                            <div id="ttsStatus"
+                                style="font-family:'Tiny5',monospace;color:var(--text-secondary);font-size:14px;min-height:18px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. CONSTRUCTOR -->
+                <div class="journal-page" id="sec-constructor" data-page="5">
+                    <div class="page-content">
+                        <section class="constructor-panel">
+                            <h2 class="constructor-title">Constructor</h2>
+                            <div class="merch-constructor">
+                                <div class="tshirt-preview">
+                                    <img src="assets/tshirt.jpeg" alt="T-shirt">
+                                    <canvas id="printCanvas"></canvas>
                                 </div>
-                                <div class="drum-dots" id="drumDots"></div>
-                                <div class="drum-read-btn">
-                                    <button class="universal-btn" id="drumReadBtn">
-                                        <span class="btn-inner"><span>READ</span></span>
+                                <div class="constructor-controls">
+                                    <label for="imageUpload" class="upload-label">
+                                        <span>choose file</span>
+                                    </label>
+                                    <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+                                    <button class="universal-btn" id="resetPrint" type="button">
+                                        <span class="btn-inner"><span>CLEAR</span></span>
                                     </button>
                                 </div>
                             </div>
+                        </section>
+                    </div>
+                </div>
 
-                            <!-- OTHER TAB content (hidden for wellness) -->
-                            <p id="forumTextEmbedded" class="text-secondary" style="display:none;"></p>
+                <!-- 6. TOP -->
+                <div class="journal-page" id="sec-top" data-page="6">
+                    <div class="page-content top-tetris-layout">
+                        <h4 class="top-title text-primary">TOP PLAYERS</h4>
+                        <div class="top-players-framed">
+                            <div class="top-players-list"></div>
                         </div>
                     </div>
-                    <div class="forum-actions">
-                        <button class="universal-btn" id="forumFullBtn"><span
-                                class="btn-inner"><span>FULL</span></span></button>
-                        <button class="universal-btn" id="supportBtn"><span
-                                class="btn-inner"><span>SUPPORT</span></span></button>
-                    </div>
                 </div>
-            </div>
 
-            <!-- 9. TOP -->
-            <div class="journal-page" id="sec-top" data-page="9">
-                <div class="page-content top-tetris-layout">
-                    <h4 class="top-title text-primary">TOP PLAYERS</h4>
-                    <div class="top-players-framed">
-                        <div class="top-players-list"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 10. TETRIS -->
-            <div class="journal-page" id="sec-tetris" data-page="10">
-                <div class="page-content">
-                    <a href="tetris.html" target="_blank" class="tetris-big">
-                        <img src="assets/tetris.png" alt="TETRIS">
-                        <span class="text-primary">TETRIS</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- 11. TEAM -->
-            <div class="journal-page" id="sec-team" data-page="11">
-                <div class="page-content">
-                    <div class="team-choice-container">
-                        <a href="morsova.html" class="team-choice">
-                            <img src="assets/a.png" alt="DES">
-                            <span>DESIGNER</span>
-                        </a>
-                        <a href="ex.html" class="team-choice">
-                            <img src="assets/x.png" alt="DEV">
-                            <span>DEVELOPER</span>
+                <!-- 7. TETRIS -->
+                <div class="journal-page" id="sec-tetris" data-page="7">
+                    <div class="page-content">
+                        <a href="tetris.html" target="_blank" class="tetris-big">
+                            <img src="assets/tetris.png" alt="TETRIS">
+                            <span class="text-primary">TETRIS</span>
                         </a>
                     </div>
                 </div>
-            </div>
 
-            <!-- 12. DONATE -->
-            <div class="journal-page" id="sec-donate" data-page="12">
-                <div class="page-content">
-                    <div class="donate-line"></div>
-                    <div class="donate-label" id="donateBtn">DONATE</div>
-                    <div class="donate-sub">monobank</div>
-                </div>
             </div>
+        </div>
 
+    </div>
+
+    <!-- =========================================================
+         FOOTER: DONATE — always visible regardless of active tab
+         ========================================================= -->
+    <div class="journal-page journal-footer" id="sec-donate" data-page="footer">
+        <div class="page-content">
+            <div class="donate-line"></div>
+            <div class="donate-label" id="donateBtn">DONATE</div>
+            <div class="donate-sub">monobank</div>
         </div>
     </div>
 
@@ -784,6 +1025,7 @@
         </div>
     </div>
 
+    <!-- FONT MODAL — now opened via #design hashtag in INFO tab -->
     <div id="fontInfoModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -796,6 +1038,97 @@
                 <button class="universal-btn" id="downloadArchiveBtnEmbedded">
                     <span class="btn-inner"><span>DOWNLOAD</span></span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GENERIC TAG MODALS (INFO tab hashtags) -->
+    <div id="tagDevelopmentModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">#development</span>
+                <button class="modal-close-btn" data-modal="tagDevelopmentModal">✜</button>
+            </div>
+            <div class="modal-inner modal-inner-centered">
+                <p class="text-secondary">development work in progress.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tagDiygearModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">#diygear</span>
+                <button class="modal-close-btn" data-modal="tagDiygearModal">✜</button>
+            </div>
+            <div class="modal-inner modal-inner-centered">
+                <p class="text-secondary">diy gear archive coming soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tagTattooModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">#tattoo</span>
+                <button class="modal-close-btn" data-modal="tagTattooModal">✜</button>
+            </div>
+            <div class="modal-inner modal-inner-centered">
+                <p class="text-secondary">tattoo archive coming soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="tagBarberingModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">#barbering</span>
+                <button class="modal-close-btn" data-modal="tagBarberingModal">✜</button>
+            </div>
+            <div class="modal-inner modal-inner-centered">
+                <p class="text-secondary">barbering archive coming soon.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TWITTER MODAL — carousel moved here -->
+    <div id="twitterModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">twitter</span>
+                <button class="modal-close-btn" data-modal="twitterModal">✜</button>
+            </div>
+            <div class="modal-inner" style="display:flex;flex-direction:column;align-items:center;">
+                <div class="carousel-section">
+                    <div class="carousel" id="mainCarousel">
+                        <img src="assets/mx1.jpg" class="active">
+                        <img src="assets/mx2.jpg">
+                    </div>
+                    <div class="hashtag-row"><span class="hashtag text-secondary">#layoutporn</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELEGRAM MODAL — wellness drum moved here -->
+    <div id="telegramModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">telegram</span>
+                <button class="modal-close-btn" data-modal="telegramModal">✜</button>
+            </div>
+            <div class="modal-inner">
+                <div class="wellness-drum-wrap" id="wellnessDrumWrap">
+                    <div class="drum-scene">
+                        <div class="drum-cylinder" id="drumCylinder"></div>
+                    </div>
+                    <div class="drum-dots" id="drumDots"></div>
+                    <div class="drum-read-btn">
+                        <button class="universal-btn" id="drumReadBtn">
+                            <span class="btn-inner"><span>READ</span></span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -874,7 +1207,7 @@
 
     <script>
         (function () {
-            // ===== NAVIGATION anchor scroll =====
+            // ===== NAVIGATION anchor scroll (kept intact, legacy modal) =====
             document.querySelectorAll('.contents-item[data-anchor]').forEach(item => {
                 item.addEventListener('click', () => {
                     const target = document.getElementById(item.dataset.anchor);
@@ -889,7 +1222,8 @@
                 window.location.href = 'https://send.monobank.ua/jar/8q9Kk2hkDV';
             });
 
-            // ===== FONT MODAL =====
+            // ===== FONT MODAL (legacy trigger, kept intact even though the
+            //       #fontModalBtn element no longer exists — harmless no-op) =====
             document.getElementById('fontModalBtn')?.addEventListener('click', () => {
                 document.getElementById('fontInfoModal')?.classList.add('active');
                 window.playUiMenuBlip?.();
@@ -924,6 +1258,130 @@
                 input.addEventListener('focus', stop);
                 input.addEventListener('blur', () => { if (input.value === '') start(); });
                 start();
+            })();
+
+            // =====================================================
+            // NEW: TAB SWITCHING (LAB / INFO)
+            // =====================================================
+            (function () {
+                const tabButtons = document.querySelectorAll('.tab-btn[data-tab]');
+                const tabPanels = {
+                    lab: document.getElementById('tab-lab'),
+                    info: document.getElementById('tab-info')
+                };
+                function switchTab(name) {
+                    Object.keys(tabPanels).forEach(key => {
+                        tabPanels[key]?.classList.toggle('active', key === name);
+                    });
+                    tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
+                }
+                tabButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        switchTab(btn.dataset.tab);
+                        window.playUiMenuBlip?.();
+                    });
+                });
+                switchTab('info');
+            })();
+
+            // =====================================================
+            // NEW: generic [data-modal-trigger] opener
+            // (used by INFO hashtags + telegram/twitter social buttons)
+            // =====================================================
+            document.querySelectorAll('[data-modal-trigger]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById(btn.dataset.modalTrigger)?.classList.add('active');
+                    window.playUiMenuBlip?.();
+                });
+            });
+
+            // =====================================================
+            // NEW: SOUNDSTYLER (speechSynthesis)
+            // =====================================================
+            (function () {
+                let voices = [];
+                const ttsVoiceSelect = document.getElementById('ttsVoiceSelect');
+                const ttsTextInput = document.getElementById('ttsTextInput');
+                const ttsSpeakBtn = document.getElementById('ttsSpeakBtn');
+                const ttsStatus = document.getElementById('ttsStatus');
+                if (!ttsSpeakBtn) return;
+
+                function loadVoices() {
+                    voices = speechSynthesis.getVoices();
+                    if (!ttsVoiceSelect) return;
+                    ttsVoiceSelect.innerHTML = '';
+                    voices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `${voice.lang} - ${voice.name}`;
+                        ttsVoiceSelect.appendChild(option);
+                    });
+                    const uk = voices.find(voice => voice.lang.startsWith('uk'));
+                    const ru = voices.find(voice => voice.lang.startsWith('ru'));
+                    if (uk) ttsVoiceSelect.value = uk.name;
+                    else if (ru) ttsVoiceSelect.value = ru.name;
+                }
+
+                if (typeof speechSynthesis !== 'undefined') {
+                    speechSynthesis.onvoiceschanged = loadVoices;
+                    loadVoices();
+                }
+
+                function speak(text) {
+                    if (!text.trim()) {
+                        if (ttsStatus) ttsStatus.textContent = 'Введите текст';
+                        return;
+                    }
+                    speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    const selectedVoice = ttsVoiceSelect?.value;
+                    if (selectedVoice) {
+                        const voice = voices.find(item => item.name === selectedVoice);
+                        if (voice) utterance.voice = voice;
+                    }
+                    utterance.onstart = () => { if (ttsStatus) ttsStatus.textContent = '▶ Воспроизведение'; };
+                    utterance.onend = () => { if (ttsStatus) ttsStatus.textContent = ''; };
+                    utterance.onerror = event => { if (ttsStatus) ttsStatus.textContent = 'Ошибка: ' + event.error; };
+                    speechSynthesis.speak(utterance);
+                }
+
+                ttsSpeakBtn.addEventListener('click', () => speak(ttsTextInput?.value || ''));
+                ttsTextInput?.addEventListener('keypress', event => {
+                    if (event.key === 'Enter') speak(ttsTextInput.value);
+                });
+            })();
+
+            // =====================================================
+            // NEW: MERCH CONSTRUCTOR (canvas print upload)
+            // =====================================================
+            (function () {
+                const canvas = document.getElementById('printCanvas');
+                const upload = document.getElementById('imageUpload');
+                const reset = document.getElementById('resetPrint');
+                if (!canvas || !upload) return;
+                const ctx = canvas.getContext('2d');
+                canvas.width = 80;
+                canvas.height = 80;
+
+                upload.addEventListener('change', event => {
+                    const file = event.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = loadEvent => {
+                        const img = new Image();
+                        img.onload = () => {
+                            ctx.clearRect(0, 0, 80, 80);
+                            ctx.drawImage(img, 0, 0, 80, 80);
+                        };
+                        img.src = loadEvent.target?.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+
+                reset?.addEventListener('click', () => {
+                    ctx.clearRect(0, 0, 80, 80);
+                    upload.value = '';
+                });
             })();
 
         })();
