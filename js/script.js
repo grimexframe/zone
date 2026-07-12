@@ -547,8 +547,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
 
-    // ===== TWITTER =====
-    document.getElementById('twitterBtn')?.addEventListener('click', () => openModal('disclaimerModal'));
     // ===== BEHANCE =====
     document.getElementById('behanceBtn')?.addEventListener('click', () => openModal('behanceDisclaimerModal'));
 
