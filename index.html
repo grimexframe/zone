@@ -500,88 +500,126 @@
         }
 
         /* =========================================================
-           ============  NEW: TAB ARCHITECTURE (LAB / INFO)  ========
+           ==========  WIN95 FOLDER TABS (LAB / INFO)  ==============
+           ==========  premium minimalist sci-fi treatment  =========
            ========================================================= */
+
+        :root {
+            --tab-accent: #ff4f8f;
+            --tab-accent-dim: rgba(255, 79, 143, .35);
+            --tab-surface-idle: #131318;
+            --tab-surface-active: #0a0a0d;
+            --tab-border: #2f2f38;
+            --tab-border-hover: #46464f;
+            --tab-text-idle: #6c6c76;
+            --tab-text-active: #f0f0f2;
+        }
 
         .tab-btn-row {
             display: flex;
-            gap: 10px;
+            align-items: flex-end;
+            gap: 6px;
+            position: relative;
+            padding-bottom: 2px;
         }
 
-        /* ===== 8-BIT PIXEL TAB BUTTONS =====
-           Hard-edged bevel: convex (raised) when idle, concave (pressed-in)
-           when active. No blur, no rounding — flat pixel-window chrome. */
+        .tab-btn-row::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: var(--tab-border);
+            z-index: 1;
+        }
+
+        /* ===== Folder-tab geometry =====
+           A literal 2-step pixel staircase cuts each top corner — hard
+           90° steps, no border-radius, no diagonal. Reads as a chamfered
+           window-chrome tab rather than a rounded pill. */
         .tab-btn {
             position: relative;
             font-size: 13px !important;
-            padding: 8px 16px;
-            margin: 0;
-            background: #170a0e;
-            border: 2px solid #000;
-            box-shadow:
-                inset 2px 2px 0 0 #ffb7c7,
-                inset -2px -2px 0 0 #3d1620,
-                2px 2px 0 0 #000;
-            opacity: 0.65;
-            color: var(--text-primary);
+            padding: 8px 18px 7px;
+            margin: 0 0 3px;
+            background: var(--tab-surface-idle);
+            border: 1px solid var(--tab-border);
+            border-bottom: none;
+            color: var(--tab-text-idle);
+            letter-spacing: 1px;
             transition: none;
+            z-index: 2;
+            clip-path: polygon(0 6px,
+                    3px 6px,
+                    3px 3px,
+                    6px 3px,
+                    6px 0,
+                    calc(100% - 6px) 0,
+                    calc(100% - 6px) 3px,
+                    calc(100% - 3px) 3px,
+                    calc(100% - 3px) 6px,
+                    100% 6px,
+                    100% 100%,
+                    0 100%);
         }
 
+        .tab-btn:hover {
+            border-color: var(--tab-border-hover);
+        }
+
+        /* Active folder: pulled forward over the rail (negative margin),
+           erasing the seam so it reads as attached to the panel below. */
         .tab-btn.active {
-            opacity: 1;
-            background: #0c0508;
-            box-shadow:
-                inset -2px -2px 0 0 #ffb7c7,
-                inset 2px 2px 0 0 #3d1620,
-                1px 1px 0 0 #000;
-            color: #ffb7c7 !important;
+            margin-bottom: -2px;
+            padding-bottom: 9px;
+            background: var(--tab-surface-active);
+            border-color: var(--tab-border);
+            border-top: 2px solid var(--tab-accent);
+            border-bottom: 2px solid var(--tab-surface-active);
+            color: var(--tab-text-active) !important;
+            z-index: 3;
         }
 
-        .tab-btn:active {
-            box-shadow:
-                inset -2px -2px 0 0 #ffb7c7,
-                inset 2px 2px 0 0 #3d1620,
-                0 0 0 0 #000;
-        }
-
-        /* Instant neon flicker pulse on tap — pixel-stepped, no easing */
-        .tab-btn::after {
+        /* Instant "power-on" scan: a hairline rail draws itself left-to-right
+           in hard pixel steps — a precise ignition cue, not a glitch/flicker. */
+        .tab-btn::before {
             content: '';
             position: absolute;
-            inset: -3px;
+            top: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--tab-accent);
             pointer-events: none;
-            border: 2px solid #ff3d7f;
-            opacity: 0;
         }
 
-        .tab-btn.flicker::after {
-            animation: tabFlicker 50ms steps(2, jump-none) 1;
+        .tab-btn.activate::before {
+            animation: tabScanIn 140ms steps(4, jump-none) 1;
         }
 
-        @keyframes tabFlicker {
+        @keyframes tabScanIn {
             0% {
-                opacity: 1;
-                border-color: #fff;
-                box-shadow: 0 0 6px 2px #ff3d7f;
+                width: 0;
+                box-shadow: none;
             }
 
-            50% {
-                opacity: 1;
-                border-color: #ff3d7f;
-                box-shadow: 0 0 2px 1px #fff;
+            75% {
+                width: 100%;
+                box-shadow: 0 0 6px 1px var(--tab-accent-dim);
             }
 
             100% {
-                opacity: 0;
+                width: 100%;
                 box-shadow: none;
             }
         }
 
-        /* ===== CONTENT TRANSITION: chaos pixel dither (no slide/transform) =====
-           Panels never move on X/Y — only opacity + a hard pixel mask animate.
-           Outgoing panel is overlaid exactly in place (same XY) while the
-           incoming panel fades in underneath; both run on stepped keyframes
-           (no smoothing) for a pixel-perfect dissolve. */
+        /* ===== CONTENT TRANSITION: layered reveal (no slide/transform) =====
+           Panels never move on X/Y. The outgoing panel is overlaid exactly
+           in place and fades out quickly; the incoming panel's content
+           groups reveal one after another with a short stagger, so
+           different elements visibly appear at different speeds. */
         .tab-panel {
             display: none;
             position: relative;
@@ -600,150 +638,52 @@
             pointer-events: none;
         }
 
-        .tab-panel.dither-out,
-        .tab-panel.dither-in {
-            -webkit-mask-repeat: repeat;
-            mask-repeat: repeat;
+        .tab-panel.fade-out {
+            animation: tabFadeOut 110ms ease-out 1 forwards;
         }
 
-        .tab-panel.dither-out {
-            animation: ditherOut 170ms steps(6, jump-none) 1;
-        }
-
-        .tab-panel.dither-in {
-            animation: ditherIn 170ms steps(6, jump-none) 1;
-        }
-
-        @keyframes ditherOut {
-            0% {
+        @keyframes tabFadeOut {
+            from {
                 opacity: 1;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                -webkit-mask-size: 8px 8px;
-                mask-size: 8px 8px;
-                -webkit-mask-position: 0 0;
-                mask-position: 0 0;
             }
 
-            20% {
-                opacity: 0.7;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 40%, transparent 0% 60%);
-                mask-image: repeating-conic-gradient(#fff 0% 40%, transparent 0% 60%);
-                -webkit-mask-size: 14px 20px;
-                mask-size: 14px 20px;
-                -webkit-mask-position: 6px 0;
-                mask-position: 6px 0;
-            }
-
-            40% {
-                opacity: 0.85;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 20%, transparent 0% 35%);
-                mask-image: repeating-conic-gradient(#fff 0% 20%, transparent 0% 35%);
-                -webkit-mask-size: 22px 10px;
-                mask-size: 22px 10px;
-                -webkit-mask-position: 0 12px;
-                mask-position: 0 12px;
-            }
-
-            60% {
-                opacity: 0.45;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 55%, transparent 0% 65%);
-                mask-image: repeating-conic-gradient(#fff 0% 55%, transparent 0% 65%);
-                -webkit-mask-size: 10px 24px;
-                mask-size: 10px 24px;
-                -webkit-mask-position: 14px 4px;
-                mask-position: 14px 4px;
-            }
-
-            80% {
-                opacity: 0.18;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 12%, transparent 0% 30%);
-                mask-image: repeating-conic-gradient(#fff 0% 12%, transparent 0% 30%);
-                -webkit-mask-size: 28px 16px;
-                mask-size: 28px 16px;
-                -webkit-mask-position: 4px 18px;
-                mask-position: 4px 18px;
-            }
-
-            100% {
+            to {
                 opacity: 0;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                -webkit-mask-size: 18px 18px;
-                mask-size: 18px 18px;
-                -webkit-mask-position: 16px 0;
-                mask-position: 16px 0;
             }
         }
 
-        @keyframes ditherIn {
-            0% {
+        .journal-page {
+            opacity: 1;
+        }
+
+        .tab-panel.active .journal-page.stagger-in {
+            opacity: 0;
+            animation: tabStaggerIn 200ms cubic-bezier(.16, 1, .3, 1) 1 forwards;
+        }
+
+        @keyframes tabStaggerIn {
+            from {
                 opacity: 0;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                -webkit-mask-size: 18px 18px;
-                mask-size: 18px 18px;
-                -webkit-mask-position: 16px 0;
-                mask-position: 16px 0;
+                clip-path: inset(0 0 0 100%);
             }
 
-            20% {
-                opacity: 0.18;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 12%, transparent 0% 30%);
-                mask-image: repeating-conic-gradient(#fff 0% 12%, transparent 0% 30%);
-                -webkit-mask-size: 28px 16px;
-                mask-size: 28px 16px;
-                -webkit-mask-position: 4px 18px;
-                mask-position: 4px 18px;
-            }
-
-            40% {
-                opacity: 0.45;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 55%, transparent 0% 65%);
-                mask-image: repeating-conic-gradient(#fff 0% 55%, transparent 0% 65%);
-                -webkit-mask-size: 10px 24px;
-                mask-size: 10px 24px;
-                -webkit-mask-position: 14px 4px;
-                mask-position: 14px 4px;
-            }
-
-            60% {
-                opacity: 0.85;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 20%, transparent 0% 35%);
-                mask-image: repeating-conic-gradient(#fff 0% 20%, transparent 0% 35%);
-                -webkit-mask-size: 22px 10px;
-                mask-size: 22px 10px;
-                -webkit-mask-position: 0 12px;
-                mask-position: 0 12px;
-            }
-
-            80% {
-                opacity: 0.7;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 40%, transparent 0% 60%);
-                mask-image: repeating-conic-gradient(#fff 0% 40%, transparent 0% 60%);
-                -webkit-mask-size: 14px 20px;
-                mask-size: 14px 20px;
-                -webkit-mask-position: 6px 0;
-                mask-position: 6px 0;
-            }
-
-            100% {
+            to {
                 opacity: 1;
-                -webkit-mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                mask-image: repeating-conic-gradient(#fff 0% 25%, transparent 0% 50%);
-                -webkit-mask-size: 8px 8px;
-                mask-size: 8px 8px;
-                -webkit-mask-position: 0 0;
-                mask-position: 0 0;
+                clip-path: inset(0 0 0 0%);
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
 
-            .tab-panel.dither-out,
-            .tab-panel.dither-in,
-            .tab-btn.flicker::after {
+            .tab-panel.fade-out,
+            .journal-page.stagger-in,
+            .tab-btn.activate::before {
                 animation: none !important;
+            }
+
+            .journal-page.stagger-in {
+                opacity: 1;
+                clip-path: none;
             }
         }
 
@@ -1551,9 +1491,23 @@
                     lab: document.getElementById('tab-lab'),
                     info: document.getElementById('tab-info')
                 };
-                const TRANSITION_MS = 170;
+                const FADE_OUT_MS = 110;
+                const STAGGER_STEP_MS = 40;
+                const ITEM_DURATION_MS = 200;
+                const MAX_STAGGER_STEPS = 6; // cap so long panels don't feel sluggish
                 let currentTab = null;
                 let transitionTimer = null;
+
+                function getStaggerItems(panel) {
+                    return Array.from(panel.querySelectorAll(':scope > .journal-vertical > .journal-page'));
+                }
+
+                function resetStagger(panel) {
+                    getStaggerItems(panel).forEach(el => {
+                        el.classList.remove('stagger-in');
+                        el.style.animationDelay = '';
+                    });
+                }
 
                 function switchTab(name) {
                     const toPanel = tabPanels[name];
@@ -1564,44 +1518,54 @@
                     // Reset panels left mid-transition from a rapid previous tap.
                     Object.values(tabPanels).forEach(p => {
                         if (!p || p === fromPanel || p === toPanel) return;
-                        p.classList.remove('active', 'tab-outgoing', 'dither-out', 'dither-in');
+                        p.classList.remove('active', 'tab-outgoing', 'fade-out');
                         p.style.display = 'none';
+                        resetStagger(p);
                     });
 
                     tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
 
-                    // Incoming panel: joins normal flow immediately, dissolves in.
-                    toPanel.classList.remove('tab-outgoing', 'dither-out');
+                    // Incoming panel: joins normal flow immediately; its content
+                    // groups reveal one after another (layered, staggered speed).
+                    toPanel.classList.remove('tab-outgoing', 'fade-out');
                     toPanel.style.display = 'block';
                     toPanel.classList.add('active');
-                    void toPanel.offsetWidth; // force reflow so the animation restarts
-                    toPanel.classList.add('dither-in');
+                    const items = getStaggerItems(toPanel);
+                    let maxDelay = 0;
+                    items.forEach((el, i) => {
+                        el.classList.remove('stagger-in');
+                        void el.offsetWidth; // force reflow so the animation restarts
+                        const delay = Math.min(i, MAX_STAGGER_STEPS - 1) * STAGGER_STEP_MS;
+                        el.style.animationDelay = delay + 'ms';
+                        el.classList.add('stagger-in');
+                        maxDelay = Math.max(maxDelay, delay);
+                    });
 
                     // Outgoing panel: pinned exactly over the same spot (no XY shift),
-                    // dissolves out in sync with the incoming panel.
+                    // fades out quickly and uniformly (it's leaving, not layering in).
                     if (fromPanel && fromPanel !== toPanel) {
-                        fromPanel.classList.remove('dither-in');
                         fromPanel.classList.add('tab-outgoing');
                         void fromPanel.offsetWidth;
-                        fromPanel.classList.add('dither-out');
+                        fromPanel.classList.add('fade-out');
                     }
 
                     currentTab = name;
+                    const totalMs = Math.max(FADE_OUT_MS, maxDelay + ITEM_DURATION_MS);
                     transitionTimer = setTimeout(() => {
-                        toPanel.classList.remove('dither-in');
+                        resetStagger(toPanel);
                         if (fromPanel && fromPanel !== toPanel) {
-                            fromPanel.classList.remove('active', 'tab-outgoing', 'dither-out');
+                            fromPanel.classList.remove('active', 'tab-outgoing', 'fade-out');
                             fromPanel.style.display = 'none';
                         }
                         transitionTimer = null;
-                    }, TRANSITION_MS);
+                    }, totalMs);
                 }
 
                 tabButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
-                        btn.classList.remove('flicker');
-                        void btn.offsetWidth; // allow the flicker animation to replay
-                        btn.classList.add('flicker');
+                        btn.classList.remove('activate');
+                        void btn.offsetWidth; // allow the scan-in animation to replay
+                        btn.classList.add('activate');
                         switchTab(btn.dataset.tab);
                         window.playUiMenuBlip?.();
                     });
