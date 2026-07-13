@@ -566,13 +566,12 @@
         }
 
         .icon-strip {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 78px);
             justify-content: center;
             align-items: stretch;
             gap: 14px;
-            flex-wrap: wrap;
             width: 100%;
-            max-width: 480px;
             margin: 0 auto;
         }
 
@@ -865,12 +864,12 @@
                                 <span class="icon-action-label">threads</span>
                             </a>
                             <a href="#" class="icon-action">
-                                <span class="icon-action-glyph">tt</span>
-                                <span class="icon-action-label">tiktok</span>
-                            </a>
-                            <a href="#" class="icon-action">
                                 <span class="icon-action-glyph">yt</span>
                                 <span class="icon-action-label">youtube</span>
+                            </a>
+                            <a href="#" class="icon-action">
+                                <span class="icon-action-glyph">tt</span>
+                                <span class="icon-action-label">tiktok</span>
                             </a>
                         </div>
                     </div>
