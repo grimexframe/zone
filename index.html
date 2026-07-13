@@ -505,29 +505,246 @@
 
         .tab-btn-row {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
+        /* ===== 8-BIT PIXEL TAB BUTTONS =====
+           Hard-edged bevel: convex (raised) when idle, concave (pressed-in)
+           when active. No blur, no rounding — flat pixel-window chrome. */
         .tab-btn {
-            font-size: 14px !important;
-            padding: 6px 14px;
-            opacity: 0.55;
-            border-bottom: 2px solid transparent;
-            transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+            position: relative;
+            font-size: 13px !important;
+            padding: 8px 16px;
+            margin: 0;
+            background: #170a0e;
+            border: 2px solid #000;
+            box-shadow:
+                inset 2px 2px 0 0 #ffb7c7,
+                inset -2px -2px 0 0 #3d1620,
+                2px 2px 0 0 #000;
+            opacity: 0.65;
+            color: var(--text-primary);
+            transition: none;
         }
 
         .tab-btn.active {
             opacity: 1;
-            border-bottom: 2px solid #a84d6b;
+            background: #0c0508;
+            box-shadow:
+                inset -2px -2px 0 0 #ffb7c7,
+                inset 2px 2px 0 0 #3d1620,
+                1px 1px 0 0 #000;
             color: #ffb7c7 !important;
         }
 
+        .tab-btn:active {
+            box-shadow:
+                inset -2px -2px 0 0 #ffb7c7,
+                inset 2px 2px 0 0 #3d1620,
+                0 0 0 0 #000;
+        }
+
+        /* Instant neon flicker pulse on tap — pixel-stepped, no easing */
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            pointer-events: none;
+            border: 2px solid #ff3d7f;
+            opacity: 0;
+        }
+
+        .tab-btn.flicker::after {
+            animation: tabFlicker 50ms steps(2, jump-none) 1;
+        }
+
+        @keyframes tabFlicker {
+            0% {
+                opacity: 1;
+                border-color: #fff;
+                box-shadow: 0 0 6px 2px #ff3d7f;
+            }
+
+            50% {
+                opacity: 1;
+                border-color: #ff3d7f;
+                box-shadow: 0 0 2px 1px #fff;
+            }
+
+            100% {
+                opacity: 0;
+                box-shadow: none;
+            }
+        }
+
+        /* ===== CONTENT TRANSITION: chaos pixel dither (no slide/transform) =====
+           Panels never move on X/Y — only opacity + a hard pixel mask animate.
+           Outgoing panel is overlaid exactly in place (same XY) while the
+           incoming panel fades in underneath; both run on stepped keyframes
+           (no smoothing) for a pixel-perfect dissolve. */
         .tab-panel {
             display: none;
+            position: relative;
         }
 
         .tab-panel.active {
             display: block;
+        }
+
+        .tab-panel.tab-outgoing {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .tab-panel.dither-out,
+        .tab-panel.dither-in {
+            -webkit-mask-repeat: repeat;
+            mask-repeat: repeat;
+        }
+
+        .tab-panel.dither-out {
+            animation: ditherOut 170ms steps(6, jump-none) 1;
+        }
+
+        .tab-panel.dither-in {
+            animation: ditherIn 170ms steps(6, jump-none) 1;
+        }
+
+        @keyframes ditherOut {
+            0% {
+                opacity: 1;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                -webkit-mask-size: 2px 2px;
+                mask-size: 2px 2px;
+                -webkit-mask-position: 0 0;
+                mask-position: 0 0;
+            }
+
+            20% {
+                opacity: 0.8;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 30%, transparent 0% 55%);
+                mask-image: repeating-conic-gradient(#000 0% 30%, transparent 0% 55%);
+                -webkit-mask-size: 3px 4px;
+                mask-size: 3px 4px;
+                -webkit-mask-position: 1px 0;
+                mask-position: 1px 0;
+            }
+
+            40% {
+                opacity: 0.55;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 20%, transparent 0% 45%);
+                mask-image: repeating-conic-gradient(#000 0% 20%, transparent 0% 45%);
+                -webkit-mask-size: 4px 2px;
+                mask-size: 4px 2px;
+                -webkit-mask-position: 0 2px;
+                mask-position: 0 2px;
+            }
+
+            60% {
+                opacity: 0.32;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 35%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 35%, transparent 0% 50%);
+                -webkit-mask-size: 2px 4px;
+                mask-size: 2px 4px;
+                -webkit-mask-position: 2px 1px;
+                mask-position: 2px 1px;
+            }
+
+            80% {
+                opacity: 0.12;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 15%, transparent 0% 40%);
+                mask-image: repeating-conic-gradient(#000 0% 15%, transparent 0% 40%);
+                -webkit-mask-size: 5px 3px;
+                mask-size: 5px 3px;
+                -webkit-mask-position: 1px 3px;
+                mask-position: 1px 3px;
+            }
+
+            100% {
+                opacity: 0;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                -webkit-mask-size: 3px 3px;
+                mask-size: 3px 3px;
+                -webkit-mask-position: 3px 0;
+                mask-position: 3px 0;
+            }
+        }
+
+        @keyframes ditherIn {
+            0% {
+                opacity: 0;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                -webkit-mask-size: 3px 3px;
+                mask-size: 3px 3px;
+                -webkit-mask-position: 3px 0;
+                mask-position: 3px 0;
+            }
+
+            20% {
+                opacity: 0.12;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 15%, transparent 0% 40%);
+                mask-image: repeating-conic-gradient(#000 0% 15%, transparent 0% 40%);
+                -webkit-mask-size: 5px 3px;
+                mask-size: 5px 3px;
+                -webkit-mask-position: 1px 3px;
+                mask-position: 1px 3px;
+            }
+
+            40% {
+                opacity: 0.32;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 35%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 35%, transparent 0% 50%);
+                -webkit-mask-size: 2px 4px;
+                mask-size: 2px 4px;
+                -webkit-mask-position: 2px 1px;
+                mask-position: 2px 1px;
+            }
+
+            60% {
+                opacity: 0.55;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 20%, transparent 0% 45%);
+                mask-image: repeating-conic-gradient(#000 0% 20%, transparent 0% 45%);
+                -webkit-mask-size: 4px 2px;
+                mask-size: 4px 2px;
+                -webkit-mask-position: 0 2px;
+                mask-position: 0 2px;
+            }
+
+            80% {
+                opacity: 0.8;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 30%, transparent 0% 55%);
+                mask-image: repeating-conic-gradient(#000 0% 30%, transparent 0% 55%);
+                -webkit-mask-size: 3px 4px;
+                mask-size: 3px 4px;
+                -webkit-mask-position: 1px 0;
+                mask-position: 1px 0;
+            }
+
+            100% {
+                opacity: 1;
+                -webkit-mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                mask-image: repeating-conic-gradient(#000 0% 25%, transparent 0% 50%);
+                -webkit-mask-size: 2px 2px;
+                mask-size: 2px 2px;
+                -webkit-mask-position: 0 0;
+                mask-position: 0 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .tab-panel.dither-out,
+            .tab-panel.dither-in,
+            .tab-btn.flicker::after {
+                animation: none !important;
+            }
         }
 
         /* ===== INFO TAB: hashtags ===== */
@@ -1334,19 +1551,66 @@
                     lab: document.getElementById('tab-lab'),
                     info: document.getElementById('tab-info')
                 };
+                const TRANSITION_MS = 170;
+                let currentTab = null;
+                let transitionTimer = null;
+
                 function switchTab(name) {
-                    Object.keys(tabPanels).forEach(key => {
-                        tabPanels[key]?.classList.toggle('active', key === name);
+                    const toPanel = tabPanels[name];
+                    if (!toPanel || name === currentTab) return;
+                    const fromPanel = currentTab ? tabPanels[currentTab] : null;
+
+                    if (transitionTimer) clearTimeout(transitionTimer);
+                    // Reset panels left mid-transition from a rapid previous tap.
+                    Object.values(tabPanels).forEach(p => {
+                        if (!p || p === fromPanel || p === toPanel) return;
+                        p.classList.remove('active', 'tab-outgoing', 'dither-out', 'dither-in');
+                        p.style.display = 'none';
                     });
+
                     tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
+
+                    // Incoming panel: joins normal flow immediately, dissolves in.
+                    toPanel.classList.remove('tab-outgoing', 'dither-out');
+                    toPanel.style.display = 'block';
+                    toPanel.classList.add('active');
+                    void toPanel.offsetWidth; // force reflow so the animation restarts
+                    toPanel.classList.add('dither-in');
+
+                    // Outgoing panel: pinned exactly over the same spot (no XY shift),
+                    // dissolves out in sync with the incoming panel.
+                    if (fromPanel && fromPanel !== toPanel) {
+                        fromPanel.classList.remove('dither-in');
+                        fromPanel.classList.add('tab-outgoing');
+                        void fromPanel.offsetWidth;
+                        fromPanel.classList.add('dither-out');
+                    }
+
+                    currentTab = name;
+                    transitionTimer = setTimeout(() => {
+                        toPanel.classList.remove('dither-in');
+                        if (fromPanel && fromPanel !== toPanel) {
+                            fromPanel.classList.remove('active', 'tab-outgoing', 'dither-out');
+                            fromPanel.style.display = 'none';
+                        }
+                        transitionTimer = null;
+                    }, TRANSITION_MS);
                 }
+
                 tabButtons.forEach(btn => {
                     btn.addEventListener('click', () => {
+                        btn.classList.remove('flicker');
+                        void btn.offsetWidth; // allow the flicker animation to replay
+                        btn.classList.add('flicker');
                         switchTab(btn.dataset.tab);
                         window.playUiMenuBlip?.();
                     });
                 });
-                switchTab('info');
+
+                // Initial state: INFO active, no transition classes/animation.
+                tabPanels.info?.classList.add('active');
+                if (tabPanels.info) tabPanels.info.style.display = 'block';
+                currentTab = 'info';
             })();
 
             // =====================================================
