@@ -656,42 +656,11 @@
             opacity: 1;
         }
 
-        /* The wipe edge travels at a constant (linear) speed across the full
-           duration so it reads as a deliberate curtain-draw, not a blend —
-           opacity snaps in early so the revealed strip is fully solid as it
-           advances instead of fading in underneath the wipe. */
-        .tab-panel.active .journal-page.stagger-in {
-            opacity: 0;
-            animation: tabStaggerIn 480ms linear 1 forwards;
-        }
-
-        @keyframes tabStaggerIn {
-            0% {
-                opacity: 0;
-                clip-path: inset(0 0 0 100%);
-            }
-
-            18% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 1;
-                clip-path: inset(0 0 0 0%);
-            }
-        }
-
         @media (prefers-reduced-motion: reduce) {
 
             .tab-panel.fade-out,
-            .journal-page.stagger-in,
             .tab-btn.activate::before {
                 animation: none !important;
-            }
-
-            .journal-page.stagger-in {
-                opacity: 1;
-                clip-path: none;
             }
         }
 
@@ -1500,22 +1469,8 @@
                     info: document.getElementById('tab-info')
                 };
                 const FADE_OUT_MS = 110;
-                const STAGGER_STEP_MS = 110;
-                const ITEM_DURATION_MS = 480;
-                const MAX_STAGGER_STEPS = 7; // cap so long panels don't feel sluggish
                 let currentTab = null;
                 let transitionTimer = null;
-
-                function getStaggerItems(panel) {
-                    return Array.from(panel.querySelectorAll(':scope > .journal-vertical > .journal-page'));
-                }
-
-                function resetStagger(panel) {
-                    getStaggerItems(panel).forEach(el => {
-                        el.classList.remove('stagger-in');
-                        el.style.animationDelay = '';
-                    });
-                }
 
                 function switchTab(name) {
                     const toPanel = tabPanels[name];
@@ -1528,29 +1483,17 @@
                         if (!p || p === fromPanel || p === toPanel) return;
                         p.classList.remove('active', 'tab-outgoing', 'fade-out');
                         p.style.display = 'none';
-                        resetStagger(p);
                     });
 
                     tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
 
-                    // Incoming panel: joins normal flow immediately; its content
-                    // groups reveal one after another (layered, staggered speed).
+                    // Incoming panel: joins normal flow immediately, no content animation.
                     toPanel.classList.remove('tab-outgoing', 'fade-out');
                     toPanel.style.display = 'block';
                     toPanel.classList.add('active');
-                    const items = getStaggerItems(toPanel);
-                    let maxDelay = 0;
-                    items.forEach((el, i) => {
-                        el.classList.remove('stagger-in');
-                        void el.offsetWidth; // force reflow so the animation restarts
-                        const delay = Math.min(i, MAX_STAGGER_STEPS - 1) * STAGGER_STEP_MS;
-                        el.style.animationDelay = delay + 'ms';
-                        el.classList.add('stagger-in');
-                        maxDelay = Math.max(maxDelay, delay);
-                    });
 
                     // Outgoing panel: pinned exactly over the same spot (no XY shift),
-                    // fades out quickly and uniformly (it's leaving, not layering in).
+                    // fades out quickly and uniformly.
                     if (fromPanel && fromPanel !== toPanel) {
                         fromPanel.classList.add('tab-outgoing');
                         void fromPanel.offsetWidth;
@@ -1558,15 +1501,13 @@
                     }
 
                     currentTab = name;
-                    const totalMs = Math.max(FADE_OUT_MS, maxDelay + ITEM_DURATION_MS);
                     transitionTimer = setTimeout(() => {
-                        resetStagger(toPanel);
                         if (fromPanel && fromPanel !== toPanel) {
                             fromPanel.classList.remove('active', 'tab-outgoing', 'fade-out');
                             fromPanel.style.display = 'none';
                         }
                         transitionTimer = null;
-                    }, totalMs);
+                    }, FADE_OUT_MS);
                 }
 
                 tabButtons.forEach(btn => {
