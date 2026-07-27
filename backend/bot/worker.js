@@ -1,7 +1,8 @@
 // ===== КОНСТАНТИ =====
 const SYSTEM_PROMPT = `Відповідай корисно, культурно, українською мовою, коротко (до 100 слів).`;
-const RULES_TEXT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʙ`;
+const RULES_TEXT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴄᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʙ`;
 const GROUP_CHAT_ID = -1003821287920;
+const CHANNEL_USERNAME = 'n5Qg8d2h9qliMmRi'; // Юзернейм канала для обратной ссылки
 
 // --- ВАШИ ПРАВИЛЬНЫЕ ID (уже исправлены) ---
 const ADMIN_ID = 8382236562;
@@ -138,6 +139,35 @@ async function handleUpdate(update, env) {
     return;
   }
 
+  // Кнопка проверки подписки (DONE)
+  if (update.callback_query?.data === 'check_membership') {
+    const userId = update.callback_query.from.id;
+    const callbackQueryId = update.callback_query.id;
+    
+    const isMember = await isGroupMember(userId, BOT_TOKEN);
+    
+    if (isMember) {
+      await tg(BOT_TOKEN, 'answerCallbackQuery', {
+        callback_query_id: callbackQueryId,
+        text: '✅ Ви учасник клубу! Тепер можете писати.',
+        show_alert: true
+      });
+      // Редактируем сообщение, удаляя кнопку
+      await tg(BOT_TOKEN, 'editMessageText', {
+        chat_id: update.callback_query.message.chat.id,
+        message_id: update.callback_query.message.message_id,
+        text: '✅ Ви учасник клубу! Тепер можете писати.'
+      });
+    } else {
+      await tg(BOT_TOKEN, 'answerCallbackQuery', {
+        callback_query_id: callbackQueryId,
+        text: '❌ Ви поки не учасник. Спочатку приєднайтесь до групи.',
+        show_alert: true
+      });
+    }
+    return;
+  }
+
   // Повідомлення
   if (update.message?.text) {
     const msg = update.message;
@@ -150,10 +180,11 @@ async function handleUpdate(update, env) {
       if (!isMember) {
         await tg(BOT_TOKEN, 'sendMessage', {
           chat_id: msg.chat.id,
-          text: '⛔ ᴛіʌьᴋи дʌя учᴀᴄниᴋɪʙ зᴀᴋᴘиᴛᴏгᴏ ᴋʌубу.\n\n👉 Долучайтесь до нашої групи, щоб спілкуватися з ботом!',
+          text: '⛔ ᴛіʌьᴋи дʌя учᴀᴄниᴋɪʙ зᴀᴋᴘиᴛᴏгᴏ ᴋʌубу.\n\n👉 Долучайтесь до нашої групи, щоб спілкуватися з ботом.',
           reply_markup: { 
             inline_keyboard: [[
-              { text: '🚀 Вступити до групи', url: 'https://t.me/+n5Qg8d2h9qliMmRi' }
+              { text: '🚀 Вступити до групи', url: 'https://t.me/+n5Qg8d2h9qliMmRi' },
+              { text: '✅ DONE', callback_data: 'check_membership' }
             ]] 
           }
         });
