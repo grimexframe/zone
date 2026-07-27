@@ -24,21 +24,31 @@ async function tg(token, method, body) {
   return data;
 }
 
-// ===== ПЕРЕВІРКА ПІДПИСКИ =====
+// ===== ПЕРЕВІРКА ПІДПИСКИ (З ДЕБАГОМ) =====
 async function isGroupMember(userId, token) {
   if (groupMembers.has(userId)) return true;
   try {
+    console.log(`🔍 [DEBUG] Checking membership for user ${userId} in chat ${GROUP_CHAT_ID}`);
     const res = await tg(token, 'getChatMember', { chat_id: GROUP_CHAT_ID, user_id: userId });
+    console.log(`🔍 [DEBUG] getChatMember raw result:`, JSON.stringify(res));
+
+    if (!res.ok) {
+      console.error(`❌ [DEBUG] Telegram API error:`, res.description);
+      return false;
+    }
+
     const status = res.result?.status;
     const ok = ['member', 'administrator', 'creator'].includes(status) ||
                 (status === 'restricted' && res.result?.is_member === true);
+    
     if (ok) groupMembers.add(userId);
     return ok;
   } catch (e) {
-    console.error('isGroupMember error:', e);
+    console.error('💥 [DEBUG] isGroupMember exception:', e);
     return false;
   }
 }
+
 
 // ===== GROQ =====
 async function getGroqReply(userMessage, apiKey) {
