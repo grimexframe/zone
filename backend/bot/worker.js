@@ -134,17 +134,23 @@ async function handleUpdate(update, env) {
     const userId = msg.from.id;
     const chatType = msg.chat.type;
 
-    // В особистих — перевіряємо підписку
+        // В особистих — перевіряємо підписку
     if (chatType === 'private') {
       const isMember = await isGroupMember(userId, BOT_TOKEN);
       if (!isMember) {
         await tg(BOT_TOKEN, 'sendMessage', {
           chat_id: msg.chat.id,
-          text: '⛔ ᴛіʌьᴋи дʌя учᴀᴄниᴋɪʙ зᴀᴋᴘиᴛᴏгᴏ ᴋʌубу'
+          text: '⛔ ᴛіʌьᴋи дʌя учᴀᴄниᴋɪʙ зᴀᴋᴘиᴛᴏгᴏ ᴋʌубу.\n\n👉 Долучайтесь до нашої групи, щоб спілкуватися з ботом!',
+          reply_markup: { 
+            inline_keyboard: [[
+              { text: '🚀 Вступити до групи', url: 'https://t.me/+n5Qg8d2h9qliMmRi' }
+            ]] 
+          }
         });
         return;
       }
     }
+
 
     // Перевірка посилань
     if (msg.entities && GOOGLE_SAFE_BROWSING_API_KEY) {
