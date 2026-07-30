@@ -1,51 +1,45 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Full Featured)
+// TELEGRAM BOT — Cloudflare Worker
 // =====================================================================
-// ENV змінна в Cloudflare Worker (Settings → Variables):
-//   BOT_TOKEN      — токен вашого бота від @BotFather (обов'язково)
+// ENV у Cloudflare (Settings → Variables):
+//   BOT_TOKEN      — токен бота від @BotFather (обов'язково)
 //   GROQ_API_KEY   — ключ Groq API (обов'язково)
-//   WEBHOOK_SECRET — (опційно) секретний токен для перевірки вебхука
+//   WEBHOOK_SECRET — (опційно) секретний токен
 // =====================================================================
 
 const ADMIN_ID = 8382236562;
 
 // --- Платна група (за потреби) ---------------------------------------
-const PAID_GROUP_CHAT_ID = -1004491630210; // Наприклад: -100123456789
-const PAID_GROUP_STARS_PRICE = 3284; // Ціна в Telegram Stars
+const PAID_GROUP_CHAT_ID = 0; 
+const PAID_GROUP_STARS_PRICE = 3284;
 
 function isPaidGroup(chatId) {
   return chatId === PAID_GROUP_CHAT_ID;
 }
 
 // --- Дефолтні тексти -------------------------------------------------
-const RULES_TEXT_DEFAULT =
-  `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʌіʙ`;
+const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʌіʙ`;
+const WELCOME_TEXT_DEFAULT = `🤬 ᴏнбᴏᴘдинг`;
 
-const COMMAND_REPLIES = {
-  invite: `🔓Апрув`,
-  welcome: `🤬 ᴏнбᴏᴘдинг`,
-  rules: `⚠️ пᴘᴀʙиʌᴀ\n\n${RULES_TEXT_DEFAULT}`
-};
-
-// Стартовий текст для привату
+// Оновлений стартовий пуш
 const START_PUSH_TEXT =
   `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
   `⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
   `/invite /welcome /rules\n\n`;
 
-// --- Динамічний кеш налаштувань груп ----------------------------------
+// --- Кеш налаштувань груп ---------------------------------------------
 const groupWelcomeCache = new Map(); 
 const groupRulesCache = new Map();   
 
 function getWelcomeText(chatId) {
-  return groupWelcomeCache.get(chatId) || COMMAND_REPLIES.welcome;
+  return groupWelcomeCache.get(chatId) || WELCOME_TEXT_DEFAULT;
 }
 
 function getRulesText(chatId) {
   return groupRulesCache.get(chatId) || RULES_TEXT_DEFAULT;
 }
 
-// --- ІІ & Реакції -----------------------------------------------------
+// --- ШІ & Реакції -----------------------------------------------------
 const SYSTEM_PROMPT =
   `Відповідай виключно українською мовою, просунутою грамотною лексикою. ` +
   `Формат відповіді: рівно 2 короткі конструктивні речення, і одразу після них — ` +
@@ -84,7 +78,7 @@ async function getAllowedReactions(chatId, env) {
 }
 
 // =====================================================================
-// ЗАПОБІЖНИКИ І КЕШ
+// ЗАПОБІЖНИКИ
 // =====================================================================
 const seenUpdateIds = new Map();
 const lastAiCallByUser = new Map();
@@ -174,7 +168,7 @@ async function getGroqReply(userMessage, apiKey) {
 }
 
 // =====================================================================
-// ОБРОБКА ПЕРЕХОДУ ПО ПОСИЛАННЮ (ЗАЯВКА НА ВСТУП)
+// ПРИЙОМ ЗАЯВОК У ГРУПУ
 // =====================================================================
 async function handleJoinRequest(req, env) {
   const { BOT_TOKEN } = env;
@@ -183,11 +177,12 @@ async function handleJoinRequest(req, env) {
 
   console.log(`[JOIN] chat_join_request: chat_id=${chatId} user_id=${userId}`);
 
-  // 1. НАДСИЛАЄМО ПРИВАТНЕ СМС КОРИСТУВАЧЕВІ В ЛС
+  // 1. Надсилаємо пуш + правила користувачу у ЛС
+  const currentRules = getRulesText(chatId);
   const privateWelcomeMessage = 
     `👋 **Вітаємо!**\n\n` +
-    `Дякуємо за перехід за посиланням. Твою заявку на вступ до групи прийнято!\n\n` +
-    `${START_PUSH_TEXT}`;
+    `${START_PUSH_TEXT}` +
+    `⚠️ **Правила спільноти:**\n${currentRules}`;
 
   try {
     await tg(BOT_TOKEN, 'sendMessage', {
@@ -196,14 +191,14 @@ async function handleJoinRequest(req, env) {
       parse_mode: 'Markdown'
     });
   } catch (e) {
-    console.error(`[JOIN] Не вдалося надіслати ЛС користувачу ${userId}:`, e.message);
+    console.error(`[JOIN] Failed DM to user ${userId}:`, e.message);
   }
 
-  // 2. Безкоштовна група -> автоматичне схвалення заявки
+  // 2. Схвалюємо заявку для безкоштовної групи
   if (!isPaidGroup(chatId)) {
     await tg(BOT_TOKEN, 'approveChatJoinRequest', { chat_id: chatId, user_id: userId });
 
-    // Повідомлення в саму групу про нового учасника
+    // Опублікувати велкам у саму групу (ЧИСТОВИЙ ВИГЛЯД, без кнопок редагування!)
     const welcomeText = getWelcomeText(chatId);
     const name = req.from.first_name || 'користувач';
     const userMention = `[${name}](tg://user?id=${userId})`;
@@ -219,7 +214,7 @@ async function handleJoinRequest(req, env) {
     return;
   }
 
-  // 3. Платна група -> надсилання інвойсу
+  // 3. Інвойс для платної групи
   const payload = `join_${chatId}_${userId}`;
   await tg(BOT_TOKEN, 'sendInvoice', {
     chat_id: userId,
@@ -232,7 +227,7 @@ async function handleJoinRequest(req, env) {
 }
 
 // =====================================================================
-// КОМАНДИ І КНОПКА "ДОДАТИ В ГРУПУ"
+// КОМАНДИ Й ІНТЕРАКТИВ (ТІЛЬКИ У ВІДПОВІДЬ НА КОМАНДИ)
 // =====================================================================
 let cachedBotUsername = null;
 async function getBotUsername(env) {
@@ -246,23 +241,24 @@ function isGroupChatType(chatType) {
   return chatType === 'group' || chatType === 'supergroup';
 }
 
-// Універсальна кнопка для додавання бота
 async function getAddBotKeyboard(env) {
   const username = await getBotUsername(env);
-  return username
-    ? { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: `https://t.me/${username}?startgroup=start` }]] }
-    : undefined;
+  if (!username) return undefined;
+  const addUrl = `https://t.me/${username}?startgroup=true&admin=invite_users+manage_chat`;
+  return { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: addUrl }]] };
 }
 
+// --- /invite ---
 async function handleInviteCommand(msg, env) {
   const isGroup = isGroupChatType(msg.chat.type);
   const keyboard = await getAddBotKeyboard(env);
 
   if (!isGroup) {
-    // ЯКЩО КОМАНДА /invite ВИКЛИКАНА В ОСОБИСТИХ (В ЛС)
     const text = 
-      `🤖 **Додавання бота в групу**\n\n` +
-      `Щоб додати бота в свій чат і використовувати автоматичний прийом заявок, натисни кнопку нижче:`;
+      `🤖 **Як підключити групу:**\n\n` +
+      `1. Натисни кнопку **«Додати бота в групу»** нижче і обери групу.\n` +
+      `2. Надай боту права адміністратора ("Запрошувати користувачів").\n` +
+      `3. Напиши в групі **/invite** — бот згенерує інвайт-посилання із заявками!`;
     
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
@@ -273,7 +269,6 @@ async function handleInviteCommand(msg, env) {
     return;
   }
 
-  // ЯКЩО КОМАНДА /invite ВИКЛИКАНА ВСЕРЕДИНІ ГРУПИ
   const res = await tg(env.BOT_TOKEN, 'createChatInviteLink', {
     chat_id: msg.chat.id,
     name: 'Авто-інвайт (join request)',
@@ -282,25 +277,26 @@ async function handleInviteCommand(msg, env) {
   const link = res?.result?.invite_link;
 
   const text = link
-    ? `🔓 **Інвайт-посилання створено!**\n\n${link}\n\n` +
-      `Кожен, хто перейде за ним, отримає приватне СМС у ЛС від бота, а його заявку буде автоматично схвалено.`
-    : `❌ Не вдалось створити посилання. Перевірте, чи є в бота право "Запрошувати користувачів за посиланням".`;
+    ? `🔓 **Інвайт-посилання для цієї групи:**\n\n${link}\n\n` +
+      `Бот активований! Кожен, хто перейде за ним, отримає приватний пуш у ЛС з правилами, а бот автоматично схвалить заявку.`
+    : `❌ Не вдалось створити посилання. Перевірте, чи бот має права адміністратора "Запрошувати користувачів за посиланням".`;
 
   await tg(env.BOT_TOKEN, 'sendMessage', {
     chat_id: msg.chat.id,
     text,
     parse_mode: 'Markdown',
     message_thread_id: msg.message_thread_id,
-    reply_markup: keyboard // Працююча кнопка додавання бота в іншу групу
+    reply_markup: keyboard
   });
 }
 
+// --- /welcome ---
 async function handleWelcomeCommand(msg, env) {
   const keyboard = await getAddBotKeyboard(env);
   if (!isGroupChatType(msg.chat.type)) {
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: `Скористайся кнопкою нижче, щоб додати бота у свою групу:`,
+      text: `Команду /welcome потрібно використовувати в групі для налаштування привітання.`,
       reply_markup: keyboard
     });
     return;
@@ -312,28 +308,33 @@ async function handleWelcomeCommand(msg, env) {
     groupWelcomeCache.set(msg.chat.id, newWelcomeText);
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: `✅ Привітальний текст оновлено!\n\n${newWelcomeText}`,
+      text: `✅ **Вітальний текст успішно оновлено!**\n\nНові учасники бачитимуть:\n\n${newWelcomeText}`,
+      parse_mode: 'Markdown',
       message_thread_id: msg.message_thread_id
     });
   } else {
-    const welcomeText = getWelcomeText(msg.chat.id);
+    const currentText = getWelcomeText(msg.chat.id);
+    const helpText = 
+      `📝 **Поточний текст привітання у цій групі:**\n\n${currentText}\n\n` +
+      `💡 *Щоб встановити новий текст, напишіть команду разом з текстом:*\n` +
+      `\`/welcome Ваше нове привітання тут...\``;
+
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: welcomeText,
-      message_thread_id: msg.message_thread_id,
-      reply_markup: {
-        inline_keyboard: [[{ text: 'пᴘᴀʙиʌᴀ', callback_data: 'show_rules' }]]
-      }
+      text: helpText,
+      parse_mode: 'Markdown',
+      message_thread_id: msg.message_thread_id
     });
   }
 }
 
+// --- /rules ---
 async function handleRulesCommand(msg, env) {
   const keyboard = await getAddBotKeyboard(env);
   if (!isGroupChatType(msg.chat.type)) {
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: `Скористайся кнопкою нижче, щоб додати бота у свою групу:`,
+      text: `Команду /rules потрібно використовувати в групі для налаштування правил.`,
       reply_markup: keyboard
     });
     return;
@@ -345,21 +346,28 @@ async function handleRulesCommand(msg, env) {
     groupRulesCache.set(msg.chat.id, newRulesText);
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: `✅ Текст правил оновлено!\n\n${newRulesText}`,
+      text: `✅ **Правила групи успішно оновлено!**\n\nЦей текст бачитимуть нові користувачі:\n\n${newRulesText}`,
+      parse_mode: 'Markdown',
       message_thread_id: msg.message_thread_id
     });
   } else {
+    const currentRules = getRulesText(msg.chat.id);
+    const helpText = 
+      `⚠️ **Поточні правила цієї групи:**\n\n${currentRules}\n\n` +
+      `💡 *Щоб змінити правила, напишіть команду разом з новим текстом:*\n` +
+      `\`/rules Ваши правила тут...\``;
+
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
-      text: `⚠️ пᴘᴀʙиʌᴀ`,
-      message_thread_id: msg.message_thread_id,
-      reply_markup: { inline_keyboard: [[{ text: 'пᴘᴀʙиʌᴀ', callback_data: 'show_rules' }]] }
+      text: helpText,
+      parse_mode: 'Markdown',
+      message_thread_id: msg.message_thread_id
     });
   }
 }
 
 // =====================================================================
-// РЕАКЦІЇ В ГРУПІ
+// РЕАКЦІЇ
 // =====================================================================
 async function reactToMessage(msg, env) {
   try {
@@ -384,13 +392,13 @@ async function handleUpdate(update, env) {
 
   if (isDuplicateUpdate(update.update_id)) return;
 
-  // --- Заявки на вступ (Перехід по посиланню) ---
+  // --- Перехід за посиланням (Заявка на вступ) ---
   if (update.chat_join_request) {
     await handleJoinRequest(update.chat_join_request, env);
     return;
   }
 
-  // --- Кнопка "Правила" ---
+  // --- Попап кнопки "Правила" у групі ---
   if (update.callback_query?.data === 'show_rules') {
     const chatId = update.callback_query.message?.chat?.id;
     const rulesText = getRulesText(chatId);
@@ -410,14 +418,14 @@ async function handleUpdate(update, env) {
     const isPrivate = chatType === 'private';
     const isRealUserMessage = msg.from && !msg.from.is_bot;
 
-    // Реакція на повідомлення в групі
+    // Реакції на повідомлення в групі
     if (isGroupChat && isRealUserMessage && !msg.left_chat_member && !msg.pinned_message) {
       await reactToMessage(msg, env);
     }
 
     if (!msg.text) return;
 
-    // --- Команди ---
+    // --- Обробка команд ---
     const cmdMatch = /^\/(invite|welcome|rules|start)(@\w+)?/i.exec(msg.text.trim());
     if (cmdMatch) {
       const cmd = cmdMatch[1].toLowerCase();
@@ -436,7 +444,7 @@ async function handleUpdate(update, env) {
       return;
     }
 
-    // --- ШІ-відповідь (Groq Llama) ---
+    // --- Groq ШІ ---
     const hasQuestionMark = /[?？]/.test(msg.text);
     const shouldReplyWithAi = isPrivate || (isGroupChat && hasQuestionMark);
 
