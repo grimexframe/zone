@@ -30,8 +30,8 @@ const COMMAND_REPLIES = {
 // Стартовий текст для привату
 const START_PUSH_TEXT =
   `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
-  `⊹ юзᴀй / дʌя зᴀᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
-  `⊹ /invite /welcome /rules\n\n`;
+  `⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
+  `/invite /welcome /rules\n\n`;
 
 // --- Динамічний кеш налаштувань груп ----------------------------------
 const groupWelcomeCache = new Map(); 
