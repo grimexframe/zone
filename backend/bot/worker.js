@@ -1,8 +1,8 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Fixed Group Add Link)
+// TELEGRAM BOT — Cloudflare Worker (Auto-Link & Supergroup Support)
 // =====================================================================
-// ENV змінну в Cloudflare Worker (Settings → Variables):
-//   BOT_TOKEN      — токен вашого бота від @BotFather (обов'язково)
+// ENV у Cloudflare (Settings → Variables):
+//   BOT_TOKEN      — токен бота від @BotFather (обов'язково)
 //   GROQ_API_KEY   — ключ Groq API (обов'язково)
 //   WEBHOOK_SECRET — (опційно) секретний токен
 // =====================================================================
@@ -21,15 +21,15 @@ function isPaidGroup(chatId) {
 const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʌіʙ`;
 const WELCOME_TEXT_DEFAULT = `🤬 ᴏнбᴏᴘдинг`;
 
-// Оновлений стартовий пуш
 const START_PUSH_TEXT =
   `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
   `⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
   `/invite /welcome /rules\n\n`;
 
-// --- Кеш налаштувань груп ---------------------------------------------
+// --- Динамічний кеш налаштувань груп (За чатами) --------------------
 const groupWelcomeCache = new Map(); 
 const groupRulesCache = new Map();   
+const groupInviteLinksCache = new Map(); // Кеш збережених посилань для кожної групи
 
 function getWelcomeText(chatId) {
   return groupWelcomeCache.get(chatId) || WELCOME_TEXT_DEFAULT;
@@ -168,6 +168,63 @@ async function getGroqReply(userMessage, apiKey) {
 }
 
 // =====================================================================
+// СТВОРЕННЯ/ОНОВЛЕННЯ ІНВАЙТ-ПОСИЛАННЯ ГРУПИ
+// =====================================================================
+async function generateAndSaveGroupInvite(chatId, env) {
+  const res = await tg(env.BOT_TOKEN, 'createChatInviteLink', {
+    chat_id: chatId,
+    name: 'Авто-інвайт (join request)',
+    creates_join_request: true
+  });
+
+  if (res?.result?.invite_link) {
+    const link = res.result.invite_link;
+    groupInviteLinksCache.set(chatId, link);
+    return link;
+  }
+  return null;
+}
+
+// =====================================================================
+// ПОДІЯ: БОТА ДОДАНО В ГРУПУ / СУПЕРГРУПУ
+// =====================================================================
+async function handleBotAddedToGroup(myChatMember, env) {
+  const chatId = myChatMember.chat.id;
+  const newStatus = myChatMember.new_chat_member.status;
+  const oldStatus = myChatMember.old_chat_member.status;
+
+  // Перевіряємо, чи бота щойно додали (member або administrator)
+  const isAdded = (oldStatus === 'left' || oldStatus === 'kicked') && 
+                  (newStatus === 'member' || newStatus === 'administrator');
+
+  if (!isAdded) return;
+
+  console.log(`[BOT ADDED] Bot added to chat_id=${chatId}`);
+
+  // Спробуємо відразу згенерувати інвайт-посилання
+  const inviteLink = await generateAndSaveGroupInvite(chatId, env);
+
+  let startMsg = 
+    `👋 **Дякую за додавання бота в групу!**\n\n` +
+    `${START_PUSH_TEXT}`;
+
+  if (inviteLink) {
+    startMsg += `\n🔓 **Автоматично створене інвайт-посилання:**\n${inviteLink}`;
+  } else {
+    startMsg += `\n⚠️ *Надайте боту права адміністратора ("Запрошувати користувачів"), щоб він міг приймати заявки.*`;
+  }
+
+  const keyboard = await getAddBotKeyboard(env);
+
+  await tg(env.BOT_TOKEN, 'sendMessage', {
+    chat_id: chatId,
+    text: startMsg,
+    parse_mode: 'Markdown',
+    reply_markup: keyboard
+  });
+}
+
+// =====================================================================
 // ПРИЙОМ ЗАЯВОК У ГРУПУ
 // =====================================================================
 async function handleJoinRequest(req, env) {
@@ -240,12 +297,9 @@ function isGroupChatType(chatType) {
   return chatType === 'group' || chatType === 'supergroup';
 }
 
-// ВІДКОРИГОВАНО: Формат посилання для відкриття списку груп
 async function getAddBotKeyboard(env) {
   const username = await getBotUsername(env);
   if (!username) return undefined;
-  
-  // Прямий лінк Deep Link Telegram з правами адміністратора
   const addUrl = `https://t.me/${username}?startgroup=select&admin=invite_users+manage_chat`;
   return { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: addUrl }]] };
 }
@@ -260,7 +314,7 @@ async function handleInviteCommand(msg, env) {
       `🤖 **Як підключити групу:**\n\n` +
       `1. Натисни кнопку **«Додати бота в групу»** нижче і обери групу.\n` +
       `2. Надай боту права адміністратора ("Запрошувати користувачів").\n` +
-      `3. Напиши в групі **/invite** — бот згенерує інвайт-посилання із заявками!`;
+      `3. Бот автоматично створить посилання або зроби це командою **/invite** у групі!`;
     
     await tg(env.BOT_TOKEN, 'sendMessage', {
       chat_id: msg.chat.id,
@@ -271,17 +325,16 @@ async function handleInviteCommand(msg, env) {
     return;
   }
 
-  const res = await tg(env.BOT_TOKEN, 'createChatInviteLink', {
-    chat_id: msg.chat.id,
-    name: 'Авто-інвайт (join request)',
-    creates_join_request: true
-  });
-  const link = res?.result?.invite_link;
+  // Отримуємо або перестворюємо посилання для конкретної групи/супергрупи
+  let link = groupInviteLinksCache.get(msg.chat.id);
+  if (!link) {
+    link = await generateAndSaveGroupInvite(msg.chat.id, env);
+  }
 
   const text = link
-    ? `🔓 **Інвайт-посилання для цієї групи:**\n\n${link}\n\n` +
-      `Бот активований! Кожен, хто перейде за ним, отримає приватний пуш у ЛС з правилами, а бот автоматично схвалить заявку.`
-    : `❌ Не вдалось створити посилання. Перевірте, чи бот має права адміністратора "Запрошувати користувачів за посиланням".`;
+    ? `🔓 **Актуальне інвайт-посилання для цієї групи:**\n\n${link}\n\n` +
+      `За цим посиланням бот автоматично приймає всі заявки на вступ!`
+    : `❌ Не вдалось отримати посилання. Перевірте, чи бот має права адміністратора "Запрошувати користувачів за посиланням".`;
 
   await tg(env.BOT_TOKEN, 'sendMessage', {
     chat_id: msg.chat.id,
@@ -394,6 +447,12 @@ async function handleUpdate(update, env) {
 
   if (isDuplicateUpdate(update.update_id)) return;
 
+  // --- Подія додавання бота у групу або супергрупу ---
+  if (update.my_chat_member) {
+    await handleBotAddedToGroup(update.my_chat_member, env);
+    return;
+  }
+
   // --- Перехід за посиланням (Заявка) ---
   if (update.chat_join_request) {
     await handleJoinRequest(update.chat_join_request, env);
@@ -416,7 +475,7 @@ async function handleUpdate(update, env) {
   if (update.message) {
     const msg = update.message;
     const chatType = msg.chat.type;
-    const isGroupChat = chatType === 'group' || chatType === 'supergroup';
+    const isGroupChat = isGroupChatType(chatType);
     const isPrivate = chatType === 'private';
     const isRealUserMessage = msg.from && !msg.from.is_bot;
 
