@@ -10,7 +10,7 @@
 const ADMIN_ID = 8382236562;
 
 // --- Платна група (за потреби) ---------------------------------------
-const PAID_GROUP_CHAT_ID = 0; // Наприклад: -100123456789
+const PAID_GROUP_CHAT_ID = -1004491630210; // Наприклад: -100123456789
 const PAID_GROUP_STARS_PRICE = 3284; // Ціна в Telegram Stars
 
 function isPaidGroup(chatId) {
@@ -29,9 +29,9 @@ const COMMAND_REPLIES = {
 
 // Стартовий текст для привату
 const START_PUSH_TEXT =
-  `⊹ ᴋᴀᴛᴀй дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
+  `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
   `⊹ юзᴀй / дʌя зᴀᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
-  `⊹ ᴏᴛᴘиᴍуй ᴘᴇᴀᴋції нᴀ ?`;
+  `⊹ /invite /welcome /rules\n\n`;
 
 // --- Динамічний кеш налаштувань груп ----------------------------------
 const groupWelcomeCache = new Map(); 
