@@ -1,5 +1,5 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Clean Start & Auto-Delete Commands)
+// TELEGRAM BOT — Cloudflare Worker (Strict Single Message Fix)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʌіʙ`;
@@ -36,7 +36,6 @@ async function tg(token, method, body) {
   }
 }
 
-// Автоматичне видалення повідомлення через заданий час (за замовчуванням 6 секунд)
 async function deleteMessageDelayed(token, chatId, messageId, delayMs = 6000) {
   setTimeout(async () => {
     await tg(token, 'deleteMessage', { chat_id: chatId, message_id: messageId });
@@ -111,19 +110,17 @@ async function handleMessage(msg, env) {
     if (!cmdMatch) return;
     const cmd = cmdMatch[1].toLowerCase();
 
-    // Якщо це група — видаляємо повідомлення з командою від користувача
+    // Якщо це група — одразу видаляємо команду користувача
     if (isGroup) {
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
     }
 
+    // У групах повністю ігноруємо команду start, щоб вона нічого не надсилала
     if (cmd === 'start') {
       if (isPrivate) {
         const username = await getBotUsername(env);
         const kb = { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: `https://t.me/${username}?startgroup=true` }]] };
         await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: START_PUSH_TEXT, reply_markup: kb });
-      } else {
-        const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: START_PUSH_TEXT });
-        if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 8000);
       }
       return;
     }
@@ -156,7 +153,7 @@ async function handleMessage(msg, env) {
 
     if (cmd === 'welcome') {
       const currentText = getWelcomeText(chatId);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', {
+      await tg(BOT_TOKEN, 'sendMessage', {
         chat_id: chatId,
         message_thread_id: threadId,
         text: `📝 **Поточний текст привітання:**\n\n${currentText}`,
@@ -168,7 +165,7 @@ async function handleMessage(msg, env) {
 
     if (cmd === 'rules') {
       const currentRules = getRulesText(chatId);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', {
+      await tg(BOT_TOKEN, 'sendMessage', {
         chat_id: chatId,
         message_thread_id: threadId,
         text: `⚠️ **Поточні правила групи:**\n\n${currentRules}`,
