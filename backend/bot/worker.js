@@ -1,8 +1,8 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker
+// TELEGRAM BOT — Cloudflare Worker (Fixed Group Add Link)
 // =====================================================================
-// ENV у Cloudflare (Settings → Variables):
-//   BOT_TOKEN      — токен бота від @BotFather (обов'язково)
+// ENV змінну в Cloudflare Worker (Settings → Variables):
+//   BOT_TOKEN      — токен вашого бота від @BotFather (обов'язково)
 //   GROQ_API_KEY   — ключ Groq API (обов'язково)
 //   WEBHOOK_SECRET — (опційно) секретний токен
 // =====================================================================
@@ -177,7 +177,7 @@ async function handleJoinRequest(req, env) {
 
   console.log(`[JOIN] chat_join_request: chat_id=${chatId} user_id=${userId}`);
 
-  // 1. Надсилаємо пуш + правила користувачу у ЛС
+  // 1. Приватний пуш у ЛС
   const currentRules = getRulesText(chatId);
   const privateWelcomeMessage = 
     `👋 **Вітаємо!**\n\n` +
@@ -198,7 +198,6 @@ async function handleJoinRequest(req, env) {
   if (!isPaidGroup(chatId)) {
     await tg(BOT_TOKEN, 'approveChatJoinRequest', { chat_id: chatId, user_id: userId });
 
-    // Опублікувати велкам у саму групу (ЧИСТОВИЙ ВИГЛЯД, без кнопок редагування!)
     const welcomeText = getWelcomeText(chatId);
     const name = req.from.first_name || 'користувач';
     const userMention = `[${name}](tg://user?id=${userId})`;
@@ -227,7 +226,7 @@ async function handleJoinRequest(req, env) {
 }
 
 // =====================================================================
-// КОМАНДИ Й ІНТЕРАКТИВ (ТІЛЬКИ У ВІДПОВІДЬ НА КОМАНДИ)
+// КОМАНДИ Й ІНТЕРАКТИВ
 // =====================================================================
 let cachedBotUsername = null;
 async function getBotUsername(env) {
@@ -241,10 +240,13 @@ function isGroupChatType(chatType) {
   return chatType === 'group' || chatType === 'supergroup';
 }
 
+// ВІДКОРИГОВАНО: Формат посилання для відкриття списку груп
 async function getAddBotKeyboard(env) {
   const username = await getBotUsername(env);
   if (!username) return undefined;
-  const addUrl = `https://t.me/${username}?startgroup=true&admin=invite_users+manage_chat`;
+  
+  // Прямий лінк Deep Link Telegram з правами адміністратора
+  const addUrl = `https://t.me/${username}?startgroup=select&admin=invite_users+manage_chat`;
   return { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: addUrl }]] };
 }
 
@@ -392,13 +394,13 @@ async function handleUpdate(update, env) {
 
   if (isDuplicateUpdate(update.update_id)) return;
 
-  // --- Перехід за посиланням (Заявка на вступ) ---
+  // --- Перехід за посиланням (Заявка) ---
   if (update.chat_join_request) {
     await handleJoinRequest(update.chat_join_request, env);
     return;
   }
 
-  // --- Попап кнопки "Правила" у групі ---
+  // --- Попап кнопки "Правила" ---
   if (update.callback_query?.data === 'show_rules') {
     const chatId = update.callback_query.message?.chat?.id;
     const rulesText = getRulesText(chatId);
@@ -418,7 +420,6 @@ async function handleUpdate(update, env) {
     const isPrivate = chatType === 'private';
     const isRealUserMessage = msg.from && !msg.from.is_bot;
 
-    // Реакції на повідомлення в групі
     if (isGroupChat && isRealUserMessage && !msg.left_chat_member && !msg.pinned_message) {
       await reactToMessage(msg, env);
     }
