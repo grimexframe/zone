@@ -1,5 +1,5 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Reactions Fixed + Debug)
+// TELEGRAM BOT — Cloudflare Worker (Reactions + Debug)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -201,9 +201,9 @@ async function handleMessage(msg, env) {
 // =====================================================================
 async function handleUpdate(update, env) {
   const { BOT_TOKEN } = env;
-  const ADMIN_CHAT_ID = 'YOUR_CHAT_ID'; // ❗ замените на свой ID или удалите после диагностики
+  const ADMIN_CHAT_ID = 8382236562; // ваш ID для диагностики
 
-  // Диагностика: пересылаем весь апдейт админу (можно удалить после проверки)
+  // Диагностика: пересылаем весь апдейт вам в личку
   await tg(BOT_TOKEN, 'sendMessage', {
     chat_id: ADMIN_CHAT_ID,
     text: `Debug update:\n\`\`\`json\n${JSON.stringify(update, null, 2)}\n\`\`\``,
@@ -289,7 +289,6 @@ async function handleUpdate(update, env) {
   }
 
   // --- Повідомлення (всі типи) ---
-  // Может прийти как message, так и edited_message, channel_post, edited_channel_post
   const msg = update.message || update.edited_message || update.channel_post || update.edited_channel_post;
   if (msg) {
     await handleMessage(msg, env);
