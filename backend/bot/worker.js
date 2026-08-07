@@ -1,5 +1,5 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Full Random Reactions)
+// TELEGRAM BOT — Cloudflare Worker (Reactions Fixed)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -15,7 +15,6 @@ function getRulesText(chatId) { return groupRulesCache.get(chatId) || RULES_TEXT
 
 const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конструктивні речення без зайвих деталей.`;
 
-// ✅ Полный список доступных реакций (как вы указали)
 const ALL_REACTIONS = [
   '👍','👎','❤️','🔥','🥰','👏','😁','🤔','🤯','😱','🤬','😢','🎉','🤩','🤮','💩','🙏','👌','🕊️','🤡','🥱','🥴','😍','🐳','❤️‍🔥','🌚','🌭','💯','🤣','⚡','🍌','🏆','💔','🤨','😐','🍓','🍾','💋','🖕','😈','😴','😭','🤓','👻','💻','👀','🎃','🙈','😇','😨','🤝','✍️','🤗','🫡','🎅','🎄','⛄','💅','🤪','🗿','🆒','💘','🙉','🦄','😘','💊','🙊','😎','👾','🤷‍♂️','🤷','🤷‍♀️','😡'
 ];
@@ -83,12 +82,12 @@ async function handleMessage(msg, env) {
   const messageId = msg.message_id;
   const isGroup = msg.chat.type === 'group' || msg.chat.type === 'supergroup';
   const isPrivate = msg.chat.type === 'private';
-  const text = msg.text || '';
+  const text = msg.text || msg.caption || ''; // caption для медиа
   const threadId = msg.message_thread_id;
 
   // 1. РЕДАГУВАННЯ ТЕКСТІВ ЧЕРЕЗ REPLY
   if (isGroup && msg.reply_to_message && msg.reply_to_message.from.is_bot) {
-    const repliedText = msg.reply_to_message.text;
+    const repliedText = msg.reply_to_message.text || msg.reply_to_message.caption || '';
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
       const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'Markdown' });
@@ -175,7 +174,7 @@ async function handleMessage(msg, env) {
     }
   }
 
-  // 3. РАНДОМНІ РЕАКЦІЇ – тепер на кожне повідомлення в групах
+  // 3. РАНДОМНІ РЕАКЦІЇ — на кожне повідомлення в групах
   if (isGroup && msg.from && !msg.from.is_bot) {
     const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
     await tg(BOT_TOKEN, 'setMessageReaction', {
@@ -185,7 +184,7 @@ async function handleMessage(msg, env) {
     });
   }
 
-  // 4. ШІ-ВІДПОВІДІ
+  // 4. ШІ-ВІДПОВІДІ (тільки на текстові повідомлення)
   if (text && (isPrivate || (isGroup && /[?？]/.test(text)))) {
     const reply = await getGroqReply(text, GROQ_API_KEY);
     await tg(BOT_TOKEN, 'sendMessage', {
@@ -281,18 +280,19 @@ async function handleUpdate(update, env) {
     return;
   }
 
-  // --- Повідомлення ---
-  if (update.message && update.message.text) {
+  // --- Повідомлення (будь-які) ---
+  if (update.message) {
     await handleMessage(update.message, env);
   }
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     if (request.method === 'POST') {
       try {
         const update = await request.json();
-        await handleUpdate(update, env);
+        // ✅ Главное исправление: дожидаемся выполнения всех асинхронных операций
+        ctx.waitUntil(handleUpdate(update, env));
       } catch (e) {
         console.error('Webhook Error:', e);
       }
