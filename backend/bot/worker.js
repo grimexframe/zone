@@ -1,5 +1,5 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Reactions Fixed)
+// TELEGRAM BOT — Cloudflare Worker (Reactions Fixed + Debug)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -82,7 +82,7 @@ async function handleMessage(msg, env) {
   const messageId = msg.message_id;
   const isGroup = msg.chat.type === 'group' || msg.chat.type === 'supergroup';
   const isPrivate = msg.chat.type === 'private';
-  const text = msg.text || msg.caption || ''; // caption для медиа
+  const text = msg.text || msg.caption || '';
   const threadId = msg.message_thread_id;
 
   // 1. РЕДАГУВАННЯ ТЕКСТІВ ЧЕРЕЗ REPLY
@@ -201,6 +201,14 @@ async function handleMessage(msg, env) {
 // =====================================================================
 async function handleUpdate(update, env) {
   const { BOT_TOKEN } = env;
+  const ADMIN_CHAT_ID = 'YOUR_CHAT_ID'; // ❗ замените на свой ID или удалите после диагностики
+
+  // Диагностика: пересылаем весь апдейт админу (можно удалить после проверки)
+  await tg(BOT_TOKEN, 'sendMessage', {
+    chat_id: ADMIN_CHAT_ID,
+    text: `Debug update:\n\`\`\`json\n${JSON.stringify(update, null, 2)}\n\`\`\``,
+    parse_mode: 'Markdown'
+  });
 
   // --- Бота додали в групу ---
   if (update.my_chat_member) {
@@ -280,9 +288,11 @@ async function handleUpdate(update, env) {
     return;
   }
 
-  // --- Повідомлення (будь-які) ---
-  if (update.message) {
-    await handleMessage(update.message, env);
+  // --- Повідомлення (всі типи) ---
+  // Может прийти как message, так и edited_message, channel_post, edited_channel_post
+  const msg = update.message || update.edited_message || update.channel_post || update.edited_channel_post;
+  if (msg) {
+    await handleMessage(msg, env);
   }
 }
 
@@ -291,7 +301,6 @@ export default {
     if (request.method === 'POST') {
       try {
         const update = await request.json();
-        // ✅ Главное исправление: дожидаемся выполнения всех асинхронных операций
         ctx.waitUntil(handleUpdate(update, env));
       } catch (e) {
         console.error('Webhook Error:', e);
