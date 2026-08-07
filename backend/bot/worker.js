@@ -3,7 +3,7 @@
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
-const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ ᴀдᴍініᴄᴛᴘᴀᴛᴏᴘᴀ`;
+const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ `;
 const START_PUSH_TEXT = `ᴀʙᴛᴏпᴘийᴏм зᴀяʙᴏᴋ у ᴄпіʌьнᴏᴛу`;
 
 const groupWelcomeCache = new Map(); 
