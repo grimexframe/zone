@@ -2,9 +2,9 @@
 // TELEGRAM BOT — Cloudflare Worker (Strict Single Message Fix)
 // =====================================================================
 
-const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏʀᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛᴜʀᴏʙᴀних ᴍᴀᴛᴇʀіᴀʌіʌіʙ`;
-const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ ᴀдᴍініᴄᴛᴘʀᴀᴛᴏʀᴀ`;
-const START_PUSH_TEXT = `ᴀʙᴛᴏᴘᴘийᴏм зᴀяʙᴏᴋ у зᴀᴋᴘиᴛу ᴄпіʌьнᴏᴛу`;
+const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй дʌя ᴄᴇᴛᴀпу:\n/invite пᴏᴄиʌᴀння\n/welcome пᴘиʙіᴛᴀння\n/rules пᴘᴀʙиʌᴀ`;
+const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ ᴀдᴍініᴄᴛᴘᴀᴛᴏᴘᴀ`;
+const START_PUSH_TEXT = `ᴀʙᴛᴏпᴘийᴏм зᴀяʙᴏᴋ у ᴄпіʌьнᴏᴛу`;
 
 const groupWelcomeCache = new Map(); 
 const groupRulesCache = new Map();   
@@ -13,7 +13,7 @@ const groupInviteLinksCache = new Map();
 function getWelcomeText(chatId) { return groupWelcomeCache.get(chatId) || WELCOME_TEXT_DEFAULT; }
 function getRulesText(chatId) { return groupRulesCache.get(chatId) || RULES_TEXT_DEFAULT; }
 
-const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конст�[...]`;
+const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конструктивні речення без зайвих деталей.`;
 const SAFE_EMOJIS = ['👍', '❤️', '🔥', '🥰', '👏', '😁', '🎉', '🤩', '🙏', '👌', '💯'];
 
 // =====================================================================
@@ -87,7 +87,7 @@ async function handleMessage(msg, env) {
     const repliedText = msg.reply_to_message.text;
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'M[...]'});
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'Markdown' });
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
@@ -107,12 +107,10 @@ async function handleMessage(msg, env) {
     if (!cmdMatch) return;
     const cmd = cmdMatch[1].toLowerCase();
 
-    // Якщо це група — одразу видаляємо команду користувача
     if (isGroup) {
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
     }
 
-    // У групах повністю ігноруємо команду start, щоб вона нічого не надсилала
     if (cmd === 'start') {
       if (isPrivate) {
         const username = await getBotUsername(env);
@@ -197,7 +195,7 @@ async function handleMessage(msg, env) {
 async function handleUpdate(update, env) {
   const { BOT_TOKEN } = env;
 
-  // --- Подія: Бота додали в групу ---
+  // --- Бота додали в групу ---
   if (update.my_chat_member) {
     const myChatMember = update.my_chat_member;
     const newStatus = myChatMember.new_chat_member.status;
@@ -208,8 +206,14 @@ async function handleUpdate(update, env) {
 
     if (isAdded) {
       const chatId = myChatMember.chat.id;
-      let textMsg = `👋 **Дякую за додавання бота в групу!**\n\n${WELCOME_TEXT_DEFAULT}\n\n⚠️ *Надайте боту права адміністратора (\"Запрошувати користувачів\", \"Керувати правами\") для коректної роботи.*`;
-      await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: textMsg, parse_mode: 'Markdown' });
+      // Надсилаємо тільки WELCOME_TEXT_DEFAULT + кнопку "правила"
+      await tg(BOT_TOKEN, 'sendMessage', {
+        chat_id: chatId,
+        text: WELCOME_TEXT_DEFAULT,
+        reply_markup: {
+          inline_keyboard: [[{ text: 'пᴘᴀʙиʌᴀ', callback_data: 'show_rules' }]]
+        }
+      });
     }
     return;
   }
@@ -221,6 +225,7 @@ async function handleUpdate(update, env) {
     const threadId = cb.message.message_thread_id;
 
     if (cb.data === 'show_rules') {
+      // Показуємо модалку з правилами (беремо з кешу або дефолт)
       await tg(BOT_TOKEN, 'answerCallbackQuery', { callback_query_id: cb.id, text: getRulesText(chatId), show_alert: true });
     } 
     else if (cb.data === 'edit_welcome') {
