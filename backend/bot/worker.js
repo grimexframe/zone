@@ -2,12 +2,9 @@
 // TELEGRAM BOT — Cloudflare Worker (Strict Single Message Fix)
 // =====================================================================
 
-const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏᴘᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛуᴘᴏʙᴀних ᴍᴀᴛᴇᴘіᴀʌіʌіʙ`;
-const WELCOME_TEXT_DEFAULT = `🤬 ᴏнбᴏᴘдинг`;
-const START_PUSH_TEXT =
-  `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n` +
-  `⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу ᴄпіʌьнᴏᴛи\n` +
-  `/invite /welcome /rules`;
+const RULES_TEXT_DEFAULT = `ᴘᴇᴋʌᴀᴍᴀ / пᴏʌіᴛиᴋᴀ - зᴀбᴏʀᴏнᴇні.\n\nᴀᴘхіʙ ᴄᴛᴘуᴋᴛᴜʀᴏʙᴀних ᴍᴀᴛᴇʀіᴀʌіʌіʙ`;
+const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ ᴀдᴍініᴄᴛᴘʀᴀᴛᴏʀᴀ`;
+const START_PUSH_TEXT = `ᴀʙᴛᴏᴘᴘийᴏм зᴀяʙᴏᴋ у зᴀᴋᴘиᴛу ᴄпіʌьнᴏᴛу`;
 
 const groupWelcomeCache = new Map(); 
 const groupRulesCache = new Map();   
@@ -16,7 +13,7 @@ const groupInviteLinksCache = new Map();
 function getWelcomeText(chatId) { return groupWelcomeCache.get(chatId) || WELCOME_TEXT_DEFAULT; }
 function getRulesText(chatId) { return groupRulesCache.get(chatId) || RULES_TEXT_DEFAULT; }
 
-const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конструктивні речення і один емодзі.`;
+const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конст�[...]`;
 const SAFE_EMOJIS = ['👍', '❤️', '🔥', '🥰', '👏', '😁', '🎉', '🤩', '🙏', '👌', '💯'];
 
 // =====================================================================
@@ -90,7 +87,7 @@ async function handleMessage(msg, env) {
     const repliedText = msg.reply_to_message.text;
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'Markdown' });
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'M[...]'});
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
@@ -119,7 +116,7 @@ async function handleMessage(msg, env) {
     if (cmd === 'start') {
       if (isPrivate) {
         const username = await getBotUsername(env);
-        const kb = { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: `https://t.me/${username}?startgroup=true` }]] };
+        const kb = { inline_keyboard: [[{ text: 'дᴏдᴀᴛи', url: `https://t.me/${username}?startgroup=true` }]] };
         await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: START_PUSH_TEXT, reply_markup: kb });
       }
       return;
@@ -127,7 +124,7 @@ async function handleMessage(msg, env) {
 
     if (!isGroup) {
       const username = await getBotUsername(env);
-      const kb = { inline_keyboard: [[{ text: '➕ Додати бота в групу', url: `https://t.me/${username}?startgroup=true` }]] };
+      const kb = { inline_keyboard: [[{ text: 'дᴏдᴀᴛи', url: `https://t.me/${username}?startgroup=true` }]] };
       await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: "⚠️ Ця команда працює лише у групах.", reply_markup: kb });
       return;
     }
@@ -211,7 +208,7 @@ async function handleUpdate(update, env) {
 
     if (isAdded) {
       const chatId = myChatMember.chat.id;
-      let textMsg = `👋 **Дякую за додавання бота в групу!**\n\n${START_PUSH_TEXT}\n\n⚠️ *Надайте боту права адміністратора ("Запрошувати користувачів"), і напишіть /invite.*`;
+      let textMsg = `👋 **Дякую за додавання бота в групу!**\n\n${WELCOME_TEXT_DEFAULT}\n\n⚠️ *Надайте боту права адміністратора (\"Запрошувати користувачів\", \"Керувати правами\") для коректної роботи.*`;
       await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: textMsg, parse_mode: 'Markdown' });
     }
     return;
