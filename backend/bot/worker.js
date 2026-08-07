@@ -1,5 +1,5 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Reactions + Debug)
+// TELEGRAM BOT — Cloudflare Worker (Reactions Fixed + Anon Admin)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -174,8 +174,17 @@ async function handleMessage(msg, env) {
     }
   }
 
-  // 3. РАНДОМНІ РЕАКЦІЇ — на кожне повідомлення в групах
-  if (isGroup && msg.from && !msg.from.is_bot) {
+  // 3. РАНДОМНІ РЕАКЦІЇ (тепер і для анонімних адмінів)
+  if (isGroup && !msg.from?.is_bot) {
+    // Обычное сообщение от реального пользователя
+    const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
+    await tg(BOT_TOKEN, 'setMessageReaction', {
+      chat_id: chatId,
+      message_id: messageId,
+      reaction: [{ type: 'emoji', emoji }]
+    });
+  } else if (isGroup && msg.sender_chat) {
+    // Сообщение от имени группы/канала (анонимный админ)
     const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
     await tg(BOT_TOKEN, 'setMessageReaction', {
       chat_id: chatId,
@@ -184,7 +193,7 @@ async function handleMessage(msg, env) {
     });
   }
 
-  // 4. ШІ-ВІДПОВІДІ (тільки на текстові повідомлення)
+  // 4. ШІ-ВІДПОВІДІ
   if (text && (isPrivate || (isGroup && /[?？]/.test(text)))) {
     const reply = await getGroqReply(text, GROQ_API_KEY);
     await tg(BOT_TOKEN, 'sendMessage', {
@@ -201,14 +210,6 @@ async function handleMessage(msg, env) {
 // =====================================================================
 async function handleUpdate(update, env) {
   const { BOT_TOKEN } = env;
-  const ADMIN_CHAT_ID = 8382236562; // ваш ID для диагностики
-
-  // Диагностика: пересылаем весь апдейт вам в личку
-  await tg(BOT_TOKEN, 'sendMessage', {
-    chat_id: ADMIN_CHAT_ID,
-    text: `Debug update:\n\`\`\`json\n${JSON.stringify(update, null, 2)}\n\`\`\``,
-    parse_mode: 'Markdown'
-  });
 
   // --- Бота додали в групу ---
   if (update.my_chat_member) {
