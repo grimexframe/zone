@@ -2,7 +2,7 @@
 // TELEGRAM BOT — Cloudflare Worker (Strict Single Message Fix)
 // =====================================================================
 
-const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй дʌя ᴄᴇᴛᴀпу:\n/invite пᴏᴄиʌᴀння\n/welcome пᴘиʙіᴛᴀння\n/rules пᴘᴀʙиʌᴀ`;
+const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
 const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ ᴀдᴍініᴄᴛᴘᴀᴛᴏᴘᴀ`;
 const START_PUSH_TEXT = `ᴀʙᴛᴏпᴘийᴏм зᴀяʙᴏᴋ у ᴄпіʌьнᴏᴛу`;
 
