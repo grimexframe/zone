@@ -1,20 +1,24 @@
 // =====================================================================
-// TELEGRAM BOT — Cloudflare Worker (Strict Single Message Fix)
+// TELEGRAM BOT — Cloudflare Worker (Full Random Reactions)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
 const WELCOME_TEXT_DEFAULT = `нᴀдᴀйᴛᴇ бᴏᴛу пᴘᴀʙᴀ `;
 const START_PUSH_TEXT = `ᴀʙᴛᴏпᴘийᴏм зᴀяʙᴏᴋ у ᴄпіʌьнᴏᴛу`;
 
-const groupWelcomeCache = new Map(); 
-const groupRulesCache = new Map();   
-const groupInviteLinksCache = new Map(); 
+const groupWelcomeCache = new Map();
+const groupRulesCache = new Map();
+const groupInviteLinksCache = new Map();
 
 function getWelcomeText(chatId) { return groupWelcomeCache.get(chatId) || WELCOME_TEXT_DEFAULT; }
 function getRulesText(chatId) { return groupRulesCache.get(chatId) || RULES_TEXT_DEFAULT; }
 
 const SYSTEM_PROMPT = `Відповідай виключно українською мовою, просунутою грамотною лексикою. Формат: 2 короткі конструктивні речення без зайвих деталей.`;
-const SAFE_EMOJIS = ['👍', '❤️', '🔥', '🥰', '👏', '😁', '🎉', '🤩', '🙏', '👌', '💯'];
+
+// ✅ Полный список доступных реакций (как вы указали)
+const ALL_REACTIONS = [
+  '👍','👎','❤️','🔥','🥰','👏','😁','🤔','🤯','😱','🤬','😢','🎉','🤩','🤮','💩','🙏','👌','🕊️','🤡','🥱','🥴','😍','🐳','❤️‍🔥','🌚','🌭','💯','🤣','⚡','🍌','🏆','💔','🤨','😐','🍓','🍾','💋','🖕','😈','😴','😭','🤓','👻','💻','👀','🎃','🙈','😇','😨','🤝','✍️','🤗','🫡','🎅','🎄','⛄','💅','🤪','🗿','🆒','💘','🙉','🦄','😘','💊','🙊','😎','👾','🤷‍♂️','🤷','🤷‍♀️','😡'
+];
 
 // =====================================================================
 // TELEGRAM API HELPER
@@ -171,10 +175,14 @@ async function handleMessage(msg, env) {
     }
   }
 
-  // 3. РАНДОМНІ РЕАКЦІЇ
-  if (isGroup && msg.from && !msg.from.is_bot && Math.random() > 0.5) {
-    const emoji = SAFE_EMOJIS[Math.floor(Math.random() * SAFE_EMOJIS.length)];
-    await tg(BOT_TOKEN, 'setMessageReaction', { chat_id: chatId, message_id: messageId, reaction: [{ type: 'emoji', emoji }] });
+  // 3. РАНДОМНІ РЕАКЦІЇ – тепер на кожне повідомлення в групах
+  if (isGroup && msg.from && !msg.from.is_bot) {
+    const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
+    await tg(BOT_TOKEN, 'setMessageReaction', {
+      chat_id: chatId,
+      message_id: messageId,
+      reaction: [{ type: 'emoji', emoji }]
+    });
   }
 
   // 4. ШІ-ВІДПОВІДІ
@@ -206,7 +214,6 @@ async function handleUpdate(update, env) {
 
     if (isAdded) {
       const chatId = myChatMember.chat.id;
-      // Надсилаємо тільки WELCOME_TEXT_DEFAULT + кнопку "правила"
       await tg(BOT_TOKEN, 'sendMessage', {
         chat_id: chatId,
         text: WELCOME_TEXT_DEFAULT,
@@ -225,7 +232,6 @@ async function handleUpdate(update, env) {
     const threadId = cb.message.message_thread_id;
 
     if (cb.data === 'show_rules') {
-      // Показуємо модалку з правилами (беремо з кешу або дефолт)
       await tg(BOT_TOKEN, 'answerCallbackQuery', { callback_query_id: cb.id, text: getRulesText(chatId), show_alert: true });
     } 
     else if (cb.data === 'edit_welcome') {
