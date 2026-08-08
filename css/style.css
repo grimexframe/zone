@@ -1426,3 +1426,37 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/* ===== TELEGRAM MODAL FIX ===== */
+#telegramModal .modal-content {
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+}
+
+#telegramModal .modal-inner {
+    padding: 10px 16px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+#telegramModal .wellness-drum-wrap {
+    padding-top: 5px !important;
+    margin-bottom: 0 !important;
+    overflow: visible !important;
+}
+
+#telegramModal .drum-scene {
+    width: min(150px, 45vw) !important;
+    height: min(150px, 24vh) !important;
+}
+
+#telegramModal .drum-dots {
+    margin-top: 10px !important;
+    margin-bottom: 5px !important;
+}
+
+#telegramModal .drum-read-btn {
+    margin-top: 0 !important;
+}
