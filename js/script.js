@@ -631,28 +631,121 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (document.querySelector('.top-players-list')) loadTopPlayers();
 
-  // ===== TELEGRAM FORUM TABS SWITCHING =====
+  // ===== TELEGRAM FORUM TABS + WELLNESS CAROUSEL =====
 (function () {
     const tabs = document.querySelectorAll('#tgForumTabs .tg-forum-tab');
     const contents = document.querySelectorAll('#tgForumContent .tg-tab-content');
     if (!tabs.length || !contents.length) return;
 
+    let carouselInitialized = false;
+
+    function initWellnessCarousel() {
+        if (carouselInitialized) return;
+        const track = document.getElementById('telegramSwipeTrack');
+        const dotsContainer = document.getElementById('telegramSwipeDots');
+        if (!track || !dotsContainer) return;
+        if (track.children.length > 0) {
+            carouselInitialized = true;
+            return;
+        }
+
+        const SLIDES_DATA = [
+            { img: 'assets/w1.jpg', caption: 'ДІАФРАГМАЛЬНЕ ДИХАННЯ', title: 'W1', body: `Стілець: жорсткий.\nОпора: спина притиснута до стіни. Стопи на підлозі.\nВдих (3-4 сек): носом, живіт вперед.\nВидих (6-8 сек): губи трубочкою.` },
+            { img: 'assets/w2.jpg', caption: 'КОРОТКА СТОПА', title: 'W2', body: `Сядь на стілець, стопи на підлозі.\nПідтягни подушечку до п'ятки.\nУтримуй 5-8 сек, розслаб.` },
+            { img: 'assets/w3.jpg', caption: 'СТИСКАННЯ КОЛІНАМИ', title: 'W3', body: `Лежачи на спині, ноги зігнуті.\nСтискай подушку колінами 5-10 сек.` },
+            { img: 'assets/w4.jpg', caption: 'ЯГІДНИЙ МІСТОК', title: 'W4', body: `Лежачи на спині.\nПідійми таз, стисни сідниці на 5 сек.` },
+            { img: 'assets/w5.jpg', caption: 'МЕРТВИЙ ЖУК', title: 'W5', body: `Лежачи, поперек притиснутий.\nОпускай ногу на видиху.` },
+            { img: 'assets/w6.jpg', caption: 'МУШЛЯ', title: 'W6', body: `На боку, ноги зігнуті.\nПідіймай верхнє коліно.` },
+            { img: 'assets/w7.jpg', caption: 'ДЕКОМПРЕСІЯ', title: 'W7', body: `На боку, руку по дузі назад.\nТримай 3 цикли дихання.` },
+            { img: 'assets/w8.jpg', caption: 'КІШКА-КОРОВА', title: 'W8', body: `Кішка: вигинай спину вгору.\nКорова: прогин у грудях.` },
+            { img: 'assets/w9.jpg', caption: 'СТАБІЛІЗАЦІЯ', title: 'W9', body: `Долоні на стіну, руки прямі.\nШтовхай стіну 30-45 сек.` }
+        ];
+
+        let currentIndex = 0;
+        let startX = 0, currentX = 0, isDragging = false;
+
+        SLIDES_DATA.forEach((slide, i) => {
+            const div = document.createElement('div');
+            div.className = 'swipe-slide';
+            div.innerHTML = `<img src="${slide.img}" alt="${slide.caption}" draggable="false">`;
+            track.appendChild(div);
+            const dot = document.createElement('div');
+            dot.className = 'swipe-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goTo(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        function goTo(index, animate = true) {
+            currentIndex = Math.max(0, Math.min(SLIDES_DATA.length - 1, index));
+            track.style.transition = animate ? 'transform 0.3s ease' : 'none';
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dotsContainer.querySelectorAll('.swipe-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
+        }
+
+        function handleStart(x) { isDragging = true; startX = x; currentX = x; track.style.transition = 'none'; }
+        function handleMove(x) {
+            if (!isDragging) return;
+            currentX = x;
+            track.style.transform = `translateX(${-currentIndex * track.offsetWidth + (currentX - startX)}px)`;
+        }
+        function handleEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            const diff = currentX - startX;
+            if (diff < -50 && currentIndex < SLIDES_DATA.length - 1) goTo(currentIndex + 1);
+            else if (diff > 50 && currentIndex > 0) goTo(currentIndex - 1);
+            else goTo(currentIndex);
+        }
+
+        track.addEventListener('pointerdown', (e) => handleStart(e.clientX));
+        track.addEventListener('pointermove', (e) => handleMove(e.clientX));
+        track.addEventListener('pointerup', handleEnd);
+        track.addEventListener('pointerleave', handleEnd);
+        track.addEventListener('touchstart', (e) => { if (e.touches.length === 1) handleStart(e.touches[0].clientX); }, { passive: true });
+        track.addEventListener('touchmove', (e) => { if (isDragging) { handleMove(e.touches[0].clientX); e.preventDefault(); } }, { passive: false });
+        track.addEventListener('touchend', handleEnd);
+
+        document.getElementById('drumReadBtn')?.addEventListener('click', () => {
+            const slide = SLIDES_DATA[currentIndex];
+            document.getElementById('wellnessPopupTitle').textContent = slide.title;
+            document.getElementById('wellnessPopupBody').textContent = slide.body;
+            document.getElementById('wellnessPopup')?.classList.add('active');
+            window.playUiMenuBlip?.();
+        });
+
+        goTo(0, false);
+        carouselInitialized = true;
+    }
+
+    // Переключение вкладок
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const tabName = tab.dataset.tab;
-            
-            // Переключаем вкладки
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            
-            // Переключаем контент
             contents.forEach(c => c.classList.remove('active'));
             const activeContent = document.querySelector(`#tgForumContent .tg-tab-content[data-content="${tabName}"]`);
             if (activeContent) activeContent.classList.add('active');
-            
+            if (tabName === 'wellness') setTimeout(initWellnessCarousel, 50);
             window.playUiMenuBlip?.();
         });
     });
+
+    // Запуск при открытии модалки
+    const modal = document.getElementById('telegramModal');
+    if (modal) {
+        const observer = new MutationObserver(() => {
+            if (modal.classList.contains('active')) {
+                setTimeout(initWellnessCarousel, 100);
+            }
+        });
+        observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // Если wellness уже активна — запускаем сразу
+    if (document.querySelector('#tgForumTabs .tg-forum-tab.active[data-tab="wellness"]')) {
+        setTimeout(initWellnessCarousel, 100);
+    }
 })();
 
     // ===== TAB SWITCHING (LAB / INFO) =====
