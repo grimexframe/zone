@@ -631,109 +631,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (document.querySelector('.top-players-list')) loadTopPlayers();
 
-  // ===== SIMPLE SWIPE CAROUSEL FOR TELEGRAM MODAL =====
+  // ===== TELEGRAM FORUM TABS SWITCHING =====
 (function () {
-    const SLIDES_DATA = [
-        { img: 'assets/w1.jpg', caption: 'ДІАФРАГМАЛЬНЕ ДИХАННЯ', title: 'W1 — ДІАФРАГМАЛЬНЕ ДИХАННЯ', body: `Стілець: жорсткий. Забудь про м'які крісла, в яких таз «тоне».\nОпора: спина щільно притиснута до рівної вертикальної поверхні (стіна або жорстка спинка стільця). Стопи щільно стоять на підлозі. Кут у колінах 90°.\nРуки: одну долоню на живіт (район пупка), другу — на груди.\n\n2. Фаза Вдиху (3–4 секунди)\nВдихай носом. Повільно, беззвучно.\nБіомеханіка: уяви, що хочеш розштовхнути свої долоні в сторони не грудьми, а животом і нижніми ребрами.\nКонтроль: верхня рука (на грудях) має залишатися нерухомою. Нижня — плавно йти вперед.\n\n3. Фаза Видиху (6–8 секунд)\nВидих через губи «трубочкою» (опір повітря). Видих має бути вдвічі довший за вдих.` },
-        { img: 'assets/w2.jpg', caption: 'КОРОТКА СТОПА', title: 'W2 — КОРОТКА СТОПА', body: `Вихідне положення: сядь на стілець, стопи щільно стоять на підлозі паралельно одна одній. Кут у колінах 90°.\n\nРух: твоя ціль — зробити стопу коротшою і вищою, не згинаючи пальці в «кігті».\n\nМеханіка: зосередься на подушечці під великим пальцем і п'ятці. Спробуй «підтягнути» їх одне до одного за рахунок скорочення м'язів склепіння.\n\nРежим: утримуй напругу 5–8 секунд, потім розслаб. Повторюй 2 хвилини для кожної стопи.` },
-        { img: 'assets/w3.jpg', caption: 'СТИСКАННЯ КОЛІНАМИ', title: 'W3 — СТИСКАННЯ КОЛІНАМИ', body: `Вихідне положення: лежачи на спині, ноги зігнуті в колінах, стопи стоять паралельно.\n\nРух: на видиху починай плавно стискати подушку. Утримуй помірну напругу 5-10 секунд. 5 секунд розслаблення.\n\nВажливо: не затримуй дихання і не відривай поперек від підлоги.` },
-        { img: 'assets/w4.jpg', caption: 'ІЗОМЕТРИЧНИЙ ЯГІДНИЙ МІСТОК', title: 'W4 — ІЗОМЕТРИЧНИЙ ЯГІДНИЙ МІСТОК', body: `Вихідне положення: лежачи на спині, стопи на підлозі на ширині плечей.\n\nПідйом: на видиху штовхай підлогу п'ятками і підіймай таз на 2-3 см.\n\nІзометрія: 5 секунд не рухайся. Тримай корпус рівно.` },
-        { img: 'assets/w5.jpg', caption: 'МЕРТВИЙ ЖУК', title: 'W5 — МЕРТВИЙ ЖУК', body: `Вихідне положення: ляж на підлогу.\n\nТочка контролю: притисни поперек до підлоги.\n\nРух: повільно, на видиху, опускай ногу вниз.` },
-        { img: 'assets/w6.jpg', caption: 'МУШЛЯ', title: 'W6 — МУШЛЯ', body: `Лягти на бік. Голова на подушці — шия є продовженням хребта.\nНоги зігнуті в колінах під ~90°.\n\nРух: повільно підіймай верхнє коліно вгору, розкриваючи ноги як стулки мушлі.` },
-        { img: 'assets/w7.jpg', caption: 'ДЕКОМПРЕСІЯ «КНИЖКА»', title: 'W7 — ДЕКОМПРЕСІЯ «КНИЖКА»', body: `Лежачи на боку з подушкою під голову.\n\nНа повільному видиху веди верхню руку вгору і по широкій дузі назад.` },
-        { img: 'assets/w8.jpg', caption: '«КІШКА-КОРОВА» БІЛЯ ОПОРИ', title: 'W8 — «КІШКА-КОРОВА» БІЛЯ ОПОРИ', body: `Опора: позиція біля столу.\n\nФаза «Кішка» (Видих): Максимально вигинай спину вгору дугою.\nФаза «Корова» (Вдих): М'яко прогинайся лише в грудному відділі.` },
-        { img: 'assets/w9.jpg', caption: 'ІЗОМЕТРИЧНА СТАБІЛІЗАЦІЯ', title: 'W9 — ІЗОМЕТРИЧНА СТАБІЛІЗАЦІЯ', body: `Встань обличчям до стіни на відстані 50–60 см.\n\nНе згинаючи ліктів, починай штовхати стіну від себе.\n\nЗавмри на 30–45 секунд.` }
-    ];
+    const tabs = document.querySelectorAll('#tgForumTabs .tg-forum-tab');
+    const contents = document.querySelectorAll('#tgForumContent .tg-tab-content');
+    if (!tabs.length || !contents.length) return;
 
-    const track = document.getElementById('telegramSwipeTrack');
-    const dotsContainer = document.getElementById('telegramSwipeDots');
-    if (!track || !dotsContainer) return;
-
-    let currentIndex = 0;
-    let startX = 0, currentX = 0, isDragging = false;
-
-    SLIDES_DATA.forEach((slide, i) => {
-        const div = document.createElement('div');
-        div.className = 'swipe-slide';
-        div.innerHTML = `<img src="${slide.img}" alt="${slide.caption}" draggable="false">`;
-        track.appendChild(div);
-
-        const dot = document.createElement('div');
-        dot.className = 'swipe-dot' + (i === 0 ? ' active' : '');
-        dot.addEventListener('click', () => goTo(i));
-        dotsContainer.appendChild(dot);
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabName = tab.dataset.tab;
+            
+            // Переключаем вкладки
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // Переключаем контент
+            contents.forEach(c => c.classList.remove('active'));
+            const activeContent = document.querySelector(`#tgForumContent .tg-tab-content[data-content="${tabName}"]`);
+            if (activeContent) activeContent.classList.add('active');
+            
+            window.playUiMenuBlip?.();
+        });
     });
-
-    function goTo(index, animate = true) {
-        currentIndex = Math.max(0, Math.min(SLIDES_DATA.length - 1, index));
-        track.style.transition = animate ? 'transform 0.3s ease' : 'none';
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-        dotsContainer.querySelectorAll('.swipe-dot').forEach((d, i) => d.classList.toggle('active', i === currentIndex));
-    }
-
-    function handleStart(x) {
-        isDragging = true;
-        startX = x;
-        currentX = x;
-        track.style.transition = 'none';
-    }
-
-    function handleMove(x) {
-        if (!isDragging) return;
-        currentX = x;
-        const diff = currentX - startX;
-        const offset = -currentIndex * track.offsetWidth + diff;
-        track.style.transform = `translateX(${offset}px)`;
-    }
-
-    function handleEnd() {
-        if (!isDragging) return;
-        isDragging = false;
-        const diff = currentX - startX;
-        const threshold = track.offsetWidth * 0.2;
-        if (diff < -threshold && currentIndex < SLIDES_DATA.length - 1) {
-            goTo(currentIndex + 1);
-        } else if (diff > threshold && currentIndex > 0) {
-            goTo(currentIndex - 1);
-        } else {
-            goTo(currentIndex);
-        }
-    }
-
-    // Mouse
-    track.addEventListener('mousedown', (e) => { e.preventDefault(); handleStart(e.clientX); });
-    track.addEventListener('mousemove', (e) => { if (isDragging) { e.preventDefault(); handleMove(e.clientX); } });
-    track.addEventListener('mouseup', handleEnd);
-    track.addEventListener('mouseleave', handleEnd);
-
-    // Touch — используем pointer events для лучшей совместимости
-    track.addEventListener('pointerdown', (e) => { handleStart(e.clientX); });
-    track.addEventListener('pointermove', (e) => { handleMove(e.clientX); });
-    track.addEventListener('pointerup', handleEnd);
-    track.addEventListener('pointercancel', handleEnd);
-    track.addEventListener('pointerleave', handleEnd);
-
-    // Предотвращаем скролл страницы во время свайпа
-    track.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) handleStart(e.touches[0].clientX);
-    }, { passive: true });
-    track.addEventListener('touchmove', (e) => {
-        if (isDragging && e.touches.length === 1) {
-            handleMove(e.touches[0].clientX);
-            e.preventDefault();
-        }
-    }, { passive: false });
-    track.addEventListener('touchend', handleEnd);
-
-    document.getElementById('drumReadBtn')?.addEventListener('click', () => {
-        const slide = SLIDES_DATA[currentIndex];
-        document.getElementById('wellnessPopupTitle').textContent = slide.title;
-        document.getElementById('wellnessPopupBody').textContent = slide.body;
-        document.getElementById('wellnessPopup')?.classList.add('active');
-        window.playUiMenuBlip?.();
-    });
-
-    goTo(0, false);
 })();
 
     // ===== TAB SWITCHING (LAB / INFO) =====
