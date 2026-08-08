@@ -1446,40 +1446,24 @@ body {
     overflow-y: auto !important;
 }
 
-/* Уменьшаем drum специально для модалки */
-#telegramModal .wellness-drum-wrap {
-    position: relative !important;
-    width: 100% !important;
-    flex: 0 0 auto !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+#telegramModal .modal-content {
+    max-height: none !important;
+    height: auto !important;
     overflow: visible !important;
+}
+
+#telegramModal .modal-inner {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 15px !important;
+}
+
+#telegramModal .wellness-drum-wrap {
     padding-top: 5px !important;
-    margin-bottom: 0 !important;
+    overflow: visible !important;
 }
 
 #telegramModal .drum-scene {
-    width: min(160px, 45vw) !important;
-    height: min(160px, 22vh) !important;
-    flex-shrink: 0 !important;
-}
-
-#telegramModal .drum-dots {
-    margin-top: 8px !important;
-    margin-bottom: 4px !important;
-}
-
-#telegramModal .drum-read-btn {
-    margin-top: 0 !important;
-}
-
-/* Контейнер для кнопок */
-#telegramModal .drum-buttons-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 6px;
+    width: 140px !important;
+    height: 140px !important;
 }
