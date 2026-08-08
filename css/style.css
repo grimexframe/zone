@@ -465,3 +465,29 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
         padding-top: 16px;
     }
 }
+
+.carousel-arrow {
+    background: #1a1a22;
+    border: 1px solid #2f2f38;
+    color: #a27791;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 6px 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    line-height: 1;
+}
+
+.carousel-arrow:hover {
+    background: #2a2a35;
+    color: #ffb7c7;
+}
+
+.carousel-arrow:active {
+    background: #0a0a0d;
+}
