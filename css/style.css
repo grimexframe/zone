@@ -199,4 +199,125 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 }
 .icon-action-glyph { font-family:'Press Start 2P',monospace; font-size:11px; color:#ffb7c7; }
 .icon-action img { width:28px; height:28px; object-fit:contain; image-rendering:pixelated; }
-.icon-action-label { font-family:'Tiny5',monospace; font-size:13px; color:var(--text-primary);
+.icon-action-label { font-family:'Tiny5',monospace; font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px; }
+
+.universal-btn {
+    cursor:pointer; border:2px solid #000; background:#565656; padding:0 0 3px;
+    display:inline-block; text-decoration:none; user-select:none; appearance:none; -webkit-appearance:none; border-radius:0;
+}
+.universal-btn .btn-inner {
+    display:block; background:#fff; border:2px solid #a0a0a0; padding:4px 12px;
+    transform:translateY(-3px); transition:transform 0.08s;
+}
+.universal-btn .btn-inner span { font-family:'Press Start 2P',monospace; font-size:10px; letter-spacing:0.5px; color:#000; text-transform:uppercase; }
+.universal-btn:active .btn-inner { transform:translateY(0); }
+
+.modal-overlay {
+    position:fixed; top:0; left:0; width:100%; height:100%; background:#000;
+    display:none; justify-content:center; align-items:center; z-index:20000;
+}
+.modal-overlay.active { display:flex; }
+.modal-content {
+    background:#000; border:4px solid transparent;
+    border-image:linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
+    max-width:500px; width:90%; max-height: none; height: auto; overflow: visible;
+}
+.modal-header {
+    background:#000; padding:12px; display:flex; justify-content:space-between;
+    align-items:center; border-bottom:2px solid #000;
+}
+.modal-title-text { font-size:20px; color:var(--text-primary); text-shadow:2px 2px 0 #000; font-family:var(--font-primary); }
+.modal-close-btn {
+    background:#fff; color:#000; border:2px solid #b97272; width:32px; height:32px;
+    font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-primary);
+}
+.modal-inner {
+    padding:20px; background:#000; color:var(--text-secondary); font-family:var(--font-secondary);
+    overflow-y: auto; max-height: 80vh;
+}
+.modal-inner p { font-family:var(--font-secondary); color:var(--text-secondary); font-size:20px!important; line-height:1.4; }
+.modal-inner-centered { display:flex; flex-direction:column; align-items:center; text-align:center; }
+
+.carousel-section { display:flex; flex-direction:column; align-items:center; width:100%; gap:3px; }
+.carousel { width:100%; max-width:480px; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+.carousel img { max-width:100%; max-height:42vh; object-fit:contain; display:block; margin:0 auto; }
+.carousel img:not(.active) { display:none; }
+.hashtag-row { text-align:center; padding:2px 0 0; }
+.hashtag { font-size:16px; color:var(--text-secondary); font-family:var(--font-secondary); text-shadow:1px 1px 0 #4b3d3d, 2px 2px 0 #3d2a2f!important; }
+
+/* Простая swipe-карусель для Telegram */
+.swipe-carousel {
+    width:100%; max-width:280px; margin:0 auto; overflow:hidden;
+    touch-action:pan-y pinch-zoom; cursor:grab;
+}
+.swipe-carousel:active { cursor:grabbing; }
+.swipe-track { display:flex; transition:transform 0.3s ease; will-change:transform; }
+.swipe-slide { flex:0 0 100%; display:flex; align-items:center; justify-content:center; }
+.swipe-slide img {
+    width:100%; max-width:180px; aspect-ratio:1/1; object-fit:contain; image-rendering:pixelated;
+    border:2px solid transparent; border-image:linear-gradient(135deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
+    background:#000;
+}
+.swipe-dots { display:flex; gap:6px; justify-content:center; margin-top:10px; }
+.swipe-dot { width:8px; height:8px; background:#2a2a2a; border:1px solid #4a3040; cursor:pointer; }
+.swipe-dot.active { background:#a84d6b; border-color:#ffb7c7; }
+
+#wellnessPopup .modal-inner { padding:16px 20px 20px; }
+#wellnessPopup .modal-inner p { font-size:15px!important; line-height:1.7; white-space:pre-wrap; text-align:left; }
+#wellnessPopupTitle { font-size:9px; letter-spacing:2px; }
+
+.font-modal-preview { width:min(100%,640px); height:auto; object-fit:contain; image-rendering:pixelated; display:block; }
+
+.feed-container { display:flex; gap:12px; overflow-x:auto; overflow-y:hidden; padding:6px 2px 10px; min-height:146px; }
+.feed-item { flex:0 0 auto; width:130px; display:flex; flex-direction:column; gap:6px; cursor:pointer; }
+.feed-thumb { width:130px; height:130px; object-fit:cover; image-rendering:pixelated; border:2px solid transparent; border-image:linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1; background:#050505; }
+.feed-meta { font-size:11px; color:var(--text-secondary); font-family:var(--font-secondary); line-height:1.2; }
+.feed-preview-inner { display:flex; justify-content:center; align-items:center; }
+#feedPreviewImage { width:min(88vw,700px); max-height:72vh; object-fit:contain; image-rendering:pixelated; }
+
+.support-modal-inner { min-height:500px; max-height:70vh; overflow-y:auto; padding:10px; }
+
+.journal-footer {
+    position:fixed; left:0; right:0; bottom:0; width:100%; padding:10px 20px;
+    background:#050505; z-index:200;
+}
+.journal-footer::before {
+    content:''; position:absolute; top:-4px; left:0; width:100%; height:2px;
+    background:linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515);
+}
+.journal-footer .page-content { flex-direction:row; justify-content:center; align-items:center; gap:14px; padding:0; }
+.donate-label {
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    font-family:'Press Start 2P',monospace; font-size:11px; color:#a27791;
+    text-transform:uppercase; letter-spacing:4px; cursor:pointer;
+}
+.donate-label:hover { color:#ffb7c7; }
+.donate-sub { font-family:'Tiny5',monospace; font-size:16px; color:#a27791; letter-spacing:0; }
+.journal-footer .donate-label { font-size:10px; gap:2px; }
+.journal-footer .donate-sub { font-size:14px; }
+
+@media (max-width: 768px) {
+    :root { --top-panel-h: 50px; }
+    .top-panel { height:50px; padding:0 12px; }
+    .panel-views { font-size:14px; }
+    .panel-spacer { width:40px; }
+    .panel-btn { font-size:0.7rem; }
+    .journal-page { padding:16px 0; }
+    .journal-wrapper { padding-bottom:56px; }
+    .art-feed-row { flex-wrap:wrap; gap:12px; }
+    .art-block { flex:0 1 68vw; width:68vw; }
+    .archive-block { flex:0 0 20vw; width:20vw; }
+    .archive-img { width:100%; height:auto; max-width:56px; max-height:56px; }
+    .paint-cell { margin-top:4px; }
+    .icon-action { width:68px; padding:8px 4px; }
+    .modal-content { max-width:100%; width:100%; margin:0; border-radius:0; }
+    .feed-item, .feed-thumb { width:104px; height:104px; }
+    .feed-meta { font-size:10px; }
+    .support-modal-inner { min-height:70vh; max-height:80vh; padding:5px; }
+}
+@media (max-width: 480px) {
+    #sec-ticker { padding-top:10px; padding-bottom:6px; }
+    .archive-img { max-width:56px; max-height:56px; }
+    .ticker { animation-duration:180s; }
+}
