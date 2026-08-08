@@ -197,7 +197,7 @@
 
     </div>
 
-    <!-- FOOTER: DONATE -->
+    <!-- FOOTER -->
     <div class="journal-footer" id="sec-donate">
         <div class="page-content">
             <div class="donate-label" data-modal-trigger="donateDisclaimerModal">
@@ -331,12 +331,10 @@
                 <button class="modal-close-btn" data-modal="telegramModal">✜</button>
             </div>
             <div class="modal-inner" style="text-align:center;">
-                <div class="wellness-drum-wrap" id="wellnessDrumWrap">
-                    <div class="drum-scene">
-                        <div class="drum-cylinder" id="drumCylinder"></div>
-                    </div>
-                    <div class="drum-dots" id="drumDots"></div>
+                <div class="swipe-carousel" id="telegramSwipeCarousel">
+                    <div class="swipe-track" id="telegramSwipeTrack"></div>
                 </div>
+                <div class="swipe-dots" id="telegramSwipeDots"></div>
                 <div style="display:flex; gap:12px; justify-content:center; margin-top:12px;">
                     <button class="universal-btn" id="drumReadBtn">
                         <span class="btn-inner"><span>READ</span></span>
@@ -417,196 +415,6 @@
     <script src="js/script.js"></script>
     <script src="js/views-counter.js"></script>
     <script src="js/cosmic-bg.js"></script>
-
-    <script>
-        (function () {
-
-            // STYLER TYPEWRITER
-            (function () {
-                const input = document.getElementById('fontInputEmbedded');
-                if (!input) return;
-                const placeholder = 'TYPE TEXT';
-                let timer = null, isTyping = true, charIndex = 0;
-                function animate() {
-                    if (timer) clearTimeout(timer);
-                    if (isTyping) {
-                        if (charIndex < placeholder.length) {
-                            input.placeholder = placeholder.substring(0, charIndex + 1) + ' █';
-                            charIndex++;
-                            timer = setTimeout(animate, 120);
-                        } else { isTyping = false; timer = setTimeout(animate, 1500); }
-                    } else {
-                        if (charIndex > 0) {
-                            charIndex--;
-                            input.placeholder = placeholder.substring(0, charIndex) + ' █';
-                            timer = setTimeout(animate, 80);
-                        } else { isTyping = true; input.placeholder = ' █'; timer = setTimeout(animate, 300); }
-                    }
-                }
-                function start() {
-                    if (input.value === '') { isTyping = true; charIndex = 0; input.placeholder = ' █'; if (timer) clearTimeout(timer); timer = setTimeout(animate, 300); }
-                }
-                function stop() { if (timer) clearTimeout(timer); input.placeholder = ''; }
-                input.addEventListener('focus', stop);
-                input.addEventListener('blur', () => { if (input.value === '') start(); });
-                start();
-            })();
-
-            // TAB SWITCHING (LAB / INFO)
-            (function () {
-                const tabButtons = document.querySelectorAll('.tab-btn[data-tab]');
-                const tabPanels = {
-                    lab: document.getElementById('tab-lab'),
-                    info: document.getElementById('tab-info')
-                };
-                const FADE_OUT_MS = 110;
-                let currentTab = null;
-                let transitionTimer = null;
-
-                function switchTab(name) {
-                    const toPanel = tabPanels[name];
-                    if (!toPanel || name === currentTab) return;
-                    const fromPanel = currentTab ? tabPanels[currentTab] : null;
-
-                    if (transitionTimer) clearTimeout(transitionTimer);
-                    Object.values(tabPanels).forEach(p => {
-                        if (!p || p === fromPanel || p === toPanel) return;
-                        p.classList.remove('active', 'tab-outgoing', 'fade-out');
-                        p.style.display = 'none';
-                    });
-
-                    tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
-
-                    toPanel.classList.remove('tab-outgoing', 'fade-out');
-                    toPanel.style.display = 'block';
-                    toPanel.classList.add('active');
-
-                    if (fromPanel && fromPanel !== toPanel) {
-                        fromPanel.classList.add('tab-outgoing');
-                        void fromPanel.offsetWidth;
-                        fromPanel.classList.add('fade-out');
-                    }
-
-                    currentTab = name;
-                    transitionTimer = setTimeout(() => {
-                        if (fromPanel && fromPanel !== toPanel) {
-                            fromPanel.classList.remove('active', 'tab-outgoing', 'fade-out');
-                            fromPanel.style.display = 'none';
-                        }
-                        transitionTimer = null;
-                    }, FADE_OUT_MS);
-                }
-
-                tabButtons.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        btn.classList.remove('activate');
-                        void btn.offsetWidth;
-                        btn.classList.add('activate');
-                        switchTab(btn.dataset.tab);
-                        window.playUiMenuBlip?.();
-                    });
-                });
-
-                tabPanels.info?.classList.add('active');
-                if (tabPanels.info) tabPanels.info.style.display = 'block';
-                currentTab = 'info';
-            })();
-
-            // GENERIC MODAL TRIGGER
-            document.querySelectorAll('[data-modal-trigger]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.getElementById(btn.dataset.modalTrigger)?.classList.add('active');
-                    window.playUiMenuBlip?.();
-                });
-            });
-
-            // SOUNDSTYLER (speechSynthesis)
-            (function () {
-                let voices = [];
-                const ttsVoiceSelect = document.getElementById('ttsVoiceSelect');
-                const ttsTextInput = document.getElementById('ttsTextInput');
-                const ttsSpeakBtn = document.getElementById('ttsSpeakBtn');
-                const ttsStatus = document.getElementById('ttsStatus');
-                if (!ttsSpeakBtn) return;
-
-                function loadVoices() {
-                    voices = speechSynthesis.getVoices();
-                    if (!ttsVoiceSelect) return;
-                    ttsVoiceSelect.innerHTML = '';
-                    voices.forEach(voice => {
-                        const option = document.createElement('option');
-                        option.value = voice.name;
-                        option.textContent = `${voice.lang} - ${voice.name}`;
-                        ttsVoiceSelect.appendChild(option);
-                    });
-                    const uk = voices.find(voice => voice.lang.startsWith('uk'));
-                    const ru = voices.find(voice => voice.lang.startsWith('ru'));
-                    if (uk) ttsVoiceSelect.value = uk.name;
-                    else if (ru) ttsVoiceSelect.value = ru.name;
-                }
-
-                if (typeof speechSynthesis !== 'undefined') {
-                    speechSynthesis.onvoiceschanged = loadVoices;
-                    loadVoices();
-                }
-
-                function speak(text) {
-                    if (!text.trim()) {
-                        if (ttsStatus) ttsStatus.textContent = 'Введите текст';
-                        return;
-                    }
-                    speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    const selectedVoice = ttsVoiceSelect?.value;
-                    if (selectedVoice) {
-                        const voice = voices.find(item => item.name === selectedVoice);
-                        if (voice) utterance.voice = voice;
-                    }
-                    utterance.onstart = () => { if (ttsStatus) ttsStatus.textContent = '▶ Воспроизведение'; };
-                    utterance.onend = () => { if (ttsStatus) ttsStatus.textContent = ''; };
-                    utterance.onerror = event => { if (ttsStatus) ttsStatus.textContent = 'Ошибка: ' + event.error; };
-                    speechSynthesis.speak(utterance);
-                }
-
-                ttsSpeakBtn.addEventListener('click', () => speak(ttsTextInput?.value || ''));
-                ttsTextInput?.addEventListener('keypress', event => {
-                    if (event.key === 'Enter') speak(ttsTextInput.value);
-                });
-            })();
-
-            // MERCH CONSTRUCTOR (canvas print upload)
-            (function () {
-                const canvas = document.getElementById('printCanvas');
-                const upload = document.getElementById('imageUpload');
-                const reset = document.getElementById('resetPrint');
-                if (!canvas || !upload) return;
-                const ctx = canvas.getContext('2d');
-                canvas.width = 80;
-                canvas.height = 80;
-
-                upload.addEventListener('change', event => {
-                    const file = event.target.files?.[0];
-                    if (!file) return;
-                    const reader = new FileReader();
-                    reader.onload = loadEvent => {
-                        const img = new Image();
-                        img.onload = () => {
-                            ctx.clearRect(0, 0, 80, 80);
-                            ctx.drawImage(img, 0, 0, 80, 80);
-                        };
-                        img.src = loadEvent.target?.result;
-                    };
-                    reader.readAsDataURL(file);
-                });
-
-                reset?.addEventListener('click', () => {
-                    ctx.clearRect(0, 0, 80, 80);
-                    upload.value = '';
-                });
-            })();
-
-        })();
-    </script>
 </body>
 
 </html>
