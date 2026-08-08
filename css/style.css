@@ -732,8 +732,8 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] {
     border-image: linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
     max-width: 500px;
     width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
 }
 
 .modal-header {
