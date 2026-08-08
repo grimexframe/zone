@@ -467,29 +467,26 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 }
 
 .carousel-arrow {
-    background: #000;
-    border: 2px solid transparent;
-    border-image: linear-gradient(135deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
+    background: #0a0a0d;
+    border: 1px solid #2f2f38;
     color: #a27791;
-    font-size: 24px;
+    font-size: 22px;
     cursor: pointer;
-    padding: 8px 6px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.15s, border-color 0.15s;
+    transition: background 0.15s, color 0.15s;
     user-select: none;
     -webkit-user-select: none;
     line-height: 1;
-    font-family: 'Press Start 2P', monospace;
+    align-self: center;
 }
 
 .carousel-arrow:hover {
+    background: #1a1a22;
     color: #ffb7c7;
-    border-image: linear-gradient(135deg, #8B3A3A, #a84d6b, #ffb7c7, #a84d6b, #8B3A3A) 1;
-}
-
-.carousel-arrow:active {
-    color: #fff;
 }
