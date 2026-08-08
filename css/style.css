@@ -363,3 +363,95 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     background: #000;
     pointer-events: none;
 }
+
+/* ===== TELEGRAM FORUM TABS ===== */
+.tg-forum-tabs {
+    width: 70px;
+    min-width: 70px;
+    background: #0a0a0d;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #2f2f38;
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+.tg-forum-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #1a1a22;
+    border-left: 3px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+    gap: 4px;
+}
+
+.tg-forum-tab span:first-child {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.tg-tab-label {
+    font-family: 'Tiny5', monospace;
+    font-size: 9px;
+    color: #6c6c76;
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.tg-forum-tab:hover {
+    background: #131318;
+    border-left-color: #3d3d48;
+}
+
+.tg-forum-tab.active {
+    background: #131318;
+    border-left: 3px solid #a84d6b;
+}
+
+.tg-forum-tab.active .tg-tab-label {
+    color: #f0f0f2;
+}
+
+/* Контент справа */
+.tg-forum-content {
+    flex: 1;
+    min-width: 0;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.tg-tab-content {
+    display: none;
+}
+
+.tg-tab-content.active {
+    display: block;
+}
+
+/* Карусель внутри wellness */
+.tg-tab-content .swipe-carousel {
+    padding-top: 8px;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .tg-forum-tabs {
+        width: 56px;
+        min-width: 56px;
+    }
+    .tg-forum-tab {
+        padding: 8px 2px;
+    }
+    .tg-forum-tab span:first-child {
+        font-size: 18px;
+    }
+    .tg-tab-label {
+        font-size: 7px;
+    }
+}
