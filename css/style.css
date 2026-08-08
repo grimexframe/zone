@@ -373,7 +373,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     flex-direction: column;
     border-right: 1px solid #2f2f38;
     overflow-y: auto;
-    max-height: 70vh;
+    max-height: 60vh;
 }
 
 .tg-forum-tab {
@@ -422,7 +422,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 .tg-forum-content {
     flex: 1;
     min-width: 0;
-    max-height: 70vh;
+    max-height: 60vh;
     overflow-y: auto;
 }
 
