@@ -442,6 +442,10 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     padding-top: 0;                      /* убрали, теперь отступ у родителя */
 }
 
+.swipe-dots { display:flex; gap:6px; justify-content:center; margin-top:10px; }
+.swipe-dot { width:6px; height:6px; background:#2a2a2a; border:1px solid #4a3040; cursor:default; }
+.swipe-dot.active { background:#a84d6b; border-color:#ffb7c7; }
+
 /* Адаптация для мобильных */
 @media (max-width: 480px) {
     .tg-forum-tabs {
