@@ -330,115 +330,109 @@
             <span class="modal-title-text">telegram</span>
             <button class="modal-close-btn" data-modal="telegramModal">✜</button>
         </div>
-        <div class="modal-inner" style="display:flex; padding:0; gap:0;">
+        <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
             
-            <!-- Вкладки слева -->
-            <div class="tg-forum-tabs" id="tgForumTabs">
-                <div class="tg-forum-tab active" data-tab="wellness">
-                    <span>🧘</span>
-                    <span class="tg-tab-label">wellness</span>
+            <!-- Вкладки + контент -->
+            <div style="display:flex; flex:1; min-height:0;">
+                
+                <!-- Вкладки слева -->
+                <div class="tg-forum-tabs" id="tgForumTabs">
+                    <div class="tg-forum-tab active" data-tab="wellness">
+                        <span>🧘</span>
+                        <span class="tg-tab-label">wellness</span>
+                    </div>
+                    <div class="tg-forum-tab" data-tab="radio">
+                        <span>📻</span>
+                        <span class="tg-tab-label">radio</span>
+                    </div>
+                    <div class="tg-forum-tab" data-tab="design">
+                        <span>🎨</span>
+                        <span class="tg-tab-label">design</span>
+                    </div>
+                    <div class="tg-forum-tab" data-tab="tattoo">
+                        <span>⚡</span>
+                        <span class="tg-tab-label">tattoo</span>
+                    </div>
+                    <div class="tg-forum-tab" data-tab="clothes">
+                        <span>👕</span>
+                        <span class="tg-tab-label">clothes</span>
+                    </div>
+                    <div class="tg-forum-tab" data-tab="barber">
+                        <span>💈</span>
+                        <span class="tg-tab-label">barber</span>
+                    </div>
                 </div>
-                <div class="tg-forum-tab" data-tab="radio">
-                    <span>📻</span>
-                    <span class="tg-tab-label">radio</span>
-                </div>
-                <div class="tg-forum-tab" data-tab="design">
-                    <span>🎨</span>
-                    <span class="tg-tab-label">design</span>
-                </div>
-                <div class="tg-forum-tab" data-tab="tattoo">
-                    <span>⚡</span>
-                    <span class="tg-tab-label">tattoo</span>
-                </div>
-                <div class="tg-forum-tab" data-tab="clothes">
-                    <span>👕</span>
-                    <span class="tg-tab-label">clothes</span>
-                </div>
-                <div class="tg-forum-tab" data-tab="barber">
-                    <span>💈</span>
-                    <span class="tg-tab-label">barber</span>
+
+                <!-- Контент справа -->
+                <div class="tg-forum-content" id="tgForumContent">
+                    
+                    <!-- wellness -->
+                    <div class="tg-tab-content active" data-content="wellness">
+                        <div class="swipe-carousel" id="telegramSwipeCarousel">
+                            <div class="swipe-track" id="telegramSwipeTrack"></div>
+                        </div>
+                        <div class="swipe-dots" id="telegramSwipeDots"></div>
+                        <div style="display:flex; justify-content:center; margin-top:12px;">
+                            <button class="universal-btn" id="drumReadBtn">
+                                <span class="btn-inner"><span>READ</span></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- radio -->
+                    <div class="tg-tab-content" data-content="radio">
+                        <div style="padding:20px; text-align:center;">
+                            <p class="text-secondary" style="font-size:16px;">Музыка, подкасты, плейлисты, эфиры.</p>
+                            <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Атмосферные подборки в Telegram.</p>
+                        </div>
+                    </div>
+
+                    <!-- design -->
+                    <div class="tg-tab-content" data-content="design">
+                        <div style="padding:20px; text-align:center;">
+                            <p class="text-secondary" style="font-size:16px;">Графический дизайн, типографика, UI, брендинг.</p>
+                            <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Материалы и обсуждения в Telegram.</p>
+                        </div>
+                    </div>
+
+                    <!-- tattoo -->
+                    <div class="tg-tab-content" data-content="tattoo">
+                        <div style="padding:20px; text-align:center;">
+                            <p class="text-secondary" style="font-size:16px;">Тату-культура, эскизы, мастера, техники.</p>
+                            <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Архив тату-работ в Telegram.</p>
+                        </div>
+                    </div>
+
+                    <!-- clothes -->
+                    <div class="tg-tab-content" data-content="clothes">
+                        <div style="padding:20px; text-align:center;">
+                            <p class="text-secondary" style="font-size:16px;">Шмот: стиль, бренды, подборки, аутфиты.</p>
+                            <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Луки и находки в Telegram.</p>
+                        </div>
+                    </div>
+
+                    <!-- barber -->
+                    <div class="tg-tab-content" data-content="barber">
+                        <div style="padding:20px; text-align:center;">
+                            <p class="text-secondary" style="font-size:16px;">Барберинг: стиль, инструменты, техники стрижки.</p>
+                            <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Гайды и примеры в Telegram.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Контент справа -->
-            <div class="tg-forum-content" id="tgForumContent">
-                
-                <!-- wellness -->
-                <div class="tg-tab-content active" data-content="wellness">
-                    <div class="swipe-carousel" id="telegramSwipeCarousel">
-                        <div class="swipe-track" id="telegramSwipeTrack"></div>
-                    </div>
-                    <div class="swipe-dots" id="telegramSwipeDots"></div>
-                    <div style="display:flex; gap:12px; justify-content:center; margin-top:12px; flex-wrap:wrap;">
-                        <button class="universal-btn" id="drumReadBtn">
-                            <span class="btn-inner"><span>READ</span></span>
-                        </button>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- radio -->
-                <div class="tg-tab-content" data-content="radio">
-                    <div style="padding:20px; text-align:center;">
-                        <p class="text-secondary" style="font-size:16px;">Музыка, подкасты, плейлисты, эфиры.</p>
-                        <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Атмосферные подборки в Telegram.</p>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- design -->
-                <div class="tg-tab-content" data-content="design">
-                    <div style="padding:20px; text-align:center;">
-                        <p class="text-secondary" style="font-size:16px;">Графический дизайн, типографика, UI, брендинг.</p>
-                        <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Материалы и обсуждения в Telegram.</p>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- tattoo -->
-                <div class="tg-tab-content" data-content="tattoo">
-                    <div style="padding:20px; text-align:center;">
-                        <p class="text-secondary" style="font-size:16px;">Тату-культура, эскизы, мастера, техники.</p>
-                        <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Архив тату-работ в Telegram.</p>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- clothes -->
-                <div class="tg-tab-content" data-content="clothes">
-                    <div style="padding:20px; text-align:center;">
-                        <p class="text-secondary" style="font-size:16px;">Шмот: стиль, бренды, подборки, аутфиты.</p>
-                        <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Луки и находки в Telegram.</p>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- barber -->
-                <div class="tg-tab-content" data-content="barber">
-                    <div style="padding:20px; text-align:center;">
-                        <p class="text-secondary" style="font-size:16px;">Барберинг: стиль, инструменты, техники стрижки.</p>
-                        <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Гайды и примеры в Telegram.</p>
-                        <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
-                            <span class="btn-inner"><span>ENTER</span></span>
-                        </a>
-                    </div>
-                </div>
-
+            <!-- Кнопка ENTER — всегда снизу -->
+            <div style="text-align:center; padding:12px 16px; border-top:1px solid #2f2f38;">
+                <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none;">
+                    <span class="btn-inner"><span>ENTER</span></span>
+                </a>
             </div>
 
         </div>
     </div>
 </div>
+
     <div id="forumDisclaimerModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
