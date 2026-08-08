@@ -372,6 +372,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     display: flex;
     flex-direction: column;
     border-right: 1px solid #2f2f38;
+    border-top: 1px solid #2f2f38;      /* ← верхняя линия */
     overflow-y: auto;
     max-height: 60vh;
 }
@@ -381,7 +382,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 4px;
+    padding: 12px 4px;                   /* ← чуть больше воздуха */
     cursor: pointer;
     border-bottom: 1px solid #1a1a22;
     border-left: 3px solid transparent;
@@ -424,10 +425,12 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     min-width: 0;
     max-height: 60vh;
     overflow-y: auto;
+    border-top: 1px solid #2f2f38;      /* ← верхняя линия симметрично */
 }
 
 .tg-tab-content {
     display: none;
+    padding-top: 20px;                   /* ← отступ сверху, воздух */
 }
 
 .tg-tab-content.active {
@@ -436,7 +439,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 
 /* Карусель внутри wellness */
 .tg-tab-content .swipe-carousel {
-    padding-top: 8px;
+    padding-top: 0;                      /* убрали, теперь отступ у родителя */
 }
 
 /* Адаптация для мобильных */
@@ -446,12 +449,15 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
         min-width: 56px;
     }
     .tg-forum-tab {
-        padding: 8px 2px;
+        padding: 10px 2px;
     }
     .tg-forum-tab span:first-child {
         font-size: 18px;
     }
     .tg-tab-label {
         font-size: 7px;
+    }
+    .tg-tab-content {
+        padding-top: 16px;
     }
 }
