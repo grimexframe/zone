@@ -1427,20 +1427,59 @@ body {
     flex-direction: column;
 }
 
-/* ===== TELEGRAM MODAL — УВЕЛИЧИТЬ ОКНО ===== */
+/* ===== TELEGRAM MODAL — ПОЛНЫЙ ФИКС ===== */
 #telegramModal .modal-content {
     max-height: 95vh !important;
     width: 95% !important;
-    max-width: 550px !important;
+    max-width: 500px !important;
+    overflow: hidden !important;
 }
 
 #telegramModal .modal-inner {
-    padding: 16px !important;
+    padding: 12px 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
     max-height: calc(95vh - 60px) !important;
     overflow-y: auto !important;
 }
 
+/* Уменьшаем drum специально для модалки */
+#telegramModal .wellness-drum-wrap {
+    position: relative !important;
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow: visible !important;
+    padding-top: 5px !important;
+    margin-bottom: 0 !important;
+}
+
 #telegramModal .drum-scene {
-    width: min(180px, 50vw) !important;
-    height: min(180px, 28vh) !important;
+    width: min(160px, 45vw) !important;
+    height: min(160px, 22vh) !important;
+    flex-shrink: 0 !important;
+}
+
+#telegramModal .drum-dots {
+    margin-top: 8px !important;
+    margin-bottom: 4px !important;
+}
+
+#telegramModal .drum-read-btn {
+    margin-top: 0 !important;
+}
+
+/* Контейнер для кнопок */
+#telegramModal .drum-buttons-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
 }
