@@ -368,16 +368,33 @@
                     
                     <!-- wellness -->
                     <div class="tg-tab-content active" data-content="wellness">
-                        <div class="swipe-carousel" id="telegramSwipeCarousel">
-                            <div class="swipe-track" id="telegramSwipeTrack"></div>
-                        </div>
-                        <div class="swipe-dots" id="telegramSwipeDots"></div>
-                        <div style="display:flex; justify-content:center; margin-top:12px;">
-                            <button class="universal-btn" id="drumReadBtn">
-                                <span class="btn-inner"><span>READ</span></span>
-                            </button>
-                        </div>
-                    </div>
+    <div style="position:relative; display:flex; align-items:center; justify-content:center; gap:4px; padding:0 4px;">
+        <!-- Стрелка влево -->
+        <button class="carousel-arrow carousel-arrow-left" id="carouselPrev" type="button">
+            <span>◂</span>
+        </button>
+        
+        <!-- Карусель -->
+        <div class="swipe-carousel" id="telegramSwipeCarousel">
+            <div class="swipe-track" id="telegramSwipeTrack"></div>
+        </div>
+        
+        <!-- Стрелка вправо -->
+        <button class="carousel-arrow carousel-arrow-right" id="carouselNext" type="button">
+            <span>▸</span>
+        </button>
+    </div>
+    
+    <!-- Точки -->
+    <div class="swipe-dots" id="telegramSwipeDots"></div>
+    
+    <!-- Кнопка READ -->
+    <div style="display:flex; justify-content:center; margin-top:12px;">
+        <button class="universal-btn" id="drumReadBtn" type="button">
+            <span class="btn-inner"><span>READ</span></span>
+        </button>
+    </div>
+</div>
 
                     <!-- radio -->
                     <div class="tg-tab-content" data-content="radio">
