@@ -1317,26 +1317,29 @@
 
     <!-- TELEGRAM MODAL — wellness drum moved here -->
     <div id="telegramModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">telegram</span>
-                <button class="modal-close-btn" data-modal="telegramModal">✜</button>
-            </div>
-            <div class="modal-inner">
-                <div class="wellness-drum-wrap" id="wellnessDrumWrap">
-                    <div class="drum-scene">
-                        <div class="drum-cylinder" id="drumCylinder"></div>
-                    </div>
-                    <div class="drum-dots" id="drumDots"></div>
-                    <div class="drum-read-btn">
-                        <button class="universal-btn" id="drumReadBtn">
-                            <span class="btn-inner"><span>READ</span></span>
-                        </button>
-                    </div>
+    <div class="modal-content" style="max-height:90vh;">
+        <div class="modal-header">
+            <span class="modal-title-text">telegram</span>
+            <button class="modal-close-btn" data-modal="telegramModal">✜</button>
+        </div>
+        <div class="modal-inner" style="padding: 16px 20px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <div class="wellness-drum-wrap" id="wellnessDrumWrap" style="padding-top: 10px; margin-bottom: 10px;">
+                <div class="drum-scene">
+                    <div class="drum-cylinder" id="drumCylinder"></div>
                 </div>
+                <div class="drum-dots" id="drumDots" style="margin-top: 12px;"></div>
+            </div>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <button class="universal-btn" id="drumReadBtn">
+                    <span class="btn-inner"><span>READ</span></span>
+                </button>
+                <a href="https://t.me/morstrix" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration: none;">
+                    <span class="btn-inner"><span>ENTER</span></span>
+                </a>
             </div>
         </div>
     </div>
+</div>
 
     <div id="forumDisclaimerModal" class="modal-overlay">
         <div class="modal-content">
