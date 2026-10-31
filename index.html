@@ -94,24 +94,6 @@
         <!-- ===== LAB TAB ===== -->
         <div class="tab-panel" id="tab-lab" data-tab-panel="lab">
             <div class="journal-vertical" id="journalVertical">
-                <div class="journal-page" id="sec-art">
-                    <div class="page-content">
-                        <div class="art-feed-row">
-                            <div class="art-block">
-                                <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
-                            </div>
-                            <div class="archive-block text-primary" id="archiveBtn">
-                                <img src="assets/archive.png" alt="Archive" class="archive-img">
-                                <span class="archive-label">feed</span>
-                            </div>
-                            <div class="paint-cell">
-                                <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
-                                <span class="control-label text-primary">paint</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="journal-page" id="sec-styler">
                     <div class="page-content">
                         <div class="styler-embedded">
@@ -121,7 +103,7 @@
                     </div>
                 </div>
 
-                              <div class="journal-page" id="sec-soundstyler">
+                <div class="journal-page" id="sec-soundstyler">
                     <div class="page-content" style="display: flex; flex-direction: column; gap: 20px;">
                         <div class="text-synth-block" style="text-align: center;">
                             <div class="tts-title" style="margin-bottom: 12px;">Text Synth</div>
@@ -129,27 +111,6 @@
                                 <span class="btn-inner"><span>SPEAK</span></span>
                             </button>
                         </div>
-                    </div>
-                </div>
-
-                <div class="journal-page" id="sec-constructor">
-                    <div class="page-content">
-                        <section class="constructor-panel">
-                            <h2 class="constructor-title">Constructor</h2>
-                            <div class="merch-constructor">
-                                <div class="tshirt-preview">
-                                    <img src="assets/tshirt.jpeg" alt="T-shirt">
-                                    <canvas id="printCanvas"></canvas>
-                                </div>
-                                <div class="constructor-controls">
-                                    <label for="imageUpload" class="upload-label"><span>choose file</span></label>
-                                    <input type="file" id="imageUpload" accept="image/*" style="display:none;">
-                                    <button class="universal-btn" id="resetPrint" type="button">
-                                        <span class="btn-inner"><span>CLEAR</span></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
                     </div>
                 </div>
 
@@ -284,9 +245,20 @@
                         </div>
 
                         <div class="tg-tab-content" data-content="design">
-                            <div style="padding:20px; text-align:center;">
-                                <p class="text-secondary" style="font-size:16px;">Графический дизайн, типографика, UI, брендинг.</p>
-                                <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Материалы и обсуждения в Telegram.</p>
+                            <div class="page-content" style="padding: 20px;">
+                                <div class="art-feed-row" style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
+                                    <div class="art-block">
+                                        <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
+                                    </div>
+                                    <div class="archive-block text-primary" id="archiveBtn">
+                                        <img src="assets/archive.png" alt="Archive" class="archive-img">
+                                        <span class="archive-label">feed</span>
+                                    </div>
+                                    <div class="paint-cell">
+                                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
+                                        <span class="control-label text-primary">paint</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -298,9 +270,23 @@
                         </div>
 
                         <div class="tg-tab-content" data-content="diygear">
-                            <div style="padding:20px; text-align:center;">
-                                <p class="text-secondary" style="font-size:16px;">DIY Gear: снаряжение, самоделки, инструменты.</p>
-                                <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Проекты и гайды в Telegram.</p>
+                            <div class="page-content" style="padding: 20px;">
+                                <section class="constructor-panel">
+                                    <h2 class="constructor-title">Constructor</h2>
+                                    <div class="merch-constructor">
+                                        <div class="tshirt-preview">
+                                            <img src="assets/tshirt.jpeg" alt="T-shirt">
+                                            <canvas id="printCanvas"></canvas>
+                                        </div>
+                                        <div class="constructor-controls">
+                                            <label for="imageUpload" class="upload-label"><span>choose file</span></label>
+                                            <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+                                            <button class="universal-btn" id="resetPrint" type="button">
+                                                <span class="btn-inner"><span>CLEAR</span></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
                         </div>
 
@@ -330,15 +316,11 @@
                 <button class="modal-close-btn" data-modal="instagramModal">✜</button>
             </div>
             <div class="modal-inner" style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px;">
-                <!-- Увеличили gap до 32px для большего пространства между картинками -->
                 <div style="display:flex; gap:32px; justify-content:center; align-items:center;">
-                    
-                    <!-- Карточка EX (x.png) — размер увеличен до 64px -->
                     <a href="https://www.instagram.com/grimexframe" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
                         <img src="assets/x.png" alt="EX Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
 
-                    <!-- Карточка ADA (a.png) — размер увеличен до 64px -->
                     <a href="https://www.instagram.com/mrsv.ad" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
                         <img src="assets/a.png" alt="ADA Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
@@ -348,8 +330,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- TikTok Modal -->
     <div id="tiktokModal" class="modal-overlay">
