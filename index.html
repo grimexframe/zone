@@ -46,6 +46,14 @@
         <div class="tab-panel active" id="tab-info" data-tab-panel="info">
             <div class="journal-vertical" style="display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - var(--top-panel-h) - 70px); padding:0;">
 
+                <div class="journal-page" id="sec-ticker" style="width:100%; max-width:800px; margin-bottom:20px;">
+                    <div class="page-content">
+                        <div class="ticker-wrapper">
+                            <div class="ticker" id="rssTicker">MORSTRIX</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Первый ряд: дайджест + Twitter + Telegram -->
                 <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
                     <span class="text-secondary" style="font-size:12px; color:#888; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;">
@@ -86,14 +94,6 @@
         <!-- ===== LAB TAB ===== -->
         <div class="tab-panel" id="tab-lab" data-tab-panel="lab">
             <div class="journal-vertical" id="journalVertical">
-                <div class="journal-page" id="sec-ticker">
-                    <div class="page-content">
-                        <div class="ticker-wrapper">
-                            <div class="ticker" id="rssTicker">MORSTRIX</div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="journal-page" id="sec-art">
                     <div class="page-content">
                         <div class="art-feed-row">
@@ -277,7 +277,7 @@
                             <div style="padding:20px; text-align:center;">
                                 <p class="text-secondary" style="font-size:16px;">Музыка, подкасты, плейлисты, эфиры.</p>
                                 <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Атмосферные подборки в Telegram.</p>
-                                <a href="https://youtube.com/playlist?list=PLi1Z1_6srFOvdJ5HrgSMoGpMnpoTrx56_" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px; display:inline-block;">
+                                <a href="https://youtube.com/playlist?list=PLi1Z1_6srFOvdJ5HrgSMoGpMnpoTrx56_" target="_blank" class="universal-btn" style="text-decoration:none; margin-top:16px;">
                                     <span class="btn-inner"><span>OPEN PLAYLIST</span></span>
                                 </a>
                             </div>
@@ -334,12 +334,12 @@
                 <div style="display:flex; gap:32px; justify-content:center; align-items:center;">
                     
                     <!-- Карточка EX (x.png) — размер увеличен до 64px -->
-                    <a href="https://www.instagram.com/grimexframe" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:none; padding:0; cursor:pointer;">
+                    <a href="https://www.instagram.com/grimexframe" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
                         <img src="assets/x.png" alt="EX Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
 
                     <!-- Карточка ADA (a.png) — размер увеличен до 64px -->
-                    <a href="https://www.instagram.com/mrsv.ad" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:none; padding:0; cursor:pointer;">
+                    <a href="https://www.instagram.com/mrsv.ad" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
                         <img src="assets/a.png" alt="ADA Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
 
@@ -415,7 +415,7 @@
         </div>
     </div>
 
-<!-- ===== TEXT SYNTH MODAL ===== -->
+ <!-- ===== TEXT SYNTH MODAL ===== -->
 <div id="textSynthModal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
