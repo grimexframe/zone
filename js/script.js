@@ -402,24 +402,28 @@ document.addEventListener('DOMContentLoaded', () => {
         carousel.addEventListener('click', () => clearInterval(carouselInterval));
     }
 
-    // ===== FONT STYLER =====
-    const embeddedInput = document.getElementById('fontInputEmbedded');
-    const embeddedPreview = document.getElementById('stylerPreviewEmbedded');
-    if (embeddedInput && embeddedPreview) {
-        function updateStylerPreview() {
-            const rawText = embeddedInput.value.trim();
-            embeddedPreview.textContent = rawText === '' ? convertTextToFont('tap to copy') : convertTextToFont(rawText);
+    // ===== FONT STYLER (стилизатор текста: основная страница + вкладка GARAGE) =====
+    function initTextStyler(inputId, previewId) {
+        const input = document.getElementById(inputId);
+        const preview = document.getElementById(previewId);
+        if (!input || !preview) return;
+        function update() {
+            const rawText = input.value.trim();
+            preview.textContent = rawText === '' ? convertTextToFont('tap to copy') : convertTextToFont(rawText);
         }
-        updateStylerPreview();
-        embeddedInput.addEventListener('input', updateStylerPreview);
-        embeddedPreview.addEventListener('click', () => {
-            navigator.clipboard.writeText(embeddedPreview.textContent).then(() => {
-                const original = embeddedPreview.textContent;
-                embeddedPreview.textContent = convertTextToFont('copied!');
-                setTimeout(() => embeddedPreview.textContent = original, 800);
+        update();
+        input.addEventListener('input', update);
+        preview.addEventListener('click', () => {
+            navigator.clipboard.writeText(preview.textContent).then(() => {
+                const original = preview.textContent;
+                preview.textContent = convertTextToFont('copied!');
+                setTimeout(() => preview.textContent = original, 800);
             }).catch(err => console.warn('Clipboard error:', err));
         });
     }
+    initTextStyler('fontInputEmbedded', 'stylerPreviewEmbedded');
+    initTextStyler('garageFontInput', 'garageStylerPreview');
+
 
     // ===== DOWNLOAD ARCHIVE =====
     document.getElementById('downloadArchiveBtnEmbedded')?.addEventListener('click', () => {
@@ -531,67 +535,71 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadCurrentArt();
 
-        // ===== TTS (MODAL VERSION) =====
-    const modalTtsSpeakBtn = document.getElementById('modalTtsSpeakBtn');
-    const modalTtsTextInput = document.getElementById('modalTtsTextInput');
-    const modalTtsVoiceSelect = document.getElementById('modalTtsVoiceSelect');
-    const modalTtsStatus = document.getElementById('modalTtsStatus');
+    // ===== TTS / TEXT SYNTH (старая модалка + вкладка GARAGE) =====
     let voices = [];
+    const ttsInstances = [];
 
     function loadVoices() {
         if (typeof speechSynthesis === 'undefined') return;
         voices = speechSynthesis.getVoices();
-        if (modalTtsVoiceSelect) {
-            modalTtsVoiceSelect.innerHTML = '';
+        ttsInstances.forEach(({ voiceSelect }) => {
+            if (!voiceSelect) return;
+            const previous = voiceSelect.value;
+            voiceSelect.innerHTML = '';
             voices.forEach(voice => {
                 const option = document.createElement('option');
                 option.value = voice.name;
                 option.textContent = `${voice.lang} - ${voice.name}`;
-                modalTtsVoiceSelect.appendChild(option);
+                voiceSelect.appendChild(option);
             });
             const ukrVoice = voices.find(v => v.lang.startsWith('uk'));
             const rusVoice = voices.find(v => v.lang.startsWith('ru'));
-            if (ukrVoice) modalTtsVoiceSelect.value = ukrVoice.name;
-            else if (rusVoice) modalTtsVoiceSelect.value = rusVoice.name;
-        }
+            if (previous && voices.some(v => v.name === previous)) voiceSelect.value = previous;
+            else if (ukrVoice) voiceSelect.value = ukrVoice.name;
+            else if (rusVoice) voiceSelect.value = rusVoice.name;
+        });
     }
+
+    function initTts(ids) {
+        const textInput = document.getElementById(ids.text);
+        const voiceSelect = document.getElementById(ids.voice);
+        const speakBtn = document.getElementById(ids.speak);
+        const statusEl = document.getElementById(ids.status);
+        if (!textInput || !speakBtn) return;
+        ttsInstances.push({ voiceSelect });
+        const setStatus = text => { if (statusEl) statusEl.textContent = text; };
+
+        function speak() {
+            const text = textInput.value;
+            if (!text.trim()) { setStatus('Введите текст'); return; }
+            if (typeof speechSynthesis === 'undefined') { setStatus('Синтез речи не поддерживается'); return; }
+            speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voice = voices.find(v => v.name === voiceSelect?.value);
+            if (voice) utterance.voice = voice;
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            utterance.onstart = () => setStatus('▶ Воспроизведение');
+            utterance.onend = () => setStatus('');
+            utterance.onerror = e => {
+                if (e.error === 'interrupted' || e.error === 'canceled') return;
+                setStatus('Ошибка: ' + e.error);
+            };
+            speechSynthesis.speak(utterance);
+        }
+
+        speakBtn.addEventListener('click', speak);
+        textInput.addEventListener('keypress', e => { if (e.key === 'Enter') speak(); });
+    }
+
+    initTts({ text: 'modalTtsTextInput', voice: 'modalTtsVoiceSelect', speak: 'modalTtsSpeakBtn', status: 'modalTtsStatus' });
+    initTts({ text: 'garageTtsTextInput', voice: 'garageTtsVoiceSelect', speak: 'garageTtsSpeakBtn', status: 'garageTtsStatus' });
 
     if (typeof speechSynthesis !== 'undefined') {
         speechSynthesis.onvoiceschanged = loadVoices;
         loadVoices();
     }
 
-    function speakWithSpeechSynthesis(text) {
-        if (!text.trim()) { 
-            if (modalTtsStatus) modalTtsStatus.textContent = 'Введите текст'; 
-            return; 
-        }
-        speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        const selectedVoiceName = modalTtsVoiceSelect?.value;
-        if (selectedVoiceName) {
-            const voice = voices.find(v => v.name === selectedVoiceName);
-            if (voice) utterance.voice = voice;
-        }
-        utterance.rate = 1.0; 
-        utterance.pitch = 1.0;
-        utterance.onstart = () => { if (modalTtsStatus) modalTtsStatus.textContent = '▶ Воспроизведение'; };
-        utterance.onend = () => { if (modalTtsStatus) modalTtsStatus.textContent = ''; };
-        utterance.onerror = e => { if (modalTtsStatus) modalTtsStatus.textContent = 'Ошибка: ' + e.error; };
-        speechSynthesis.speak(utterance);
-    }
-
-    if (modalTtsSpeakBtn) {
-        modalTtsSpeakBtn.addEventListener('click', () => {
-            speakWithSpeechSynthesis(modalTtsTextInput.value);
-        });
-    }
-
-    if (modalTtsTextInput) {
-        modalTtsTextInput.addEventListener('keypress', e => { 
-            if (e.key === 'Enter') modalTtsSpeakBtn?.click(); 
-        });
-    }
 
     // ===== TOP PLAYERS =====
     async function loadTopPlayers() {
@@ -723,67 +731,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.querySelector('#tgForumTabs .tg-forum-tab.active[data-tab="wellness"]')) {
             setTimeout(initWellnessCarousel, 100);
         }
-    })();
-
-    // ===== TAB SWITCHING (LAB/INFO) =====
-    (function () {
-        const tabButtons = document.querySelectorAll('.tab-btn[data-tab]');
-        const tabPanels = {
-            lab: document.getElementById('tab-lab'),
-            info: document.getElementById('tab-info')
-        };
-        const FADE_OUT_MS = 110;
-        let currentTab = null;
-        let transitionTimer = null;
-
-        function switchTab(name) {
-            const toPanel = tabPanels[name];
-            if (!toPanel || name === currentTab) return;
-            const fromPanel = currentTab ? tabPanels[currentTab] : null;
-            if (transitionTimer) clearTimeout(transitionTimer);
-            Object.values(tabPanels).forEach(p => {
-                if (!p || p === fromPanel || p === toPanel) return;
-                p.classList.remove('active', 'tab-outgoing', 'fade-out');
-                p.style.display = 'none';
-            });
-            tabButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === name));
-            toPanel.classList.remove('tab-outgoing', 'fade-out');
-            toPanel.style.display = 'block';
-            toPanel.classList.add('active');
-            if (fromPanel && fromPanel !== toPanel) {
-                fromPanel.classList.add('tab-outgoing');
-                void fromPanel.offsetWidth;
-                fromPanel.classList.add('fade-out');
-            }
-            currentTab = name;
-            transitionTimer = setTimeout(() => {
-                if (fromPanel && fromPanel !== toPanel) {
-                    fromPanel.classList.remove('active', 'tab-outgoing', 'fade-out');
-                    fromPanel.style.display = 'none';
-                }
-                transitionTimer = null;
-            }, FADE_OUT_MS);
-        }
-
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.classList.remove('activate');
-                void btn.offsetWidth;
-                btn.classList.add('activate');
-                switchTab(btn.dataset.tab);
-                window.playUiMenuBlip?.();
-            });
-        });
-
-        // По умолчанию показываем INFO
-        if (tabPanels.info) {
-            tabPanels.info.classList.add('active');
-            tabPanels.info.style.display = 'block';
-        }
-        if (tabPanels.lab) {
-            tabPanels.lab.style.display = 'none';
-        }
-        currentTab = 'info';
     })();
 
     // ===== GENERIC MODAL TRIGGER =====
