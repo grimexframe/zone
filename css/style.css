@@ -1,4 +1,4 @@
-/* style.css v6 | Telegram modal: GARAGE active, LAB/INFO removed */
+/* style.css v7 | Telegram modal: GARAGE, single page, frameless Tetris icon */
 @font-face {
     font-family: 'CrtOverscan';
     src: url('../assets/fonts/CrtOverscan-Regular.ttf') format('truetype');
@@ -50,8 +50,8 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 
 .top-panel {
     position:fixed; top:0; left:0; right:0; height:var(--top-panel-h); background:#050505;
-    display:grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
-    align-items:center; padding:0 20px; z-index:200;
+    display:grid; grid-template-columns: minmax(0,1fr) auto;
+    align-items:center; padding:0 12px 0 20px; z-index:200;
 }
 .top-panel::after {
     content:''; position:absolute; bottom:-4px; left:0; width:100%; height:2px;
@@ -65,19 +65,17 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 .panel-views-value { color:#8B3A3A; }
 .panel-spacer { width:48px; height:1px; }
 .top-panel-tetris-trigger {
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    padding:4px 6px; background:transparent; border:2px solid transparent;
-    border-image:linear-gradient(135deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
-    cursor:pointer; color:var(--text-primary); font-family:var(--font-primary); font-size:10px;
-    text-transform:uppercase; line-height:1; box-shadow:0 0 12px rgba(168,77,107,.15);
+    display:flex; align-items:center; justify-content:center;
+    padding:0; background:transparent; border:0; cursor:pointer;
+    appearance:none; -webkit-appearance:none; -webkit-tap-highlight-color:transparent;
 }
 .top-panel-tetris-trigger img {
-    width:26px; height:26px; display:block; object-fit:contain; image-rendering:pixelated;
+    width:34px; height:34px; display:block; object-fit:contain; image-rendering:pixelated;
 }
-.top-panel-tetris-trigger span { font-size:10px; letter-spacing:1px; }
+.top-panel-tetris-trigger:active { opacity:.7; }
 @media (max-width:480px) {
-    .top-panel { padding:0 12px; }
-    .top-panel-tetris-trigger img { width:22px; height:22px; }
+    .top-panel { padding:0 8px 0 12px; }
+    .top-panel-tetris-trigger img { width:30px; height:30px; }
 }
 .panel-btn {
     background:transparent; border:none; color:#fff; font-family:var(--font-primary);
