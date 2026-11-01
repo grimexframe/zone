@@ -595,8 +595,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ===== TOP PLAYERS =====
     async function loadTopPlayers() {
-        const container = document.querySelector('.top-players-list');
-        if (!container) return;
+        const containers = document.querySelectorAll('.top-players-list');
+        if (!containers.length) return;
+        const setAll = html => containers.forEach(c => { c.innerHTML = html; });
         try {
             const { initializeApp, getApps, getApp } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js');
             const { getFirestore, collection, query, orderBy, limit, getDocs } = await import('https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js');
@@ -615,13 +616,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!snap.empty) {
                 let html = ''; let rank = 1;
                 snap.forEach(d => { const data = d.data(); html += `<div class="top-row"><span>${rank}. ${(data.name || 'ANON').slice(0, 10)}</span><span>${data.score}</span></div>`; rank++; });
-                container.innerHTML = html;
+                setAll(html);
             } else {
-                container.innerHTML = '<div style="text-align:center;padding:10px;">— пусто —</div>';
+                setAll('<div style="text-align:center;padding:10px;">— пусто —</div>');
             }
         } catch (e) {
             console.warn('loadTopPlayers failed', e);
-            container.innerHTML = '⚠️ ERROR';
+            setAll('⚠️ ERROR');
         }
     }
     if (document.querySelector('.top-players-list')) loadTopPlayers();
