@@ -1,4 +1,4 @@
-/* style.css v5 | Telegram modal included */
+/* style.css v6 | Telegram modal: GARAGE active, LAB/INFO removed */
 @font-face {
     font-family: 'CrtOverscan';
     src: url('../assets/fonts/CrtOverscan-Regular.ttf') format('truetype');
@@ -85,38 +85,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     cursor:pointer; text-transform:uppercase; padding:8px 0;
 }
 
-.tab-btn-row { display:flex; align-items:flex-end; gap:6px; position:relative; padding-bottom:2px; }
-.tab-btn-row::after { content:''; position:absolute; left:0; right:0; bottom:0; height:2px; background:var(--tab-border); z-index:1; }
-.tab-btn {
-    position:relative; font-size:13px !important; padding:8px 18px 7px; margin:0 0 3px;
-    background:var(--tab-surface-idle); border:1px solid var(--tab-border); border-bottom:none;
-    color:var(--tab-text-idle); letter-spacing:1px; z-index:2;
-    clip-path: polygon(0 6px, 3px 6px, 3px 3px, 6px 3px, 6px 0,
-                        calc(100% - 6px) 0, calc(100% - 6px) 3px, calc(100% - 3px) 3px,
-                        calc(100% - 3px) 6px, 100% 6px, 100% 100%, 0 100%);
-    transition:none;
-}
-.tab-btn:hover { border-color:var(--tab-border-hover); }
-.tab-btn.active {
-    margin-bottom:-2px; padding-bottom:9px; background:var(--tab-surface-active);
-    border-color:var(--tab-border); border-top:2px solid var(--tab-accent);
-    border-bottom:2px solid var(--tab-surface-active); color:var(--tab-text-active)!important; z-index:3;
-}
-.tab-btn::before { content:''; position:absolute; top:-2px; left:0; width:0; height:2px; background:var(--tab-accent); pointer-events:none; }
-.tab-btn.activate::before { animation:tabScanIn 140ms steps(4,jump-none) 1; }
-@keyframes tabScanIn {
-    0% { width:0; box-shadow:none; }
-    75% { width:100%; box-shadow:0 0 6px 1px var(--tab-accent-dim); }
-    100% { width:100%; box-shadow:none; }
-}
-.tab-panel { display:none; position:relative; }
-.tab-panel.active { display:block; }
-.tab-panel.tab-outgoing { position:absolute; top:0; left:0; width:100%; z-index:2; pointer-events:none; }
-.tab-panel.fade-out { animation:tabFadeOut 110ms ease-out 1 forwards; }
-@keyframes tabFadeOut { from { opacity:1; } to { opacity:0; } }
-@media (prefers-reduced-motion: reduce) {
-    .tab-panel.fade-out, .tab-btn.activate::before { animation:none!important; }
-}
+/* (LAB/INFO tabs removed) */
 
 .journal-wrapper { width:100%; margin-top:var(--top-panel-h); position:relative; z-index:10; padding-bottom:64px; }
 .journal-vertical { display:block; width:100%; }
@@ -223,7 +192,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 }
 .icon-action-glyph { font-family:'Press Start 2P',monospace; font-size:11px; color:#ffb7c7; }
 
-/* ===== MODALS (restored for index.html) ===== */
+/* ===== MODALS ===== */
 .modal-overlay {
     position: fixed; inset: 0; display: none;
     align-items: center; justify-content: center;
@@ -278,7 +247,6 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 .feed-meta { font-size: 12px; padding: 6px; color: var(--text-secondary); text-align: center; }
 
 /* ===== TELEGRAM FORUM MODAL ===== */
-/* внутри у Telegram свои скроллы (tabs/content), общий скролл модалки не нужен */
 #telegramModal .modal-content { overflow: hidden; }
 #telegramModal .tg-forum-tabs {
     width: 70px;
@@ -326,6 +294,31 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 #telegramModal .tg-tab-content { display: none; padding-top: 20px; }
 #telegramModal .tg-tab-content.active { display: block; }
 
+/* ===== GARAGE tab: styler + TTS ===== */
+#telegramModal .tg-tab-content[data-content="garage"] > div {
+    padding: 20px 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+#telegramModal .tg-tab-content[data-content="garage"] .styler-embedded {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+}
+#telegramModal .tg-tab-content[data-content="garage"] .text-synth-block {
+    width: 100%;
+    max-width: 340px;
+}
+#telegramModal .tg-tab-content[data-content="garage"] .styler-input {
+    font-size: 18px;
+}
+#telegramModal .tg-tab-content[data-content="garage"] #garageTtsStatus {
+    text-align: center;
+    width: 100%;
+}
+
 #telegramModal .tg-tab-content[data-content="design"] .page-content,
 #telegramModal .tg-tab-content[data-content="diygear"] .page-content {
     width: min(100%, 420px);
@@ -352,7 +345,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 #telegramModal .tg-tab-content[data-content="design"] .control-label { font-size: 14px; margin-top: 0; }
 /* DESIGN: арт слева, FEED справа, paint под артом */
 #telegramModal .tg-tab-content[data-content="design"] .art-feed-row {
-    display: grid !important; /* перебивает inline display:flex в разметке */
+    display: grid !important;
     grid-template-columns: auto auto;
     grid-template-areas: "art feed" "paint .";
     justify-content: center;
@@ -422,6 +415,9 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     #telegramModal .tg-forum-tab span:first-child { font-size: 18px; }
     #telegramModal .tg-tab-label { font-size: 7px; }
     #telegramModal .tg-tab-content { padding-top: 16px; }
+
+    #telegramModal .tg-tab-content[data-content="garage"] .styler-input { font-size: 16px; }
+
     #telegramModal .tg-tab-content[data-content="design"] .art-block {
         flex: 0 0 120px;
         width: 120px;
