@@ -1,4 +1,4 @@
-/* style.css v4 | Telegram modal included */
+/* style.css v5 | Telegram modal included */
 @font-face {
     font-family: 'CrtOverscan';
     src: url('../assets/fonts/CrtOverscan-Regular.ttf') format('truetype');
@@ -350,6 +350,18 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 #telegramModal .tg-tab-content[data-content="design"] .archive-label { font-size: 14px; }
 #telegramModal .tg-tab-content[data-content="design"] .paint-cell { margin-top: 0; }
 #telegramModal .tg-tab-content[data-content="design"] .control-label { font-size: 14px; margin-top: 0; }
+/* DESIGN: арт слева, FEED справа, paint под артом */
+#telegramModal .tg-tab-content[data-content="design"] .art-feed-row {
+    display: grid !important; /* перебивает inline display:flex в разметке */
+    grid-template-columns: auto auto;
+    grid-template-areas: "art feed" "paint .";
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+#telegramModal .tg-tab-content[data-content="design"] .art-block { grid-area: art; }
+#telegramModal .tg-tab-content[data-content="design"] .archive-block { grid-area: feed; }
+#telegramModal .tg-tab-content[data-content="design"] .paint-cell { grid-area: paint; }
 
 #telegramModal .carousel-arrow {
     background: #0a0a0d;
