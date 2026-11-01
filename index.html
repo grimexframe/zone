@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>grimexframe.help</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
     
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -248,15 +248,15 @@
 
                         <div class="tg-tab-content" data-content="design">
                             <div class="page-content" style="padding: 20px;">
-                                <div class="art-feed-row" style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;">
-                                    <div class="art-block">
+                                <div class="art-feed-row" style="display:grid; grid-template-columns:auto auto; grid-template-areas:'art feed' 'paint .'; align-items:center; justify-items:center; justify-content:center; gap:12px;">
+                                    <div class="art-block" style="grid-area:art;">
                                         <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
                                     </div>
-                                    <div class="archive-block text-primary" id="archiveBtn">
+                                    <div class="archive-block text-primary" id="archiveBtn" style="grid-area:feed;">
                                         <img src="assets/archive.png" alt="Archive" class="archive-img">
                                         <span class="archive-label">feed</span>
                                     </div>
-                                    <div class="paint-cell">
+                                    <div class="paint-cell" style="grid-area:paint;">
                                         <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
                                         <span class="control-label text-primary">paint</span>
                                     </div>
@@ -443,7 +443,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="js/script.js?v=4"></script>
+    <script src="js/script.js?v=5"></script>
     <script src="js/views-counter.js"></script>
     <script src="js/cosmic-bg.js"></script>
     <script>
