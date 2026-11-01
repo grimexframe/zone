@@ -36,7 +36,9 @@
             </div>
         </div>
         <div class="panel-right">
-            <div class="panel-spacer" aria-hidden="true"></div>
+            <button class="top-panel-tetris-trigger" type="button" data-modal-trigger="tetrisModal" aria-label="Tetris / Top players">
+                <img src="assets/tetris.png" alt="TETRIS">
+            </button>
         </div>
     </div>
 
@@ -395,12 +397,30 @@
         </div>
     </div>
 
+    <!-- ===== TETRIS / TOP PLAYERS MODAL ===== -->
+    <div id="tetrisModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">TOP PLAYERS</span>
+                <button class="modal-close-btn" data-modal="tetrisModal">✜</button>
+            </div>
+            <div class="modal-inner top-players-modal-inner">
+                <div class="top-players-framed top-players-modal-panel">
+                    <div class="top-players-list"></div>
+                </div>
+                <a href="tetris.html" target="_blank" class="universal-btn tetris-modal-btn" data-modal-close="tetrisModal">
+                    <span class="btn-inner"><span>TETRIS</span></span>
+                </a>
+            </div>
+        </div>
+    </div>
+
  <!-- ===== TEXT SYNTH MODAL ===== -->
 <div id="textSynthModal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
             <span class="modal-title-text">TEXT SYNTH</span>
-            <button class="modal-close-btn" data-modal="textSynthModal"></button>
+            <button class="modal-close-btn" data-modal="textSynthModal">✜</button>
         </div>
         <div class="modal-inner" style="display:flex; flex-direction:column; gap:14px; align-items:center; padding: 20px;">
             <input type="text" id="modalTtsTextInput" class="styler-input" placeholder="TYPE TEXT" style="width:100%;">
