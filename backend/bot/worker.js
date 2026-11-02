@@ -1,6 +1,6 @@
 // =====================================================================
 // TELEGRAM BOT — Cloudflare Worker (Reactions Fixed + Anon Admin)
-// ИИ: Groq gpt-oss-120b
+// ИИ: Groq (openai/gpt-oss-120b + fallback llama-3.3-70b-versatile)
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -53,32 +53,53 @@ async function getBotUsername(env) {
 }
 
 // =====================================================================
-// ИИ-ЗАПРОС (Groq, gpt-oss-120b)
+// ИИ-ЗАПРОС (Groq, с fallback-моделью и подробным логом ошибок)
 // =====================================================================
-async function getAIResponse(userMessage, apiKey) {
-  try {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-oss-120b',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userMessage }
-        ],
-        temperature: 0.7,
-        max_tokens: 150
-      })
-    });
-    const data = await res.json();
-    return data.choices?.[0]?.message?.content || 'спробуйте попізже 🫩';
-  } catch (e) {
-    console.error('Groq API error:', e.message);
-    return 'спробуйте попізже 🫩';
+const GROQ_MODELS = ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile'];
+
+async function callGroqOnce(model, userMessage, apiKey) {
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: userMessage }
+      ],
+      temperature: 0.7,
+      max_tokens: 150
+    })
+  });
+
+  const raw = await res.text();
+  if (!res.ok) {
+    console.error(`[Groq] model=${model} status=${res.status} body=${raw}`);
+    return null;
   }
+
+  try {
+    const data = JSON.parse(raw);
+    return data.choices?.[0]?.message?.content || null;
+  } catch (e) {
+    console.error(`[Groq] JSON parse error, raw=${raw}`);
+    return null;
+  }
+}
+
+async function getAIResponse(userMessage, apiKey) {
+  for (const model of GROQ_MODELS) {
+    try {
+      const reply = await callGroqOnce(model, userMessage, apiKey);
+      if (reply) return reply;
+    } catch (e) {
+      console.error(`[Groq] model=${model} exception:`, e.message);
+    }
+  }
+  return 'спробуйте попізже 🫩';
 }
 
 // =====================================================================
@@ -98,14 +119,14 @@ async function handleMessage(msg, env) {
     const repliedText = msg.reply_to_message.text || msg.reply_to_message.caption || '';
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **оновлено**", parse_mode: 'Markdown' });
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'Markdown' });
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
     }
     if (repliedText && repliedText.includes("Надішліть новий текст правил")) {
       groupRulesCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **оновлено**", parse_mode: 'Markdown' });
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Правила успішно оновлено!**", parse_mode: 'Markdown' });
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
@@ -134,7 +155,7 @@ async function handleMessage(msg, env) {
     if (!isGroup) {
       const username = await getBotUsername(env);
       const kb = { inline_keyboard: [[{ text: 'дᴏдᴀᴛи', url: `https://t.me/${username}?startgroup=true` }]] };
-      await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: "⚠️ команда працює лише у групах.", reply_markup: kb });
+      await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: "⚠️ Ця команда працює лише у групах.", reply_markup: kb });
       return;
     }
 
@@ -182,7 +203,7 @@ async function handleMessage(msg, env) {
     }
   }
 
-  // 3. РАНДОМНІ РЕАКЦІЇ (включая анонимных админов)
+  // 3. РАНДОМНІ РЕАКЦІЇ
   if (isGroup && !msg.from?.is_bot) {
     const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
     await tg(BOT_TOKEN, 'setMessageReaction', {
@@ -199,7 +220,7 @@ async function handleMessage(msg, env) {
     });
   }
 
-  // 4. ИИ-ОТВЕТЫ (Groq)
+  // 4. ИИ-ОТВЕТЫ
   if (text && (isPrivate || (isGroup && /[?？]/.test(text)))) {
     const reply = await getAIResponse(text, GROQ_API_KEY);
     await tg(BOT_TOKEN, 'sendMessage', {
@@ -217,7 +238,6 @@ async function handleMessage(msg, env) {
 async function handleUpdate(update, env) {
   const { BOT_TOKEN } = env;
 
-  // --- Бота додали в групу ---
   if (update.my_chat_member) {
     const myChatMember = update.my_chat_member;
     const newStatus = myChatMember.new_chat_member.status;
@@ -239,7 +259,6 @@ async function handleUpdate(update, env) {
     return;
   }
 
-  // --- Кнопки (Callback Queries) ---
   if (update.callback_query) {
     const cb = update.callback_query;
     const chatId = cb.message.chat.id;
@@ -271,7 +290,6 @@ async function handleUpdate(update, env) {
     return;
   }
 
-  // --- Заявка на вступ ---
   if (update.chat_join_request) {
     const req = update.chat_join_request;
     const userId = req.from.id;
@@ -295,7 +313,6 @@ async function handleUpdate(update, env) {
     return;
   }
 
-  // --- Повідомлення (всі типи) ---
   const msg = update.message || update.edited_message || update.channel_post || update.edited_channel_post;
   if (msg) {
     await handleMessage(msg, env);
