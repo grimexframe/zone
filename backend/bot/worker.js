@@ -1,5 +1,6 @@
 // =====================================================================
 // TELEGRAM BOT — Cloudflare Worker (Reactions Fixed + Anon Admin)
+// ИИ: Groq gpt-oss-120b
 // =====================================================================
 
 const RULES_TEXT_DEFAULT = `⊹ ᴋᴀᴛᴀй ? дʌя ᴀɪ ᴀуᴛпуᴛу\n\n⊹ юзᴀй / дʌя ᴄᴇᴛᴀпу`;
@@ -51,13 +52,19 @@ async function getBotUsername(env) {
   return cachedBotUsername;
 }
 
-async function getGroqReply(userMessage, apiKey) {
+// =====================================================================
+// ИИ-ЗАПРОС (Groq, gpt-oss-120b)
+// =====================================================================
+async function getAIResponse(userMessage, apiKey) {
   try {
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'gpt-oss-120b',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: userMessage }
@@ -67,9 +74,10 @@ async function getGroqReply(userMessage, apiKey) {
       })
     });
     const data = await res.json();
-    return data.choices?.[0]?.message?.content || 'спробуйте попізніше 🫩';
+    return data.choices?.[0]?.message?.content || 'спробуйте пізніше 🫩';
   } catch (e) {
-    return 'спробуйте попізніше 🫩';
+    console.error('Groq API error:', e.message);
+    return 'спробуйте пізніше 🫩';
   }
 }
 
@@ -86,7 +94,7 @@ async function handleMessage(msg, env) {
   const threadId = msg.message_thread_id;
 
   // 1. РЕДАГУВАННЯ ТЕКСТІВ ЧЕРЕЗ REPLY
-  if (isGroup && msg.reply_to_message && msg.reply_to_message.from.is_bot) {
+  if (isGroup && msg.reply_to_message && msg.reply_to_message.from?.is_bot) {
     const repliedText = msg.reply_to_message.text || msg.reply_to_message.caption || '';
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
@@ -174,9 +182,8 @@ async function handleMessage(msg, env) {
     }
   }
 
-  // 3. РАНДОМНІ РЕАКЦІЇ (тепер і для анонімних адмінів)
+  // 3. РАНДОМНІ РЕАКЦІЇ (включая анонимных админов)
   if (isGroup && !msg.from?.is_bot) {
-    // Обычное сообщение от реального пользователя
     const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
     await tg(BOT_TOKEN, 'setMessageReaction', {
       chat_id: chatId,
@@ -184,7 +191,6 @@ async function handleMessage(msg, env) {
       reaction: [{ type: 'emoji', emoji }]
     });
   } else if (isGroup && msg.sender_chat) {
-    // Сообщение от имени группы/канала (анонимный админ)
     const emoji = ALL_REACTIONS[Math.floor(Math.random() * ALL_REACTIONS.length)];
     await tg(BOT_TOKEN, 'setMessageReaction', {
       chat_id: chatId,
@@ -193,9 +199,9 @@ async function handleMessage(msg, env) {
     });
   }
 
-  // 4. ШІ-ВІДПОВІДІ
+  // 4. ИИ-ОТВЕТЫ (Groq)
   if (text && (isPrivate || (isGroup && /[?？]/.test(text)))) {
-    const reply = await getGroqReply(text, GROQ_API_KEY);
+    const reply = await getAIResponse(text, GROQ_API_KEY);
     await tg(BOT_TOKEN, 'sendMessage', {
       chat_id: chatId,
       message_thread_id: threadId,
@@ -216,8 +222,8 @@ async function handleUpdate(update, env) {
     const myChatMember = update.my_chat_member;
     const newStatus = myChatMember.new_chat_member.status;
     const oldStatus = myChatMember.old_chat_member.status;
-    
-    const isAdded = (oldStatus === 'left' || oldStatus === 'kicked') && 
+
+    const isAdded = (oldStatus === 'left' || oldStatus === 'kicked') &&
                     (newStatus === 'member' || newStatus === 'administrator');
 
     if (isAdded) {
@@ -241,7 +247,7 @@ async function handleUpdate(update, env) {
 
     if (cb.data === 'show_rules') {
       await tg(BOT_TOKEN, 'answerCallbackQuery', { callback_query_id: cb.id, text: getRulesText(chatId), show_alert: true });
-    } 
+    }
     else if (cb.data === 'edit_welcome') {
       await tg(BOT_TOKEN, 'sendMessage', {
         chat_id: chatId,
