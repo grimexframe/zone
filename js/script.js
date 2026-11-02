@@ -593,7 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initTts({ text: 'modalTtsTextInput', voice: 'modalTtsVoiceSelect', speak: 'modalTtsSpeakBtn', status: 'modalTtsStatus' });
-    initTts({ text: 'garageTtsTextInput', voice: 'garageTtsVoiceSelect', speak: 'garageTtsSpeakBtn', status: 'garageTtsStatus' });
+    initTts({ text: 'garageFontInput', voice: 'garageTtsVoiceSelect', speak: 'garageTtsSpeakBtn', status: 'garageTtsStatus' });
 
     if (typeof speechSynthesis !== 'undefined') {
         speechSynthesis.onvoiceschanged = loadVoices;
