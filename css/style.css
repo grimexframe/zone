@@ -152,6 +152,14 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     color:#888;
 }
 
+.styler-select {
+    width:100%; background:#000; color:#888; padding:10px 15px; cursor:pointer;
+    font-family:'Tiny5',monospace; font-size:16px; text-transform:uppercase; text-align:center; text-align-last:center;
+    border:2px dashed #888; border-radius:0; appearance:none; -webkit-appearance:none;
+}
+.styler-select:focus { outline:none; border-color:#bbb; }
+.styler-select option { background:#000; color:#ccc; }
+
 .text-synth-block { width:min(100%,420px); display:flex; flex-direction:column; align-items:center; gap:10px; margin:0 auto; }
 .tts-title { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--text-primary); letter-spacing:2px; text-transform:uppercase; }
 .text-synth-block .styler-input { width:100%; }
