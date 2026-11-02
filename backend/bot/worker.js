@@ -74,10 +74,10 @@ async function getAIResponse(userMessage, apiKey) {
       })
     });
     const data = await res.json();
-    return data.choices?.[0]?.message?.content || 'спробуйте пізніше 🫩';
+    return data.choices?.[0]?.message?.content || 'спробуйте попізже 🫩';
   } catch (e) {
     console.error('Groq API error:', e.message);
-    return 'спробуйте пізже 🫩';
+    return 'спробуйте попізже 🫩';
   }
 }
 
@@ -98,14 +98,14 @@ async function handleMessage(msg, env) {
     const repliedText = msg.reply_to_message.text || msg.reply_to_message.caption || '';
     if (repliedText && repliedText.includes("Надішліть новий текст привітання")) {
       groupWelcomeCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Вітальний текст успішно оновлено!**", parse_mode: 'Markdown' });
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **оновлено**", parse_mode: 'Markdown' });
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
     }
     if (repliedText && repliedText.includes("Надішліть новий текст правил")) {
       groupRulesCache.set(chatId, text);
-      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **Правила успішно оновлено!**", parse_mode: 'Markdown' });
+      const sent = await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, message_thread_id: threadId, text: "✅ **оновлено**", parse_mode: 'Markdown' });
       if (sent?.result?.message_id) deleteMessageDelayed(BOT_TOKEN, chatId, sent.result.message_id, 5000);
       await tg(BOT_TOKEN, 'deleteMessage', { chat_id: chatId, message_id: messageId });
       return;
@@ -134,7 +134,7 @@ async function handleMessage(msg, env) {
     if (!isGroup) {
       const username = await getBotUsername(env);
       const kb = { inline_keyboard: [[{ text: 'дᴏдᴀᴛи', url: `https://t.me/${username}?startgroup=true` }]] };
-      await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: "⚠️ Ця команда працює лише у групах.", reply_markup: kb });
+      await tg(BOT_TOKEN, 'sendMessage', { chat_id: chatId, text: "⚠️ команда працює лише у групах.", reply_markup: kb });
       return;
     }
 
