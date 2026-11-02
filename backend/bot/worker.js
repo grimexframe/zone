@@ -77,7 +77,7 @@ async function getAIResponse(userMessage, apiKey) {
     return data.choices?.[0]?.message?.content || 'спробуйте пізніше 🫩';
   } catch (e) {
     console.error('Groq API error:', e.message);
-    return 'спробуйте пізніше 🫩';
+    return 'спробуйте пізже 🫩';
   }
 }
 
