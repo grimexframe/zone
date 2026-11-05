@@ -535,69 +535,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadCurrentArt();
 
-    // ===== TTS / TEXT SYNTH (старая модалка + вкладка GARAGE) =====
-    let voices = [];
-    const ttsInstances = [];
+    // ===== GARAGE: плейсхолдер «TYPE TEXT» печатается, как на машинке =====
+    (function () {
+        const input = document.getElementById('garageFontInput');
+        if (!input) return;
+        const PHRASE = 'TYPE TEXT';
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) { input.placeholder = PHRASE; return; }
 
-    function loadVoices() {
-        if (typeof speechSynthesis === 'undefined') return;
-        voices = speechSynthesis.getVoices();
-        ttsInstances.forEach(({ voiceSelect }) => {
-            if (!voiceSelect) return;
-            const previous = voiceSelect.value;
-            voiceSelect.innerHTML = '';
-            voices.forEach(voice => {
-                const option = document.createElement('option');
-                option.value = voice.name;
-                option.textContent = `${voice.lang} - ${voice.name}`;
-                voiceSelect.appendChild(option);
-            });
-            const ukrVoice = voices.find(v => v.lang.startsWith('uk'));
-            const rusVoice = voices.find(v => v.lang.startsWith('ru'));
-            if (previous && voices.some(v => v.name === previous)) voiceSelect.value = previous;
-            else if (ukrVoice) voiceSelect.value = ukrVoice.name;
-            else if (rusVoice) voiceSelect.value = rusVoice.name;
-        });
-    }
+        const TYPE_MS = 130, ERASE_MS = 70, HOLD_MS = 1500, PAUSE_MS = 500, HIDDEN_POLL_MS = 400;
+        let shown = 0, erasing = false, timer = null;
 
-    function initTts(ids) {
-        const textInput = document.getElementById(ids.text);
-        const voiceSelect = document.getElementById(ids.voice);
-        const speakBtn = document.getElementById(ids.speak);
-        const statusEl = document.getElementById(ids.status);
-        if (!textInput || !speakBtn) return;
-        ttsInstances.push({ voiceSelect });
-        const setStatus = text => { if (statusEl) statusEl.textContent = text; };
-
-        function speak() {
-            const text = textInput.value;
-            if (!text.trim()) { setStatus('Введите текст'); return; }
-            if (typeof speechSynthesis === 'undefined') { setStatus('Синтез речи не поддерживается'); return; }
-            speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            const voice = voices.find(v => v.name === voiceSelect?.value);
-            if (voice) utterance.voice = voice;
-            utterance.rate = 1.0;
-            utterance.pitch = 1.0;
-            utterance.onstart = () => setStatus('▶ Воспроизведение');
-            utterance.onend = () => setStatus('');
-            utterance.onerror = e => {
-                if (e.error === 'interrupted' || e.error === 'canceled') return;
-                setStatus('Ошибка: ' + e.error);
-            };
-            speechSynthesis.speak(utterance);
+        function paint() {
+            // «_» играет роль курсора; пока набрано 0 символов, поле не остаётся пустым
+            input.placeholder = PHRASE.slice(0, shown) + (shown < PHRASE.length || erasing ? '_' : '');
         }
 
-        speakBtn.addEventListener('click', speak);
-        textInput.addEventListener('keypress', e => { if (e.key === 'Enter') speak(); });
-    }
+        function schedule(ms) { clearTimeout(timer); timer = setTimeout(tick, ms); }
 
-    initTts({ text: 'modalTtsTextInput', voice: 'modalTtsVoiceSelect', speak: 'modalTtsSpeakBtn', status: 'modalTtsStatus' });
-    initTts({ text: 'garageFontInput', voice: 'garageTtsVoiceSelect', speak: 'garageTtsSpeakBtn', status: 'garageTtsStatus' });
+        function tick() {
+            // вкладка/модалка скрыты — ничего не двигаем, просто ждём
+            if (input.offsetParent === null) { schedule(HIDDEN_POLL_MS); return; }
+            if (!erasing) {
+                if (shown < PHRASE.length) { shown++; paint(); schedule(TYPE_MS); }
+                else { paint(); erasing = true; schedule(HOLD_MS); }
+            } else {
+                if (shown > 0) { shown--; paint(); schedule(ERASE_MS); }
+                else { erasing = false; schedule(PAUSE_MS); }
+            }
+        }
 
-    if (typeof speechSynthesis !== 'undefined') {
-        speechSynthesis.onvoiceschanged = loadVoices;
-        loadVoices();
+        function stop() { clearTimeout(timer); timer = null; input.placeholder = PHRASE; }
+        function resume() { if (!input.value && timer === null) { shown = 0; erasing = false; paint(); schedule(TYPE_MS); } }
+
+        input.addEventListener('focus', stop);
+        input.addEventListener('blur', resume);
+        paint();
+        schedule(TYPE_MS);
+    })();
+
+    // ===== TATTOO: виджет Pinterest-доски =====
+    function initPinterestWidget() {
+        const wrap = document.getElementById('pinterestWidget');
+        const embed = document.getElementById('pinterestEmbed');
+        if (!wrap || !embed || wrap.dataset.ready) return;
+        wrap.dataset.ready = '1';
+
+        // Виджету нужен полный адрес доски вида https://www.pinterest.com/<user>/<board>/ (pin.it не подходит)
+        const boardUrl = (wrap.dataset.boardUrl || '').trim();
+        if (!/^https:\/\/([a-z]{2,3}\.)?pinterest\.[a-z.]+\/[^/?#]+\/[^/?#]+\/?/i.test(boardUrl)) {
+            embed.hidden = true; // остаётся только кнопка OPEN BOARD
+            return;
+        }
+
+        const link = document.createElement('a');
+        link.href = boardUrl;
+        link.setAttribute('data-pin-do', 'embedBoard');
+        link.setAttribute('data-pin-board-width', String(Math.max(200, Math.min(400, embed.clientWidth || 400))));
+        link.setAttribute('data-pin-scale-height', '260');
+        link.setAttribute('data-pin-scale-width', '80');
+        embed.appendChild(link);
+
+        if (window.PinUtils) { window.PinUtils.build(embed); return; }
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://assets.pinterest.com/js/pinit.js'; // сам найдёт ссылку выше при загрузке
+        script.onerror = () => { embed.hidden = true; };
+        document.body.appendChild(script);
     }
 
 
@@ -716,6 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const activeContent = document.querySelector(`#tgForumContent .tg-tab-content[data-content="${tabName}"]`);
                 if (activeContent) activeContent.classList.add('active');
                 if (tabName === 'wellness') setTimeout(initWellnessCarousel, 50);
+                if (tabName === 'tattoo') setTimeout(initPinterestWidget, 50);
                 window.playUiMenuBlip?.();
             });
         });
