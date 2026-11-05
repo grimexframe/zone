@@ -331,12 +331,9 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    margin-top: 12px;
 }
 #telegramModal .pin-embed { width: 100%; display: flex; justify-content: center; overflow: hidden; }
 #telegramModal .pin-embed[hidden] { display: none; }
-#telegramModal .pin-open-btn { text-decoration: none; }
 
 /* ===== GARAGE tab: styler ===== */
 #telegramModal .tg-tab-content[data-content="garage"] > div {
