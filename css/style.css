@@ -152,18 +152,6 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     color:#888;
 }
 
-.styler-select {
-    width:100%; background:#000; color:#888; padding:10px 15px; cursor:pointer;
-    font-family:'Tiny5',monospace; font-size:16px; text-transform:uppercase; text-align:center; text-align-last:center;
-    border:2px dashed #888; border-radius:0; appearance:none; -webkit-appearance:none;
-}
-.styler-select:focus { outline:none; border-color:#bbb; }
-.styler-select option { background:#000; color:#ccc; }
-
-.text-synth-block { width:min(100%,420px); display:flex; flex-direction:column; align-items:center; gap:10px; margin:0 auto; }
-.tts-title { font-family:'Press Start 2P',monospace; font-size:9px; color:var(--text-primary); letter-spacing:2px; text-transform:uppercase; }
-.text-synth-block .styler-input { width:100%; }
-
 .constructor-panel {
     width:min(100%,420px); border:2px solid transparent;
     border-image:linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515) 1;
@@ -273,6 +261,8 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 .feed-meta { font-size: 12px; padding: 6px; color: var(--text-secondary); text-align: center; }
 
 /* ===== TELEGRAM FORUM MODAL ===== */
+/* Одинаковая высота панели у всех вкладок: контент центрируется по обеим осям и не «прыгает» при переключении */
+#telegramModal { --tg-pane-h: min(440px, 56vh); }
 #telegramModal .modal-content { overflow: hidden; }
 #telegramModal .tg-forum-tabs {
     width: 70px;
@@ -283,7 +273,7 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     border-right: 1px solid #2f2f38;
     border-top: 1px solid #2f2f38;
     overflow-y: auto;
-    max-height: 60vh;
+    max-height: var(--tg-pane-h);
 }
 #telegramModal .tg-forum-tab {
     display: flex;
@@ -313,14 +303,42 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
 #telegramModal .tg-forum-content {
     flex: 1;
     min-width: 0;
-    max-height: 60vh;
+    height: var(--tg-pane-h);
     overflow-y: auto;
     border-top: 1px solid #2f2f38;
+    display: flex;
+    flex-direction: column;
 }
-#telegramModal .tg-tab-content { display: none; padding-top: 20px; }
-#telegramModal .tg-tab-content.active { display: block; }
+/* Центрирование: margin-block:auto держит контент по центру, а если он выше панели — прокрутка идёт с самого верха */
+#telegramModal .tg-tab-content { display: none; }
+#telegramModal .tg-tab-content.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-block: auto;
+    padding: 12px 8px;
+    text-align: center;
+}
+#telegramModal .tg-tab-content.active > * {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+}
 
-/* ===== GARAGE tab: styler + TTS ===== */
+/* ===== TATTOO tab: Pinterest board ===== */
+#telegramModal .pin-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+#telegramModal .pin-embed { width: 100%; display: flex; justify-content: center; overflow: hidden; }
+#telegramModal .pin-embed[hidden] { display: none; }
+#telegramModal .pin-open-btn { text-decoration: none; }
+
+/* ===== GARAGE tab: styler ===== */
 #telegramModal .tg-tab-content[data-content="garage"] > div {
     padding: 20px 16px 24px;
     display: flex;
@@ -333,16 +351,8 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     max-width: 340px;
     margin: 0 auto;
 }
-#telegramModal .tg-tab-content[data-content="garage"] .text-synth-block {
-    width: 100%;
-    max-width: 340px;
-}
 #telegramModal .tg-tab-content[data-content="garage"] .styler-input {
     font-size: 18px;
-}
-#telegramModal .tg-tab-content[data-content="garage"] #garageTtsStatus {
-    text-align: center;
-    width: 100%;
 }
 
 #telegramModal .tg-tab-content[data-content="design"] .page-content,
@@ -440,7 +450,6 @@ button, a, .universal-btn, .donate-label, [data-modal-trigger], [data-href] { to
     #telegramModal .tg-forum-tab { padding: 10px 2px; }
     #telegramModal .tg-forum-tab span:first-child { font-size: 18px; }
     #telegramModal .tg-tab-label { font-size: 7px; }
-    #telegramModal .tg-tab-content { padding-top: 16px; }
 
     #telegramModal .tg-tab-content[data-content="garage"] .styler-input { font-size: 16px; }
 
