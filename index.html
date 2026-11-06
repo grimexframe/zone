@@ -32,22 +32,32 @@
             <!-- ===== СОЦСЕТИ ===== -->
             <div class="journal-page">
                 <div class="page-content">
-                    <!-- Первый ряд: дайджест + Twitter + Telegram -->
-                    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;">
+
+                    <!-- Первый ряд: дайджест + HELPER (по центру) -->
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;">
                         <span class="text-secondary" style="font-size:12px; color:#888; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;">
                             <span class="blink-dot">◈</span> дайджест
                         </span>
                         <button class="icon-action" type="button" data-modal-trigger="twitterModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/twit.png" alt="Twitter / X" style="width:28px; height:28px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px;">twitter</span>
-                        </button>
-                        <button class="icon-action" type="button" data-modal-trigger="telegramModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/IMG_0746.png" alt="Telegram" style="width:36px; height:36px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px;">telegram</span>
+                            <img src="assets/IMG_1858.jpeg" alt="Helper" style="width:48px; height:48px; object-fit:contain;">
+                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">HELPER</span>
                         </button>
                     </div>
 
-                    <!-- Второй ряд: Instagram + TikTok -->
+                    <!-- Второй ряд: ДРАФТ + FORUM -->
+                    <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
+                        <button class="icon-action" type="button" data-modal-trigger="draftModal" style="width:78px; padding:10px 6px;">
+                            <img src="assets/IMG_1860.jpeg" alt="Драфт" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
+                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">ДРАФТ</span>
+                        </button>
+                        <button class="icon-action" type="button" data-modal-trigger="telegramModal" style="width:78px; padding:10px 6px;">
+                            <img src="assets/IMG_1856.jpeg" alt="Forum" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
+                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">FORUM</span>
+                        </button>
+                    </div>
+
+                    <!-- Третий ряд: Instagram + TikTok -->
                     <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
                         <button class="icon-action" type="button" data-modal-trigger="instagramModal" style="width:78px; padding:10px 6px;">
                             <img src="assets/insta.png" alt="Instagram" style="width:28px; height:28px; object-fit:contain; image-rendering:pixelated;">
@@ -57,6 +67,8 @@
                             <img src="assets/IMG_0745.png" alt="TikTok" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
                             <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px;">tiktok</span>
                         </button>
+                    </div>
+
                     </div>
                 </div>
             </div>
@@ -120,8 +132,8 @@
                     <div class="hashtag-row"><span class="hashtag text-secondary">#layoutporn</span></div>
                 </div>
                 <p class="text-secondary" style="margin:16px 0 12px;">creative vision lab</p>
-                <button class="universal-btn" data-href="https://x.com" data-modal-close="twitterModal">
-                    <span class="btn-inner"><span>ENTER</span></span>
+                <button type="button" data-href="https://x.com" data-modal-close="twitterModal" aria-label="Twitter / X" style="background:transparent; border:0; padding:0; cursor:pointer; appearance:none; -webkit-appearance:none;">
+                    <img src="assets/twit.png" alt="Twitter / X" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                 </button>
             </div>
         </div>
@@ -263,9 +275,24 @@
                 </div>
 
                 <div style="text-align:center; padding:12px 16px; border-top:1px solid #2f2f38;">
-                    <a href="https://t.me/morstrix" target="_blank" class="universal-btn" style="text-decoration:none;">
-                        <span class="btn-inner"><span>ENTER</span></span>
+                    <a href="https://t.me/morstrix" target="_blank" aria-label="Telegram" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
+                        <img src="assets/IMG_0746.png" alt="Telegram" style="width:56px; height:56px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== DRAFT: превью канала t.me/grimexframe ===== -->
+    <div id="draftModal" class="modal-overlay">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <span class="modal-title-text">draft</span>
+                <button class="modal-close-btn" data-modal="draftModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="padding:0;">
+                <div class="tg-feed" id="tgFeed">
+                    <p class="text-secondary tg-feed-status">loading...</p>
                 </div>
             </div>
         </div>
