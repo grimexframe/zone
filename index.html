@@ -7,7 +7,7 @@
     <title>grimexframe.help</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=12">
+    <link rel="stylesheet" href="css/style.css?v=13">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -25,17 +25,6 @@
 
 <body>
     <canvas id="cosmicCanvas"></canvas>
-
-    <div class="top-panel">
-        <div class="panel-left">
-            <div class="panel-views">views: <span class="panel-views-value" id="viewsCount">...</span></div>
-        </div>
-        <div class="panel-right">
-            <button class="top-panel-tetris-trigger" type="button" data-modal-trigger="tetrisModal" aria-label="Tetris / Top players">
-                <img src="assets/tetris.png" alt="TETRIS">
-            </button>
-        </div>
-    </div>
 
     <div class="journal-wrapper">
         <div class="journal-vertical">
@@ -263,10 +252,10 @@
                                 <div class="top-players-framed">
                                     <div class="top-players-list"></div>
                                 </div>
-                                <button class="dev-tetris-img" type="button" data-modal-trigger="tetrisModal" aria-label="Tetris">
+                                <a class="dev-tetris-img" href="tetris.html" target="_blank" aria-label="Tetris">
                                     <img src="assets/tetris.png" alt="TETRIS">
                                     <span class="dev-tetris-label">ENTER</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
 
@@ -367,29 +356,9 @@
         </div>
     </div>
 
-    <!-- ===== TETRIS / TOP PLAYERS MODAL ===== -->
-    <div id="tetrisModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">GAME</span>
-                <button class="modal-close-btn" data-modal="tetrisModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner top-players-modal-inner">
-                <h4 class="top-title text-primary" style="flex:0 0 100%; margin:0;">TOP PLAYERS</h4>
-                <div class="top-players-framed top-players-modal-panel">
-                    <div class="top-players-list"></div>
-                </div>
-                <a href="tetris.html" target="_blank" class="universal-btn tetris-modal-btn" data-modal-close="tetrisModal">
-                    <span class="btn-inner"><span>TETRIS</span></span>
-                </a>
-            </div>
-        </div>
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="js/script.js?v=10"></script>
-    <script src="js/views-counter.js"></script>
+    <script src="js/script.js?v=11"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
