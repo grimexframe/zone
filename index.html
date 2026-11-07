@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>grimexframe.help</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="css/style.css?v=13">
@@ -12,11 +14,13 @@
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://grimexframe.help/">
+    <meta property="og:title" content="grimexframe.help">
     <meta property="og:description" content="⊹ інᴛᴇᴘᴀᴋᴛиʙний пᴏᴘᴛᴀʌ">
     <meta property="og:image" content="https://grimexframe.help/assets/IMG_1627.jpeg">
 
     <!-- ===== Twitter Cards ===== -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="grimexframe.help">
     <meta name="twitter:description" content="⊹ інᴛᴇᴘᴀᴋᴛиʙний пᴏᴘᴛᴀʌ">
     <meta name="twitter:image" content="https://grimexframe.help/assets/IMG_1627.jpeg">
 </head>
@@ -86,21 +90,6 @@
     </div>
 
     <!-- ===== MODALS ===== -->
-    <div id="fontInfoModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">font.otf</span>
-                <button class="modal-close-btn" data-modal="fontInfoModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner modal-inner-centered" style="gap:16px;">
-                <img src="assets/font.jpg" alt="Font preview" class="font-modal-preview">
-                <p class="text-secondary" style="text-align:center;">free to use.</p>
-                <button class="universal-btn" id="downloadArchiveBtnEmbedded">
-                    <span class="btn-inner"><span>DOWNLOAD</span></span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <div id="donateDisclaimerModal" class="modal-overlay">
         <div class="modal-content">
@@ -275,7 +264,7 @@
                 </div>
 
                 <div style="text-align:center; padding:12px 16px; border-top:1px solid #2f2f38;">
-                    <a href="https://t.me/morstrix" target="_blank" aria-label="Telegram" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
+                    <a href="https://t.me/+n5Qg8d2h9qliMmRi" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
                         <img src="assets/IMG_0746.png" alt="Telegram" style="width:56px; height:56px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
                     </a>
                 </div>
@@ -283,41 +272,43 @@
         </div>
     </div>
 
+    <!-- ===== DRAFT modal: лента Telegram-канала через wptelegram.pro ===== -->
     <div id="draftModal" class="modal-overlay">
-    <div class="modal-content" style="max-width:600px;">
-        <div class="modal-header">
-            <span class="modal-title-text">draft</span>
-            <button class="modal-close-btn" data-modal="draftModal"><img src="assets/close.png" alt="close"></button>
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <span class="modal-title-text">draft</span>
+                <button class="modal-close-btn" data-modal="draftModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="padding:0; max-height:70vh; overflow-y:auto;">
+                <iframe
+                    src="https://widget.wptelegram.pro/s/grimexframe?theme=auto&hideRightColumn=0&scrollbar=custom"
+                    width="100%"
+                    height="600"
+                    frameborder="0"
+                    loading="lazy"
+                    title="Telegram feed"
+                    style="border:0; display:block; width:100%; min-height:600px;">
+                    Your browser does not support iframes.
+                </iframe>
+            </div>
         </div>
-        <div class="modal-inner" style="padding:10px; max-height: 70vh; overflow-y: auto;">
-            <!-- Официальный виджет ленты канала -->
-            <script async src="https://telegram.org/js/widget-post.js?2" data-telegram-post="grimexframe" data-width="100%" data-colorful="1"></script>
+    </div>
+
+    <!-- Instagram Modal -->
+<div id="instagramModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title-text">instagram</span>
+            <button class="modal-close-btn" data-modal="instagramModal"><img src="assets/close.png" alt="close"></button>
+        </div>
+        <div class="modal-inner" style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px;">
+            <a href="https://www.instagram.com/grimexframe" target="_blank" rel="noopener noreferrer" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
+                <img src="assets/x.png" alt="Instagram grimexframe" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
+            </a>
+            <p class="text-secondary" style="font-size:14px; margin:0;">open</p>
         </div>
     </div>
 </div>
-
-
-    <!-- Instagram Modal -->
-    <div id="instagramModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">instagram</span>
-                <button class="modal-close-btn" data-modal="instagramModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px;">
-                <div style="display:flex; gap:32px; justify-content:center; align-items:center;">
-                    <a href="https://www.instagram.com/grimexframe" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
-                        <img src="assets/x.png" alt="EX Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
-                    </a>
-                    <a href="https://www.instagram.com/mrsv.ad" target="_blank" data-modal-close="instagramModal" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
-                        <img src="assets/a.png" alt="ADA Instagram" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
-                    </a>
-                </div>
-                <p class="text-secondary" style="font-size:14px; margin:0;">выбери аккаунт</p>
-            </div>
-        </div>
-    </div>
-
     <!-- TikTok Modal -->
     <div id="tiktokModal" class="modal-overlay">
         <div class="modal-content">
@@ -326,10 +317,10 @@
                 <button class="modal-close-btn" data-modal="tiktokModal"><img src="assets/close.png" alt="close"></button>
             </div>
             <div class="modal-inner" style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px;">
-                <a href="https://www.tiktok.com/@grimexframe" target="_blank" class="universal-btn" style="text-decoration:none;" data-modal-close="tiktokModal">
+                <a href="https://www.tiktok.com/@grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;" data-modal-close="tiktokModal">
                     <span class="btn-inner"><span>OPEN</span></span>
                 </a>
-                <p class="text-secondary" style="font-size:14px; margin:0;">перейти в TikTok</p>
+                <p class="text-secondary" style="font-size:14px; margin:0;">open</p>
             </div>
         </div>
     </div>
@@ -353,19 +344,7 @@
                 <button class="modal-close-btn" data-modal="feedPreviewModal"><img src="assets/close.png" alt="close"></button>
             </div>
             <div class="modal-inner feed-preview-inner">
-                <img id="feedPreviewImage" src="" alt="Feed art preview">
-            </div>
-        </div>
-    </div>
-
-    <div id="supportModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">SUPPORT</span>
-                <button class="modal-close-btn" data-modal="supportModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner support-modal-inner">
-                <script async src="https://telegram.org/js/telegram-widget.js?23" data-telegram-discussion="morstrix/71" data-comments-limit="20" data-width="100%"></script>
+                <img id="feedPreviewImage" alt="Feed art preview">
             </div>
         </div>
     </div>
