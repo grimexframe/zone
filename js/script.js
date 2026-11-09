@@ -217,7 +217,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) {
             modal.classList.add('active');
             modal.style.display = 'flex';
+            if (id === 'twitterModal') renderTwitterTimeline(modal);
         }
+    }
+
+    // Официальный X-виджет: рисуем, когда модалка уже видима (в display:none он не отрисовывается)
+    function renderTwitterTimeline(modal) {
+        let tries = 0;
+        const tick = () => {
+            if (window.twttr && window.twttr.widgets && typeof window.twttr.widgets.load === 'function') {
+                window.twttr.widgets.load(modal);
+            } else if (tries++ < 40) {
+                setTimeout(tick, 250);
+            }
+        };
+        tick();
     }
 
     function closeModal(id) {
