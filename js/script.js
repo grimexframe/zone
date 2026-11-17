@@ -629,6 +629,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Enter/Space на рамках-div с role=button
+    document.querySelectorAll('[role="button"][data-modal-trigger]').forEach(el => {
+        el.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+        });
+    });
+
     // ===== MERCH CONSTRUCTOR =====
     (function () {
         const canvas = document.getElementById('printCanvas');
