@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=16">
+    <link rel="stylesheet" href="css/style.css?v=17">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
             <!-- 1: дайджест -> модалка HELPER -->
             <button class="tv-frame tv-1" type="button" data-modal-trigger="twitterModal" aria-label="Дайджест">
                 <span class="tv-content">
-                    <span class="tv-label"><span class="tv-dot" aria-hidden="true"></span>дайджест</span>
+                    <span class="tv-label"><span class="tv-dot" aria-hidden="true">⊹</span>дайджест</span>
                 </span>
             </button>
 
@@ -45,12 +45,13 @@
                 </span>
             </button>
 
-            <!-- 3: инстаграм -->
-            <button class="tv-frame tv-3" type="button" data-modal-trigger="instagramModal" aria-label="Инстаграм">
+            <!-- 3: превью инста-виджета -> модалка инстаграма -->
+            <div class="tv-frame tv-3" role="button" tabindex="0" data-modal-trigger="instagramModal" aria-label="Инстаграм">
                 <span class="tv-content">
-                    <span class="tv-label">инстаграм</span>
+                    <iframe class="tv-widget" src="https://cdn.lightwidget.com/widgets/2741a0351a4f571c91a98cb43e1b8ac1.html"
+                            title="" tabindex="-1" scrolling="no" allowtransparency="true" loading="lazy"></iframe>
                 </span>
-            </button>
+            </div>
 
             <!-- 4: тикток -->
             <button class="tv-frame tv-4" type="button" data-modal-trigger="tiktokModal" aria-label="Тикток">
@@ -148,7 +149,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=12"></script>
+    <script src="js/script.js?v=13"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
