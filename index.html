@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=14">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -25,86 +25,50 @@
     <meta name="twitter:image" content="https://grimexframe.help/assets/IMG_1627.jpeg">
 </head>
 
-
-
 <body>
     <canvas id="cosmicCanvas"></canvas>
 
-    <div class="journal-wrapper">
-        <div class="journal-vertical">
+    <main class="journal-wrapper">
+        <div class="tv-stage">
 
-            <!-- ===== СОЦСЕТИ ===== -->
-            <div class="journal-page">
-                <div class="page-content">
-                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;">
-
-                    <!-- Первый ряд: дайджест + HELPER (по центру) -->
-                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;">
-                        <span class="text-secondary" style="font-size:12px; color:#888; letter-spacing:1px; text-transform:uppercase; white-space:nowrap;">
-                            <span class="blink-dot">◈</span> дайджест
-                        </span>
-                        <button class="icon-action" type="button" data-modal-trigger="twitterModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/IMG_1858.jpeg" alt="Helper" style="width:48px; height:48px; object-fit:contain;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">HELPER</span>
-                        </button>
-                    </div>
-
-                    <!-- Второй ряд: ДРАФТ + FORUM -->
-                    <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
-                        <button class="icon-action" type="button" data-modal-trigger="draftModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/IMG_1860.jpeg" alt="Драфт" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">ДРАФТ</span>
-                        </button>
-                        <button class="icon-action" type="button" data-modal-trigger="telegramModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/IMG_1856.jpeg" alt="Forum" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:uppercase; letter-spacing:1px;">FORUM</span>
-                        </button>
-                    </div>
-
-                    <!-- Третий ряд: Instagram + TikTok -->
-                    <div style="display:flex; align-items:center; justify-content:center; gap:14px;">
-                        <button class="icon-action" type="button" data-modal-trigger="instagramModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/insta.png" alt="Instagram" style="width:28px; height:28px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px;">INSTA</span>
-                        </button>
-                        <button class="icon-action" type="button" data-modal-trigger="tiktokModal" style="width:78px; padding:10px 6px;">
-                            <img src="assets/IMG_0745.png" alt="TikTok" style="width:48px; height:48px; object-fit:contain; image-rendering:pixelated;">
-                            <span class="icon-action-label" style="font-size:13px; color:var(--text-primary); text-transform:lowercase; letter-spacing:1px;">TikTok</span>
-                        </button>
-                    </div>
-
-                    </div>
-                </div>
+            <!-- 0: лого + подпись (без рамки) -->
+            <div class="tv-brand">
+                <img class="tv-brand-img" src="assets/IMG_2051.png" alt="">
+                <div class="tv-brand-name">GRIM EX<br>FRAME</div>
             </div>
 
-        </div>
-    </div>
+            <!-- 1: дайджест -> модалка HELPER -->
+            <button class="tv-frame tv-1" type="button" data-modal-trigger="twitterModal" aria-label="Дайджест">
+                <span class="tv-content">
+                    <span class="tv-label"><span class="tv-dot" aria-hidden="true"></span>дайджест</span>
+                </span>
+            </button>
 
-    <div class="journal-footer" id="sec-donate">
-        <div class="page-content">
-            <div class="donate-label" data-modal-trigger="donateDisclaimerModal">
-                <span>DONATE</span>
-                <span class="donate-sub">monobank</span>
-            </div>
+            <!-- 2: картинка -> модалка ДРАФТ -->
+            <button class="tv-frame tv-2" type="button" data-modal-trigger="draftModal" aria-label="Драфт">
+                <span class="tv-content">
+                    <img class="tv-img" src="assets/IMG_2053.png" alt="">
+                </span>
+            </button>
+
+            <!-- 3: инстаграм -->
+            <button class="tv-frame tv-3" type="button" data-modal-trigger="instagramModal" aria-label="Инстаграм">
+                <span class="tv-content">
+                    <span class="tv-label">инстаграм</span>
+                </span>
+            </button>
+
+            <!-- 4: тикток -->
+            <button class="tv-frame tv-4" type="button" data-modal-trigger="tiktokModal" aria-label="Тикток">
+                <span class="tv-content">
+                    <span class="tv-label">тикток</span>
+                </span>
+            </button>
+
         </div>
-    </div>
+    </main>
 
     <!-- ===== MODALS ===== -->
-
-    <div id="donateDisclaimerModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">monobank</span>
-                <button class="modal-close-btn" data-modal="donateDisclaimerModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="display:flex;flex-direction:column;align-items:center;">
-                <p class="text-secondary" style="margin-bottom:20px;">support the project</p>
-                <button class="universal-btn" data-href="https://send.monobank.ua/jar/4cEfvsYmBh" data-modal-close="donateDisclaimerModal">
-                    <span class="btn-inner"><span>ENTER</span></span>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <div id="twitterModal" class="modal-overlay">
         <div class="modal-content">
@@ -133,150 +97,6 @@
         </div>
     </div>
 
-    <div id="telegramModal" class="modal-overlay">
-        <div class="modal-content" style="max-width:600px;">
-            <div class="modal-header">
-                <span class="modal-title-text">telegram</span>
-                <button class="modal-close-btn" data-modal="telegramModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
-                <div style="display:flex; flex:1; min-height:0;">
-                    <div class="tg-forum-tabs" id="tgForumTabs">
-                        <div class="tg-forum-tab" data-tab="garage"><span>#️⃣</span><span class="tg-tab-label">GARAGE</span></div>
-                        <div class="tg-forum-tab active" data-tab="wellness"><span>🦠</span><span class="tg-tab-label">WELLNESS</span></div>
-                        <div class="tg-forum-tab" data-tab="radio"><span>🎙️</span><span class="tg-tab-label">RADIO</span></div>
-                        <div class="tg-forum-tab" data-tab="design"><span>🎨</span><span class="tg-tab-label">DESIGN</span></div>
-                        <div class="tg-forum-tab" data-tab="tattoo"><span>💘</span><span class="tg-tab-label">TATTOO</span></div>
-                        <div class="tg-forum-tab" data-tab="diygear"><span>🏴‍☠️</span><span class="tg-tab-label">DIY GEAR</span></div>
-                        <div class="tg-forum-tab" data-tab="barbering"><span>💈</span><span class="tg-tab-label">BARBERING</span></div>
-                        <div class="tg-forum-tab" data-tab="development"><span>🤖</span><span class="tg-tab-label">DEVELOPMENT</span></div>
-                    </div>
-
-                    <div class="tg-forum-content" id="tgForumContent">
-
-                        <!-- ===== GARAGE ===== -->
-                        <div class="tg-tab-content" data-content="garage">
-                            <div style="padding:20px; display:flex; flex-direction:column; gap:20px; align-items:center;">
-
-                                <!-- Стилизатор текста (плейсхолдер TYPE TEXT «печатается», см. script.js) -->
-                                <div class="styler-embedded">
-                                    <input type="text" id="garageFontInput" class="styler-input" placeholder="TYPE TEXT" autocomplete="off" spellcheck="false">
-                                    <div class="styler-preview" id="garageStylerPreview"></div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- ===== WELLNESS ===== -->
-                        <div class="tg-tab-content active" data-content="wellness">
-                            <div style="display:flex; align-items:center; justify-content:center; padding:12px 8px 0;">
-                                <div style="display:flex; align-items:center; gap:8px;">
-                                    <button class="carousel-arrow" id="carouselPrev" type="button">◂</button>
-                                    <div class="swipe-carousel" id="telegramSwipeCarousel" style="max-width:180px;">
-                                        <div class="swipe-track" id="telegramSwipeTrack"></div>
-                                    </div>
-                                    <button class="carousel-arrow" id="carouselNext" type="button">▸</button>
-                                </div>
-                            </div>
-                            <div class="swipe-dots" id="telegramSwipeDots"></div>
-                            <div style="display:flex; justify-content:center; margin-top:12px; padding-bottom:12px;">
-                                <button class="universal-btn" id="drumReadBtn" type="button">
-                                    <span class="btn-inner"><span>READ</span></span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- ===== RADIO ===== -->
-                        <div class="tg-tab-content" data-content="radio">
-                            <div style="padding:12px;">
-                                <iframe style="border-radius:12px; display:block;" src="https://open.spotify.com/embed/playlist/0kMWW4ysJKIn3ilimBPotj?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                            </div>
-                        </div>
-
-                        <!-- ===== DESIGN ===== -->
-                        <div class="tg-tab-content" data-content="design">
-                            <div class="page-content" style="padding: 20px;">
-                                <div class="art-feed-row" style="display:grid; grid-template-columns:auto auto; grid-template-areas:'art feed' 'paint .'; align-items:center; justify-items:center; justify-content:center; gap:12px;">
-                                    <div class="art-block" style="grid-area:art;">
-                                        <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
-                                    </div>
-                                    <div class="archive-block text-primary" id="archiveBtn" style="grid-area:feed;">
-                                        <img src="assets/archive.png" alt="Archive" class="archive-img">
-                                        <span class="archive-label">feed</span>
-                                    </div>
-                                    <div class="paint-cell" style="grid-area:paint;">
-                                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
-                                        <span class="control-label text-primary">paint</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ===== TATTOO ===== -->
-                        <div class="tg-tab-content" data-content="tattoo">
-                            <!-- Pinterest-доска. В data-board-url нужен ПОЛНЫЙ адрес доски без ?invite_code=...
-                                 (https://www.pinterest.com/<user>/<board>/): короткую ссылку pin.it виджет не принимает. -->
-                            <div class="pin-widget" id="pinterestWidget" data-board-url="https://www.pinterest.com/grimexframe/%E1%B4%9B%E1%B4%80%E1%B4%9B%E1%B4%9B%E1%B4%8F%E1%B4%8F/">
-                                <div class="pin-embed" id="pinterestEmbed"></div>
-                            </div>
-                        </div>
-
-                        <!-- ===== DIY GEAR ===== -->
-                        <div class="tg-tab-content" data-content="diygear">
-                            <div class="page-content" style="padding: 20px;">
-                                <section class="constructor-panel">
-                                    <h2 class="constructor-title">Constructor</h2>
-                                    <div class="merch-constructor">
-                                        <div class="tshirt-preview">
-                                            <img src="assets/tshirt.jpeg" alt="T-shirt">
-                                            <canvas id="printCanvas"></canvas>
-                                        </div>
-                                        <div class="constructor-controls">
-                                            <label for="imageUpload" class="upload-label"><span>choose file</span></label>
-                                            <input type="file" id="imageUpload" accept="image/*" style="display:none;">
-                                            <button class="universal-btn" id="resetPrint" type="button">
-                                                <span class="btn-inner"><span>CLEAR</span></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div>
-                        </div>
-
-                        <!-- ===== BARBERING ===== -->
-                        <div class="tg-tab-content" data-content="barbering">
-                            <div style="padding:20px; text-align:center;">
-                                <p class="text-secondary" style="font-size:16px;">Барберинг: стиль, инструменты, техники стрижки.</p>
-                                <p class="text-secondary" style="font-size:14px; margin-top:12px; color:#666;">Гайды и примеры в Telegram.</p>
-                            </div>
-                        </div>
-
-                        <!-- ===== DEVELOPMENT ===== -->
-                        <div class="tg-tab-content" data-content="development">
-                            <div class="dev-tab-inner">
-                                <h4 class="top-title text-primary" style="margin:0;">TOP PLAYERS</h4>
-                                <div class="top-players-framed">
-                                    <div class="top-players-list"></div>
-                                </div>
-                                <a class="dev-tetris-img" href="tetris.html" target="_blank" aria-label="Tetris">
-                                    <img src="assets/tetris.png" alt="TETRIS">
-                                    <span class="dev-tetris-label">ENTER</span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div style="text-align:center; padding:12px 16px; border-top:1px solid #2f2f38;">
-                    <a href="https://t.me/+n5Qg8d2h9qliMmRi" target="_blank" rel="noopener noreferrer" aria-label="Telegram" style="display:inline-block; text-decoration:none; background:transparent; border:0; padding:0;">
-                        <img src="assets/IMG_0746.png" alt="Telegram" style="width:56px; height:56px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- ===== DRAFT modal: лента Telegram-канала через wptelegram.pro ===== -->
     <div id="draftModal" class="modal-overlay">
         <div class="modal-content" style="max-width:600px;">
@@ -300,23 +120,23 @@
     </div>
 
     <!-- Instagram Modal -->
-<div id="instagramModal" class="modal-overlay">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="modal-title-text">instagram</span>
-            <button class="modal-close-btn" data-modal="instagramModal"><img src="assets/close.png" alt="close"></button>
-        </div>
-        <div class="modal-inner" style="padding:0; max-height:70vh; overflow-y:auto;">
-            <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-            <iframe src="https://cdn.lightwidget.com/widgets/2741a0351a4f571c91a98cb43e1b8ac1.html"
-                    scrolling="no"
-                    allowtransparency="true"
-                    class="lightwidget-widget"
-                    style="width:100%;border:0;overflow:hidden;">
-            </iframe>
+    <div id="instagramModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">instagram</span>
+                <button class="modal-close-btn" data-modal="instagramModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="padding:0; max-height:70vh; overflow-y:auto;">
+                <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
+                <iframe src="https://cdn.lightwidget.com/widgets/2741a0351a4f571c91a98cb43e1b8ac1.html"
+                        scrolling="no"
+                        allowtransparency="true"
+                        class="lightwidget-widget"
+                        style="width:100%;border:0;overflow:hidden;">
+                </iframe>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- TikTok Modal -->
     <div id="tiktokModal" class="modal-overlay">
@@ -334,45 +154,7 @@
         </div>
     </div>
 
-    <div id="stubModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text" id="stubModalTitle">feed</span>
-                <button class="modal-close-btn" data-modal="stubModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner">
-                <div id="feedContainer" class="feed-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="feedPreviewModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">ART PREVIEW</span>
-                <button class="modal-close-btn" data-modal="feedPreviewModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner feed-preview-inner">
-                <img id="feedPreviewImage" alt="Feed art preview">
-            </div>
-        </div>
-    </div>
-
-    <div id="wellnessPopup" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text" id="wellnessPopupTitle">WELLNESS</span>
-                <button class="modal-close-btn" data-modal="wellnessPopup"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner">
-                <p id="wellnessPopupBody"></p>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="js/script.js?v=11"></script>
+    <script src="js/script.js?v=12"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
