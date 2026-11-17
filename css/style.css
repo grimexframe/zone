@@ -172,6 +172,13 @@ a:focus:not(:focus-visible) {
 }
 .tv-frame[role="button"] { cursor: pointer; }
 
+/* пока открыта любая модалка — анимации главной стоят, чтобы ничего не мигало поверх */
+body:has(.modal-overlay.active) .tv-frame::after,
+body:has(.modal-overlay.active) .tv-2 .tv-content,
+body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
+
+.draft-open-link { display: flex; justify-content: center; padding: 12px; background: #000; }
+
 /* VHS: мелкое живое зерно плёнки (без полос и виньетки) */
 .tv-frame::after {
     content: '';
@@ -442,9 +449,7 @@ a:focus:not(:focus-visible) {
     display: none;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, .95);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, .96);
     z-index: 10000;
     padding: 12px;
 }
