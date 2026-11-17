@@ -116,7 +116,7 @@ a:focus:not(:focus-visible) {
 }
 .tv-1 { left: 38%; top: 5%;  width: 58%; height: 12%; }
 .tv-2 { left: 12%; top: 20%; width: 82%; height: 28%; }
-.tv-3 { left: 4%;  top: 52%; width: 44%; height: 23%; }
+.tv-3 { left: 4%;  top: 52%; width: 44%; height: 29%; background: #fff; }
 .tv-4 { left: 52%; top: 61%; width: 44%; height: 30%; }
 
 .tv-frame { --tv-aberr: drop-shadow(-1.2px 0 0 rgba(255, 30, 90, .42)) drop-shadow(1.2px 0 0 rgba(0, 190, 255, .38)); }
@@ -165,7 +165,7 @@ a:focus:not(:focus-visible) {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     pointer-events: none;
 }
 .tv-frame[role="button"] { cursor: pointer; }
@@ -174,8 +174,6 @@ a:focus:not(:focus-visible) {
 body:has(.modal-overlay.active) .tv-frame::after,
 body:has(.modal-overlay.active) .tv-2 .tv-content,
 body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
-
-.draft-open-link { display: flex; justify-content: center; padding: 12px; background: #000; }
 
 /* VHS: мелкое живое зерно плёнки (без полос и виньетки) */
 .tv-frame::after {
