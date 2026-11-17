@@ -1,4 +1,4 @@
-/* style.css v8 | Telegram modal: GARAGE, single page, frameless Tetris icon */
+/* style.css v9 | главная: лого + 4 CRT-рамки */
 @font-face {
     font-family: 'CrtOverscan';
     src: url('../assets/fonts/CrtOverscan-Regular.ttf') format('truetype');
@@ -78,63 +78,155 @@ a:focus:not(:focus-visible) {
     pointer-events: none;
 }
 
-/* ===== LAYOUT ===== */
+/* ===== LAYOUT: главная (лого + 4 рамки-«телевизора») ===== */
 .journal-wrapper {
     width: 100%;
+    height: 100vh;
+    height: 100dvh;
     position: relative;
     z-index: 10;
-    padding-bottom: 64px;
-}
-.journal-vertical { display: block; width: 100%; }
-.journal-page { width: 100%; display: flex; flex-direction: column; padding: 30px 0; }
-.page-content {
-    flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    padding: 12px 12px 15px;
-    gap: 20px;
-    min-height: 0;
+}
+/* сцена в пропорции наброска (591x1280): всё внутри позиционируется в % и cqw */
+.tv-stage {
+    position: relative;
+    width: min(100vw, calc(100dvh * 591 / 1280));
+    aspect-ratio: 591 / 1280;
+    container-type: inline-size;
 }
 
-/* ===== FOOTER / DONATE ===== */
-.journal-footer {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    z-index: 200;
-    background: #050505;
-    padding-bottom: env(safe-area-inset-bottom);
+/* 0: лого + подпись, без рамки */
+.tv-brand {
+    position: absolute;
+    left: 1%;
+    top: 4%;
+    width: 36%;
+    pointer-events: none;
 }
-.journal-footer::before {
+.tv-brand-img { display: block; width: 64%; height: auto; }
+.tv-brand-name {
+    margin: 1cqw 0 0 2cqw;
+    font-family: var(--font-primary);
+    font-size: 3cqw;
+    line-height: 1.45;
+    white-space: nowrap;
+    letter-spacing: 0;
+    color: var(--text-primary);
+    text-shadow: -1px 0 rgba(255, 60, 60, .55), 1px 0 rgba(60, 220, 255, .45);
+}
+
+/* рамки */
+.tv-frame {
+    position: absolute;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: #050507;
+    border: 2px solid transparent;
+    border-image: var(--gradient-frame) 1;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    font: inherit;
+    color: var(--text-primary);
+    box-shadow: 0 0 18px rgba(168, 77, 107, .18), inset 0 0 22px rgba(0, 0, 0, .9);
+}
+.tv-1 { left: 42%;   top: 7%;    width: 47.5%; height: 11%; }
+.tv-2 { left: 25.5%; top: 22.3%; width: 61.8%; height: 21.9%; }
+.tv-3 { left: 11%;   top: 51.6%; width: 39%;   height: 19.9%; }
+.tv-4 { left: 54%;   top: 60.5%; width: 32%;   height: 25%; }
+
+.tv-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6%;
+    filter: contrast(1.12) saturate(1.08);
+    animation: tv-jitter 7s steps(1, end) infinite;
+}
+.tv-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.tv-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 2cqw;
+    font-family: var(--font-primary);
+    font-size: 3.6cqw;
+    letter-spacing: 0;
+    white-space: nowrap;
+    text-transform: lowercase;
+    color: #d3a6c0;
+    text-shadow: -1px 0 rgba(255, 60, 60, .6), 1px 0 rgba(60, 220, 255, .5), 0 0 8px rgba(162, 119, 145, .55);
+}
+.tv-dot {
+    width: 2.4cqw;
+    height: 2.4cqw;
+    border-radius: 50%;
+    background: #ff4f8f;
+    box-shadow: 0 0 6px #ff4f8f;
+    animation: blink-dot 1.2s steps(2, start) infinite;
+}
+
+/* CRT: горизонтальные полосы развёртки + RGB-маска (вертикальные полоски) + виньетка */
+.tv-frame::after {
     content: '';
     position: absolute;
-    top: -4px; left: 0;
-    width: 100%; height: 2px;
-    background: linear-gradient(90deg, #4a1515, #8B3A3A, #a84d6b, #8B3A3A, #4a1515);
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .6) 100%),
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, .32) 0 1px, transparent 1px 3px),
+        repeating-linear-gradient(90deg, rgba(255, 0, 0, .13) 0 1px, rgba(0, 255, 0, .10) 1px 2px, rgba(0, 80, 255, .13) 2px 3px);
+    animation: tv-flicker 3.2s steps(1, end) infinite;
 }
-.journal-footer .page-content { padding: 10px 12px; gap: 0; justify-content: center; }
+/* медленно ползущая светлая полоса, как у старого телика */
+.tv-frame::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 0;
+    height: 28%;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, .07), transparent);
+    transform: translateY(-110%);
+    animation: tv-roll 6s linear infinite;
+}
+.tv-2::before { animation-delay: -2s; }
+.tv-3::before { animation-delay: -4s; }
+.tv-4::before { animation-delay: -1s; }
 
-.donate-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    cursor: pointer;
-    font-family: var(--font-primary);
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: var(--text-primary);
-    -webkit-tap-highlight-color: transparent;
+.tv-frame:active .tv-content { filter: contrast(1.3) brightness(1.4); }
+@media (hover: hover) {
+    .tv-frame:hover .tv-content { filter: contrast(1.2) saturate(1.2) brightness(1.2); }
 }
-.donate-label:active { opacity: .7; }
-.donate-sub {
-    font-family: 'Tiny5', monospace;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: lowercase;
-    color: #7a454d;
+
+@keyframes tv-roll {
+    from { transform: translateY(-110%); }
+    to   { transform: translateY(420%); }
+}
+@keyframes tv-flicker {
+    0%, 100% { opacity: 1; }
+    42%      { opacity: .85; }
+    44%      { opacity: 1; }
+    78%      { opacity: .9; }
+    80%      { opacity: 1; }
+}
+@keyframes tv-jitter {
+    0%, 100% { transform: none; }
+    61%      { transform: translateX(1px); }
+    62%      { transform: translateX(-1px); }
+    63%      { transform: none; }
 }
 
 /* ===== ART / ARCHIVE / PAINT ===== */
