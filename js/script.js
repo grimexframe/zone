@@ -672,6 +672,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.appendChild(sc);
                 }
                 if (name === 'pinterest') setTimeout(initWorldPins, 50);
+                if (name === 'youtube') {
+                    const sc = document.createElement('script');
+                    sc.async = true;
+                    sc.src = 'https://apis.google.com/js/platform.js';
+                    document.body.appendChild(sc);
+                }
                 if (name === 'linkedin') {
                     const sc = document.createElement('script');
                     sc.async = true;
