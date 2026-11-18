@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=20">
+    <link rel="stylesheet" href="css/style.css?v=21">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -61,6 +61,11 @@
 
         </div>
     </main>
+
+    <!-- Кнопка внизу справа -> модалка ZONE (TXT / PAINT / DIYGEAR / GAME) -->
+    <button class="zone-fab" type="button" data-modal-trigger="telegramModal" aria-label="Zone">
+        <img src="assets/clear.png" alt="">
+    </button>
 
     <!-- ===== MODALS ===== -->
 
@@ -148,7 +153,121 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=13"></script>
+    <!-- ===== ZONE modal: TXT / PAINT / DIYGEAR / GAME ===== -->
+    <div id="telegramModal" class="modal-overlay">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <span class="modal-title-text">zone</span>
+                <button class="modal-close-btn" data-modal="telegramModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
+                <div style="display:flex; flex:1; min-height:0;">
+                    <div class="tg-forum-tabs" id="tgForumTabs">
+                        <div class="tg-forum-tab active" data-tab="garage"><span>#️⃣</span><span class="tg-tab-label">TXT</span></div>
+                        <div class="tg-forum-tab" data-tab="design"><span>🎨</span><span class="tg-tab-label">PAINT</span></div>
+                        <div class="tg-forum-tab" data-tab="diygear"><span>🏴‍☠️</span><span class="tg-tab-label">DIYGEAR</span></div>
+                        <div class="tg-forum-tab" data-tab="development"><span>🎮</span><span class="tg-tab-label">GAME</span></div>
+                    </div>
+
+                    <div class="tg-forum-content" id="tgForumContent">
+
+                        <!-- ===== TXT: стайлер ===== -->
+                        <div class="tg-tab-content active" data-content="garage">
+                            <div style="padding:20px; display:flex; flex-direction:column; gap:20px; align-items:center;">
+                                <div class="styler-embedded">
+                                    <input type="text" id="garageFontInput" class="styler-input" placeholder="TYPE TEXT" autocomplete="off" spellcheck="false">
+                                    <div class="styler-preview" id="garageStylerPreview"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== PAINT: артборд + кнопка paint + feed ===== -->
+                        <div class="tg-tab-content" data-content="design">
+                            <div class="page-content" style="padding: 20px;">
+                                <div class="art-feed-row" style="display:grid; grid-template-columns:auto auto; grid-template-areas:'art feed' 'paint .'; align-items:center; justify-items:center; justify-content:center; gap:12px;">
+                                    <div class="art-block" style="grid-area:art;">
+                                        <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
+                                    </div>
+                                    <div class="archive-block text-primary" id="archiveBtn" style="grid-area:feed;">
+                                        <img src="assets/archive.png" alt="Archive" class="archive-img">
+                                        <span class="archive-label">feed</span>
+                                    </div>
+                                    <div class="paint-cell" style="grid-area:paint;">
+                                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
+                                        <span class="control-label text-primary">paint</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== DIYGEAR: конструктор ===== -->
+                        <div class="tg-tab-content" data-content="diygear">
+                            <div class="page-content" style="padding: 20px;">
+                                <section class="constructor-panel">
+                                    <h2 class="constructor-title">Constructor</h2>
+                                    <div class="merch-constructor">
+                                        <div class="tshirt-preview">
+                                            <img src="assets/tshirt.jpeg" alt="T-shirt">
+                                            <canvas id="printCanvas"></canvas>
+                                        </div>
+                                        <div class="constructor-controls">
+                                            <label for="imageUpload" class="upload-label"><span>choose file</span></label>
+                                            <input type="file" id="imageUpload" accept="image/*" style="display:none;">
+                                            <button class="universal-btn" id="resetPrint" type="button">
+                                                <span class="btn-inner"><span>CLEAR</span></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+
+                        <!-- ===== GAME: топ тетриса + переход ===== -->
+                        <div class="tg-tab-content" data-content="development">
+                            <div class="dev-tab-inner">
+                                <h4 class="top-title text-primary" style="margin:0;">TOP PLAYERS</h4>
+                                <div class="top-players-framed">
+                                    <div class="top-players-list"></div>
+                                </div>
+                                <a class="dev-tetris-img" href="tetris.html" target="_blank" aria-label="Tetris">
+                                    <img src="assets/tetris.png" alt="TETRIS">
+                                    <span class="dev-tetris-label">ENTER</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- feed (из вкладки PAINT) -->
+    <div id="stubModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text" id="stubModalTitle">feed</span>
+                <button class="modal-close-btn" data-modal="stubModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner">
+                <div id="feedContainer" class="feed-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="feedPreviewModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">ART PREVIEW</span>
+                <button class="modal-close-btn" data-modal="feedPreviewModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner feed-preview-inner">
+                <img id="feedPreviewImage" alt="Feed art preview">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=14"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
