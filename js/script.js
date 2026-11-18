@@ -679,7 +679,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.appendChild(sc);
                 }
             }
-            if (name === 'threads') renderTwitterTimeline(pane);
         }
 
         tabs.forEach(tab => tab.addEventListener('click', () => {
@@ -687,22 +686,17 @@ document.addEventListener('DOMContentLoaded', () => {
             window.playUiMenuBlip?.();
         }));
 
-        // twitter-виджет подгружаем лениво: скрипт ставим при первом открытии модалки
+        // Threads-виджет: embed.js грузим при первом открытии модалки (вкладка Threads открыта по умолчанию)
         const modal = document.getElementById('worldModal');
         if (modal) {
-            let twLoaded = false;
+            let thLoaded = false;
             new MutationObserver(() => {
-                if (!modal.classList.contains('active')) return;
-                if (!twLoaded) {
-                    twLoaded = true;
-                    const sc = document.createElement('script');
-                    sc.async = true;
-                    sc.charset = 'utf-8';
-                    sc.src = 'https://platform.x.com/widgets.js';
-                    document.body.appendChild(sc);
-                }
-                const active = document.querySelector('#worldTabs .world-tab.active');
-                if (active && active.dataset.tab === 'threads') renderTwitterTimeline(modal);
+                if (!modal.classList.contains('active') || thLoaded) return;
+                thLoaded = true;
+                const sc = document.createElement('script');
+                sc.async = true;
+                sc.src = 'https://www.threads.com/embed.js';
+                document.body.appendChild(sc);
             }).observe(modal, { attributes: true, attributeFilter: ['class'] });
         }
     })();
