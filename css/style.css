@@ -1094,16 +1094,15 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 .about-resume:active img { transform: scale(.94); }
 .about-tags { padding-bottom: 12px; }
 
-/* ===== WORLD: LinkedIn / YouTube ===== */
-.li-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+/* ===== WORLD: YouTube / TikTok ===== */
 .yt-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; }
 .yt-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.li-wrap .LI-simple-link {
-    color: var(--text-primary);
-    font-family: var(--font-primary);
-    font-size: 10px;
-    text-decoration: none;
-}
+.tt-wrap { width: 100%; display: flex; justify-content: center; overflow: hidden; }
+.tt-wrap .tiktok-embed { margin: 0; }
 
-/* ===== YouTube: кнопка подписки под плейлистом ===== */
-.yt-sub { display: flex; justify-content: center; margin-top: 16px; min-height: 48px; }
+
+/* ===== вкладки по центру колонки (а не прижаты к верху) ===== */
+.world-tabs > :first-child,
+#telegramModal .tg-forum-tabs > :first-child { margin-top: auto; }
+.world-tabs > :last-child,
+#telegramModal .tg-forum-tabs > :last-child { margin-bottom: auto; }

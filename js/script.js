@@ -672,16 +672,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.appendChild(sc);
                 }
                 if (name === 'pinterest') setTimeout(initWorldPins, 50);
-                if (name === 'youtube') {
+                if (name === 'tiktok') {
                     const sc = document.createElement('script');
                     sc.async = true;
-                    sc.src = 'https://apis.google.com/js/platform.js';
-                    document.body.appendChild(sc);
-                }
-                if (name === 'linkedin') {
-                    const sc = document.createElement('script');
-                    sc.async = true;
-                    sc.src = 'https://platform.linkedin.com/badges/js/profile.js';
+                    sc.src = 'https://www.tiktok.com/embed.js';
                     document.body.appendChild(sc);
                 }
             }

@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=27">
+    <link rel="stylesheet" href="css/style.css?v=28">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -66,13 +66,12 @@
     <div id="worldModal" class="modal-overlay">
         <div class="modal-content" style="max-width:600px;">
             <div class="modal-header">
-                <span class="modal-title-text">world</span>
+                <span class="modal-title-text">socials</span>
                 <button class="modal-close-btn" data-modal="worldModal"><img src="assets/close.png" alt="close"></button>
             </div>
             <div class="modal-inner" style="padding:0;">
                 <div class="world-layout">
                     <div class="world-tabs" id="worldTabs" role="tablist">
-                        <button type="button" class="world-tab" data-tab="linkedin" role="tab" aria-label="LinkedIn"><img src="assets/LinkedIn.png" alt=""></button>
                         <button type="button" class="world-tab active" data-tab="threads" role="tab" aria-label="Threads"><img src="assets/threads_icon_bg.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="instagram" role="tab" aria-label="Instagram"><img src="assets/Instagram.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="telegram" role="tab" aria-label="Telegram"><img src="assets/Telegram.png" alt=""></button>
@@ -83,18 +82,6 @@
                     </div>
 
                     <div class="world-content" id="worldContent">
-
-                        <!-- LINKEDIN: бейдж профиля (виден, если профиль публичный) -->
-                        <div class="world-pane world-pane-center" data-pane="linkedin">
-                            <div class="li-wrap">
-                                <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="dark" data-type="VERTICAL" data-vanity="grimexframe" data-version="v1">
-                                    <a class="badge-base__link LI-simple-link" href="https://www.linkedin.com/in/grimexframe?trk=profile-badge">grimexframe</a>
-                                </div>
-                                <a href="https://www.linkedin.com/in/grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;">
-                                    <span class="btn-inner"><span>OPEN</span></span>
-                                </a>
-                            </div>
-                        </div>
 
                         <!-- THREADS (бывший twitter / дайджест) -->
                         <div class="world-pane active" data-pane="threads">
@@ -130,11 +117,15 @@
                                     style="border:0; display:block; width:100%; min-height:600px;"></iframe>
                         </div>
 
-                        <!-- TIKTOK -->
-                        <div class="world-pane world-pane-center" data-pane="tiktok">
-                            <a href="https://www.tiktok.com/@grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;">
-                                <span class="btn-inner"><span>ENTER</span></span>
-                            </a>
+                        <!-- TIKTOK: creator embed -->
+                        <div class="world-pane" data-pane="tiktok">
+                            <div class="tt-wrap">
+                                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@grimexframe" data-unique-id="grimexframe" data-embed-type="creator" style="max-width: 780px; min-width: 0; margin: 0;">
+                                    <section>
+                                        <a target="_blank" rel="noopener noreferrer" href="https://www.tiktok.com/@grimexframe?refer=creator_embed">@grimexframe</a>
+                                    </section>
+                                </blockquote>
+                            </div>
                         </div>
 
                         <!-- PINTEREST -->
@@ -152,16 +143,13 @@
                             <iframe style="border-radius:12px; display:block;" data-src="https://open.spotify.com/embed/playlist/0kMWW4ysJKIn3ilimBPotj?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                         </div>
 
-                        <!-- YOUTUBE -->
+                        <!-- YOUTUBE: автообновляемая лента загрузок канала (UC... -> UU...) -->
                         <div class="world-pane" data-pane="youtube">
                             <div class="yt-wrap">
-                                <iframe data-src="https://www.youtube.com/embed/videoseries?list=PLi1Z1_6srFOvdJ5HrgSMoGpMnpoTrx56_&rel=0&modestbranding=1"
-                                        title="YouTube playlist" frameborder="0"
+                                <iframe data-src="https://www.youtube.com/embed/videoseries?list=UUdh3ctzhUuxiRXZptFqvG3g&rel=0&modestbranding=1"
+                                        title="YouTube uploads" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen></iframe>
-                            </div>
-                            <div class="yt-sub">
-                                <div class="g-ytsubscribe" data-channelid="UCdh3ctzhUuxiRXZptFqvG3g" data-layout="full" data-theme="dark" data-count="hidden"></div>
                             </div>
                         </div>
 
@@ -299,7 +287,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=18"></script>
+    <script src="js/script.js?v=19"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
