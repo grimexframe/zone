@@ -928,7 +928,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 .world-btn img { width: 74px; height: 74px; }
 .hub-small { width: 64px; }
 .hub-small img { width: 64px; height: 64px; }
-.hub-about { align-self: flex-start; margin-left: -14px; }
+.hub-about { align-self: flex-start; margin-left: -44px; }
 .world-btn img, .hub-small img {
     display: block;
     object-fit: contain;
