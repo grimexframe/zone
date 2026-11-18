@@ -874,17 +874,24 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     bottom: max(14px, env(safe-area-inset-bottom));
     z-index: 50;
     width: 96px;
-    height: 96px;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     background: transparent;
     border: 0;
     appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
+    font-family: var(--font-primary);
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
 }
 .zone-fab img {
-    width: 100%;
-    height: 100%;
+    width: 96px;
+    height: 96px;
     object-fit: contain;
     display: block;
     image-rendering: pixelated;
@@ -893,30 +900,92 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 .zone-fab:hover img { transform: scale(1.08); filter: brightness(1.15); }
 .zone-fab:active img { transform: scale(.94); }
 
-
-/* ===== WORLD: одна картинка по центру ===== */
-.world-btn {
+/* ===== HOME HUB: ABOUT / SOCIALS / RESUME ===== */
+.home-hub {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    width: 120px;
+}
+.world-btn, .hub-small {
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
     background: transparent;
     border: 0;
     appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
-    width: max(96px, min(64vw, 46dvh, 360px));
-    aspect-ratio: 1 / 1;
+    font-family: var(--font-primary);
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
 }
-.world-btn img {
-    width: 100%;
-    height: 100%;
+.world-btn { width: 120px; }
+.world-btn img { width: 120px; height: 120px; }
+.hub-small { width: 64px; }
+.hub-small img { width: 64px; height: 64px; }
+.hub-about { align-self: flex-start; }
+.world-btn img, .hub-small img {
     display: block;
     object-fit: contain;
     image-rendering: pixelated;
     transition: transform .2s, filter .2s;
 }
 @media (hover: hover) {
-    .world-btn:hover img { transform: scale(1.05); filter: brightness(1.15); }
+    .world-btn:hover img, .hub-small:hover img { transform: scale(1.06); filter: brightness(1.15); }
 }
-.world-btn:active img { transform: scale(.96); }
+.world-btn:active img, .hub-small:active img { transform: scale(.95); }
+
+/* ===== ABOUT: окошко сверху с глитч-появлением ===== */
+.about-popup {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: min(320px, calc(100vw - 24px));
+    z-index: 9000;
+    background: #000;
+    border: 2px solid transparent;
+    border-image: var(--gradient-frame) 1;
+    box-shadow: 0 0 18px rgba(168, 77, 107, .25);
+}
+.about-popup[hidden] { display: none; }
+.about-popup.glitch-in { animation: about-glitch .5s linear both; }
+.about-popup-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--tab-border);
+}
+.about-close img { width: 24px; height: 24px; display: block; }
+.about-tags {
+    margin: 0;
+    padding: 16px 14px 18px;
+    font-family: var(--font-primary);
+    font-size: 10px;
+    line-height: 2;
+    color: var(--text-primary);
+    word-spacing: 6px;
+}
+@keyframes about-glitch {
+    0%   { opacity: 0; transform: translateY(-40px) skewX(24deg); clip-path: inset(0 0 100% 0); }
+    15%  { opacity: 1; transform: translate(10px, -14px) skewX(-12deg); clip-path: inset(35% 0 30% 0);
+           filter: drop-shadow(-5px 0 0 rgba(255,30,90,.85)) drop-shadow(5px 0 0 rgba(0,190,255,.8)); }
+    30%  { transform: translate(-12px, 0) skewX(8deg); clip-path: inset(0 0 55% 0);
+           filter: drop-shadow(5px 0 0 rgba(255,30,90,.85)) drop-shadow(-5px 0 0 rgba(0,190,255,.8)); }
+    45%  { transform: translate(7px, 4px) skewX(-5deg); clip-path: inset(50% 0 0 0); }
+    60%  { transform: translate(-4px, -2px); clip-path: inset(10% 0 20% 0);
+           filter: drop-shadow(-3px 0 0 rgba(255,30,90,.7)) drop-shadow(3px 0 0 rgba(0,190,255,.7)); }
+    80%  { transform: translate(2px, 0); clip-path: inset(0); filter: none; }
+    100% { opacity: 1; transform: none; clip-path: inset(0); filter: none; }
+}
+@media (prefers-reduced-motion: reduce) { .about-popup.glitch-in { animation: none; } }
 
 /* ===== WORLD modal: вкладки-иконки слева, контент справа ===== */
 #worldModal { --world-pane-h: min(560px, 70vh); }

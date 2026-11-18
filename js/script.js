@@ -701,6 +701,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
 
+    // ===== ABOUT: окошко сверху с глитчем =====
+    (function () {
+        const btn = document.getElementById('aboutBtn');
+        const popup = document.getElementById('aboutPopup');
+        if (!btn || !popup) return;
+        function open() {
+            popup.hidden = false;
+            popup.classList.remove('glitch-in');
+            void popup.offsetWidth; // перезапуск анимации
+            popup.classList.add('glitch-in');
+            btn.setAttribute('aria-expanded', 'true');
+            window.playUiMenuBlip?.();
+        }
+        function close() {
+            if (popup.hidden) return;
+            popup.hidden = true;
+            popup.classList.remove('glitch-in');
+            btn.setAttribute('aria-expanded', 'false');
+            window.playUiMenuBlip?.();
+        }
+        btn.addEventListener('click', e => { e.stopPropagation(); popup.hidden ? open() : close(); });
+        document.getElementById('aboutClose')?.addEventListener('click', e => { e.stopPropagation(); close(); });
+        document.addEventListener('click', e => { if (!popup.hidden && !popup.contains(e.target)) close(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    })();
+
     // ===== GENERIC MODAL TRIGGER =====
     document.querySelectorAll('[data-modal-trigger]').forEach(btn => {
         btn.addEventListener('click', () => {

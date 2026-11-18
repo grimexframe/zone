@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=23">
+    <link rel="stylesheet" href="css/style.css?v=24">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -29,14 +29,35 @@
     <canvas id="cosmicCanvas"></canvas>
 
     <main class="journal-wrapper">
-        <button class="world-btn" type="button" data-modal-trigger="worldModal" aria-label="World">
-            <img src="assets/world.png" alt="">
-        </button>
+        <div class="home-hub">
+            <button class="hub-small hub-about" id="aboutBtn" type="button" aria-controls="aboutPopup" aria-expanded="false">
+                <img src="assets/itchio-pxl-retro-computer-icons-set-110-item60.png" alt="">
+                <span>ABOUT</span>
+            </button>
+            <button class="world-btn" type="button" data-modal-trigger="worldModal" aria-label="Socials">
+                <img src="assets/world.png" alt="">
+                <span>SOCIALS</span>
+            </button>
+            <button class="hub-small hub-resume" type="button" data-modal-trigger="resumeModal">
+                <img src="assets/itchio-pxl-retro-computer-icons-set-110-item38.png" alt="">
+                <span>RESUME</span>
+            </button>
+        </div>
     </main>
 
+    <!-- ABOUT: маленькое окошко, появляется сверху с глитчем -->
+    <div id="aboutPopup" class="about-popup" role="dialog" aria-label="About" hidden>
+        <div class="about-popup-header">
+            <span class="modal-title-text">about</span>
+            <button class="modal-close-btn about-close" type="button" id="aboutClose"><img src="assets/close.png" alt="close"></button>
+        </div>
+        <p class="about-tags">#dev #design #tattoo #diygear #barbering</p>
+    </div>
+
     <!-- Кнопка внизу справа -> модалка ZONE (TXT / PAINT / DIYGEAR / GAME) -->
-    <button class="zone-fab" type="button" data-modal-trigger="telegramModal" aria-label="Zone">
-        <img src="assets/clear.png" alt="">
+    <button class="zone-fab" type="button" data-modal-trigger="telegramModal" aria-label="Tools">
+        <img src="assets/recycle_bin_full.png" alt="">
+        <span>TOOLS</span>
     </button>
 
     <!-- ===== MODALS ===== -->
@@ -238,7 +259,20 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=15"></script>
+    <!-- ===== RESUME modal ===== -->
+    <div id="resumeModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">resume</span>
+                <button class="modal-close-btn" data-modal="resumeModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="padding:24px; text-align:center;">
+                <p class="text-secondary" style="margin:0;">coming soon</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=16"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
