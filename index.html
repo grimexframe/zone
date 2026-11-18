@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=28">
+    <link rel="stylesheet" href="css/style.css?v=29">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -78,7 +78,6 @@
                         <button type="button" class="world-tab" data-tab="tiktok" role="tab" aria-label="TikTok"><img src="assets/TikTok.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="pinterest" role="tab" aria-label="Pinterest"><img src="assets/Pinterest.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="spotify" role="tab" aria-label="Spotify"><img src="assets/Spotify.png" alt=""></button>
-                        <button type="button" class="world-tab" data-tab="youtube" role="tab" aria-label="YouTube"><img src="assets/Youtube.png" alt=""></button>
                     </div>
 
                     <div class="world-content" id="worldContent">
@@ -128,16 +127,6 @@
                             <iframe style="border-radius:12px; display:block;" data-src="https://open.spotify.com/embed/playlist/0kMWW4ysJKIn3ilimBPotj?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
                         </div>
 
-                        <!-- YOUTUBE: автообновляемая лента загрузок канала (UC... -> UU...) -->
-                        <div class="world-pane" data-pane="youtube">
-                            <div class="yt-wrap">
-                                <iframe data-src="https://www.youtube.com/embed/videoseries?list=UUdh3ctzhUuxiRXZptFqvG3g&rel=0&modestbranding=1"
-                                        title="YouTube uploads" frameborder="0"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                        allowfullscreen></iframe>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -155,10 +144,10 @@
             <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
                 <div style="display:flex; flex:1; min-height:0;">
                     <div class="tg-forum-tabs" id="tgForumTabs">
-                        <div class="tg-forum-tab active" data-tab="garage"><span>#️⃣</span><span class="tg-tab-label">TXT</span></div>
-                        <div class="tg-forum-tab" data-tab="design"><span>🎨</span><span class="tg-tab-label">PAINT</span></div>
-                        <div class="tg-forum-tab" data-tab="diygear"><span>🏴‍☠️</span><span class="tg-tab-label">DIYGEAR</span></div>
-                        <div class="tg-forum-tab" data-tab="development"><span>🎮</span><span class="tg-tab-label">GAME</span></div>
+                        <div class="tg-forum-tab active" data-tab="garage" role="tab" aria-label="TXT"><img class="tab-ico" src="assets/itchio-pxl-retro-computer-icons-set-110-item93.png" alt=""></div>
+                        <div class="tg-forum-tab" data-tab="design" role="tab" aria-label="PAINT"><img class="tab-ico" src="assets/icons8-раскраска-по-номерам-48.png" alt=""></div>
+                        <div class="tg-forum-tab" data-tab="diygear" role="tab" aria-label="DIYGEAR"><img class="tab-ico tab-ico-smooth tab-ico-shirt" src="assets/IMG_2069.png" alt=""></div>
+                        <div class="tg-forum-tab" data-tab="development" role="tab" aria-label="GAME"><img class="tab-ico tab-ico-smooth tab-ico-pad" src="assets/IMG_2046.png" alt=""></div>
                     </div>
 
                     <div class="tg-forum-content" id="tgForumContent">
@@ -272,7 +261,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=20"></script>
+    <script src="js/script.js?v=21"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 
