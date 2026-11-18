@@ -873,8 +873,8 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     right: max(14px, env(safe-area-inset-right));
     bottom: max(14px, env(safe-area-inset-bottom));
     z-index: 50;
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
     padding: 0;
     background: transparent;
     border: 0;
@@ -902,7 +902,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     appearance: none;
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
-    width: min(64vw, 46dvh, 360px);
+    width: max(96px, min(64vw, 46dvh, 360px));
     aspect-ratio: 1 / 1;
 }
 .world-btn img {
