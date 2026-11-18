@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=21">
+    <link rel="stylesheet" href="css/style.css?v=22">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -29,37 +29,9 @@
     <canvas id="cosmicCanvas"></canvas>
 
     <main class="journal-wrapper">
-        <div class="tv-stage">
-
-            <!-- 1: дайджест -> модалка HELPER -->
-            <button class="tv-frame tv-1" type="button" data-modal-trigger="twitterModal" aria-label="Дайджест">
-                <span class="tv-content">
-                    <span class="tv-label"><span class="tv-dot" aria-hidden="true">⊹</span>дайджест</span>
-                </span>
-            </button>
-
-            <!-- 2: картинка -> модалка ДРАФТ -->
-            <button class="tv-frame tv-2" type="button" data-modal-trigger="draftModal" aria-label="Драфт">
-                <span class="tv-content">
-                    <img class="tv-img" src="assets/IMG_2053.png" alt="">
-                </span>
-            </button>
-
-            <!-- 3: картинка -> модалка инстаграма -->
-            <div class="tv-frame tv-3" role="button" tabindex="0" data-modal-trigger="instagramModal" aria-label="Инстаграм">
-                <span class="tv-content">
-                    <img class="tv-widget" src="assets/IMG_2056.jpeg" alt="">
-                </span>
-            </div>
-
-            <!-- 4: тикток -->
-            <button class="tv-frame tv-4" type="button" data-modal-trigger="tiktokModal" aria-label="Тикток">
-                <span class="tv-content">
-                    <span class="tv-label">тикток</span>
-                </span>
-            </button>
-
-        </div>
+        <button class="world-btn" type="button" data-modal-trigger="worldModal" aria-label="World">
+            <img src="assets/world.png" alt="">
+        </button>
     </main>
 
     <!-- Кнопка внизу справа -> модалка ZONE (TXT / PAINT / DIYGEAR / GAME) -->
@@ -69,89 +41,88 @@
 
     <!-- ===== MODALS ===== -->
 
-    <div id="twitterModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">twitter</span>
-                <button class="modal-close-btn" data-modal="twitterModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="display:flex;flex-direction:column;align-items:center;">
-                <div class="carousel-section">
-                    <div class="carousel" id="mainCarousel">
-                        <img src="assets/mx1.jpg" class="active">
-                        <img src="assets/mx2.jpg">
-                    </div>
-                    <div class="hashtag-row"><span class="hashtag text-secondary">#layoutporn</span></div>
-                </div>
-                <p class="text-secondary" style="margin:16px 0 12px;">creative vision lab</p>
-                <button type="button" data-href="https://x.com" data-modal-close="twitterModal" aria-label="Twitter / X" style="background:transparent; border:0; padding:0; cursor:pointer; appearance:none; -webkit-appearance:none;">
-                    <img src="assets/twit.png" alt="Twitter / X" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
-                </button>
-
-                <!-- Официальный X (Twitter) timeline-виджет -->
-                <div style="width:100%; margin-top:16px;">
-                    <a class="twitter-timeline" data-theme="dark" data-height="500" href="https://x.com/grimexframe?ref_src=twsrc%5Etfw">Posts by grimexframe</a> <script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== DRAFT modal: лента Telegram-канала через wptelegram.pro ===== -->
-    <div id="draftModal" class="modal-overlay">
+    <!-- ===== WORLD modal: вкладки-иконки ===== -->
+    <div id="worldModal" class="modal-overlay">
         <div class="modal-content" style="max-width:600px;">
             <div class="modal-header">
-                <span class="modal-title-text">draft</span>
-                <button class="modal-close-btn" data-modal="draftModal"><img src="assets/close.png" alt="close"></button>
+                <span class="modal-title-text">world</span>
+                <button class="modal-close-btn" data-modal="worldModal"><img src="assets/close.png" alt="close"></button>
             </div>
-            <div class="modal-inner" style="padding:0; max-height:70vh; overflow-y:auto;">
-                <iframe
-                    src="https://widget.wptelegram.pro/s/grimexframe?theme=auto&hideRightColumn=0&scrollbar=custom"
-                    width="100%"
-                    height="600"
-                    frameborder="0"
-                    loading="lazy"
-                    title="Telegram feed"
-                    style="border:0; display:block; width:100%; min-height:600px;">
-                    Your browser does not support iframes.
-                </iframe>
+            <div class="modal-inner" style="padding:0;">
+                <div class="world-layout">
+                    <div class="world-tabs" id="worldTabs" role="tablist">
+                        <button type="button" class="world-tab active" data-tab="threads" role="tab" aria-label="Threads"><img src="assets/threads_icon_bg.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="instagram" role="tab" aria-label="Instagram"><img src="assets/Instagram.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="telegram" role="tab" aria-label="Telegram"><img src="assets/Telegram.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="tiktok" role="tab" aria-label="TikTok"><img src="assets/TikTok.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="pinterest" role="tab" aria-label="Pinterest"><img src="assets/Pinterest.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="spotify" role="tab" aria-label="Spotify"><img src="assets/Spotify.png" alt=""></button>
+                    </div>
+
+                    <div class="world-content" id="worldContent">
+
+                        <!-- THREADS (бывший twitter / дайджест) -->
+                        <div class="world-pane active" data-pane="threads">
+                            <div class="carousel-section">
+                                <div class="carousel" id="mainCarousel">
+                                    <img src="assets/mx1.jpg" class="active">
+                                    <img src="assets/mx2.jpg">
+                                </div>
+                                <div class="hashtag-row"><span class="hashtag text-secondary">#layoutporn</span></div>
+                            </div>
+                            <p class="text-secondary" style="margin:16px 0 12px; text-align:center;">creative vision lab</p>
+                            <div style="display:flex; justify-content:center;">
+                                <button type="button" data-href="https://x.com" data-modal-close="worldModal" aria-label="Twitter / X" style="background:transparent; border:0; padding:0; cursor:pointer; appearance:none; -webkit-appearance:none;">
+                                    <img src="assets/twit.png" alt="Twitter / X" style="width:64px; height:64px; object-fit:contain; image-rendering:pixelated; display:block; background:transparent;">
+                                </button>
+                            </div>
+                            <div style="width:100%; margin-top:16px;">
+                                <a class="twitter-timeline" data-theme="dark" data-height="500" href="https://x.com/grimexframe?ref_src=twsrc%5Etfw">Posts by grimexframe</a>
+                            </div>
+                        </div>
+
+                        <!-- INSTAGRAM -->
+                        <div class="world-pane" data-pane="instagram">
+                            <iframe data-src="https://cdn.lightwidget.com/widgets/2741a0351a4f571c91a98cb43e1b8ac1.html"
+                                    scrolling="no" allowtransparency="true" class="lightwidget-widget"
+                                    style="width:100%; border:0; overflow:hidden; min-height:300px;"></iframe>
+                        </div>
+
+                        <!-- TELEGRAM -->
+                        <div class="world-pane" data-pane="telegram">
+                            <iframe data-src="https://widget.wptelegram.pro/s/grimexframe?theme=auto&hideRightColumn=0&scrollbar=custom"
+                                    width="100%" height="600" frameborder="0" title="Telegram feed"
+                                    style="border:0; display:block; width:100%; min-height:600px;"></iframe>
+                        </div>
+
+                        <!-- TIKTOK -->
+                        <div class="world-pane world-pane-center" data-pane="tiktok">
+                            <a href="https://www.tiktok.com/@grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;">
+                                <span class="btn-inner"><span>ENTER</span></span>
+                            </a>
+                        </div>
+
+                        <!-- PINTEREST -->
+                        <div class="world-pane" data-pane="pinterest">
+                            <!-- data-mode="user": лента профиля со всеми пинами; "board": одна доска (нужен полный data-board-url) -->
+                            <div class="pin-widget" id="worldPinWidget" data-mode="user"
+                                 data-profile-url="https://www.pinterest.com/grimexframe/"
+                                 data-board-url="https://www.pinterest.com/grimexframe/%E1%B4%9B%E1%B4%80%E1%B4%9B%E1%B4%9B%E1%B4%8F%E1%B4%8F/">
+                                <div class="pin-embed" id="worldPinEmbed"></div>
+                            </div>
+                        </div>
+
+                        <!-- SPOTIFY -->
+                        <div class="world-pane" data-pane="spotify">
+                            <iframe style="border-radius:12px; display:block;" data-src="https://open.spotify.com/embed/playlist/0kMWW4ysJKIn3ilimBPotj?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Instagram Modal -->
-    <div id="instagramModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">instagram</span>
-                <button class="modal-close-btn" data-modal="instagramModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="padding:0; max-height:70vh; overflow-y:auto;">
-                <script src="https://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-                <iframe src="https://cdn.lightwidget.com/widgets/2741a0351a4f571c91a98cb43e1b8ac1.html"
-                        scrolling="no"
-                        allowtransparency="true"
-                        class="lightwidget-widget"
-                        style="width:100%;border:0;overflow:hidden;">
-                </iframe>
-            </div>
-        </div>
-    </div>
-
-    <!-- TikTok Modal -->
-    <div id="tiktokModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">tiktok</span>
-                <button class="modal-close-btn" data-modal="tiktokModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner" style="display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px;">
-                <a href="https://www.tiktok.com/@grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;" data-modal-close="tiktokModal">
-                    <span class="btn-inner"><span>ENTER</span></span>
-                </a>
-                <p class="text-secondary" style="font-size:14px; margin:0;">open?</p>
-            </div>
-        </div>
-    </div>
 
     <!-- ===== ZONE modal: TXT / PAINT / DIYGEAR / GAME ===== -->
     <div id="telegramModal" class="modal-overlay">
@@ -267,7 +238,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=14"></script>
+    <script src="js/script.js?v=15"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 

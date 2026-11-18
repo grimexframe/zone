@@ -620,6 +620,87 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
 
+    // ===== WORLD MODAL: вкладки-иконки =====
+    (function () {
+        const tabs = document.querySelectorAll('#worldTabs .world-tab');
+        const panes = document.querySelectorAll('#worldContent .world-pane');
+        if (!tabs.length) return;
+        const ready = {};
+
+        function loadFrames(pane) {
+            pane.querySelectorAll('iframe[data-src]').forEach(f => {
+                f.src = f.dataset.src;
+                f.removeAttribute('data-src');
+            });
+        }
+
+        function initWorldPins() {
+            const wrap = document.getElementById('worldPinWidget');
+            const embed = document.getElementById('worldPinEmbed');
+            if (!wrap || !embed) return;
+            const mode = wrap.dataset.mode === 'board' ? 'board' : 'user';
+            const url = ((mode === 'board' ? wrap.dataset.boardUrl : wrap.dataset.profileUrl) || '').trim();
+            if (!url) { embed.hidden = true; return; }
+            const w = Math.max(200, Math.min(400, embed.clientWidth || 400));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('data-pin-do', mode === 'board' ? 'embedBoard' : 'embedUser');
+            link.setAttribute('data-pin-scale-height', '460');
+            link.setAttribute('data-pin-scale-width', '80');
+            link.setAttribute('data-pin-board-width', String(w));
+            embed.appendChild(link);
+            if (window.PinUtils) { window.PinUtils.build(embed); return; }
+            const sc = document.createElement('script');
+            sc.async = true;
+            sc.src = 'https://assets.pinterest.com/js/pinit.js';
+            sc.onerror = () => { embed.hidden = true; };
+            document.body.appendChild(sc);
+        }
+
+        function activate(name) {
+            tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+            panes.forEach(p => p.classList.toggle('active', p.dataset.pane === name));
+            const pane = document.querySelector(`#worldContent .world-pane[data-pane="${name}"]`);
+            if (!pane) return;
+            // тяжёлые виджеты грузим при первом показе вкладки (в display:none они не размечаются)
+            if (!ready[name]) {
+                ready[name] = true;
+                loadFrames(pane);
+                if (name === 'instagram') {
+                    const sc = document.createElement('script');
+                    sc.src = 'https://cdn.lightwidget.com/widgets/lightwidget.js';
+                    document.body.appendChild(sc);
+                }
+                if (name === 'pinterest') setTimeout(initWorldPins, 50);
+            }
+            if (name === 'threads') renderTwitterTimeline(pane);
+        }
+
+        tabs.forEach(tab => tab.addEventListener('click', () => {
+            activate(tab.dataset.tab);
+            window.playUiMenuBlip?.();
+        }));
+
+        // twitter-виджет подгружаем лениво: скрипт ставим при первом открытии модалки
+        const modal = document.getElementById('worldModal');
+        if (modal) {
+            let twLoaded = false;
+            new MutationObserver(() => {
+                if (!modal.classList.contains('active')) return;
+                if (!twLoaded) {
+                    twLoaded = true;
+                    const sc = document.createElement('script');
+                    sc.async = true;
+                    sc.charset = 'utf-8';
+                    sc.src = 'https://platform.x.com/widgets.js';
+                    document.body.appendChild(sc);
+                }
+                const active = document.querySelector('#worldTabs .world-tab.active');
+                if (active && active.dataset.tab === 'threads') renderTwitterTimeline(modal);
+            }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+        }
+    })();
+
     // ===== GENERIC MODAL TRIGGER =====
     document.querySelectorAll('[data-modal-trigger]').forEach(btn => {
         btn.addEventListener('click', () => {
