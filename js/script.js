@@ -422,6 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const input = document.getElementById('garageFontInput');
         if (!input) return;
         const PHRASE = 'TYPE TEXT';
+        const CARET = '\u258C'; // ▌ толстая вертикальная палочка
         const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (reduceMotion) { input.placeholder = PHRASE; return; }
 
@@ -429,8 +430,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let shown = 0, erasing = false, timer = null;
 
         function paint() {
-            // «_» играет роль курсора; пока набрано 0 символов, поле не остаётся пустым
-            input.placeholder = PHRASE.slice(0, shown) + (shown < PHRASE.length || erasing ? '_' : '');
+            // «▌» играет роль курсора; пока набрано 0 символов, поле не остаётся пустым
+            input.placeholder = PHRASE.slice(0, shown) + (shown < PHRASE.length || erasing ? CARET : '');
         }
 
         function schedule(ms) { clearTimeout(timer); timer = setTimeout(tick, ms); }

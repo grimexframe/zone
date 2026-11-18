@@ -1050,8 +1050,8 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     box-sizing: border-box;
 }
 /* «безопасное» центрирование: если контент выше окна, он скроллится, а не обрезается сверху */
-.world-pane.active > :first-child { margin-top: auto; }
-.world-pane.active > :last-child { margin-bottom: auto; }
+/* margin:auto у каждого видимого потомка: центрирует и виджеты, которые сами добавляют iframe (Threads) */
+.world-pane.active > * { margin-top: auto; margin-bottom: auto; }
 .world-pane.active > * { max-width: 100%; }
 .world-pane .carousel-section, .world-pane iframe, .world-pane .pin-widget { width: 100%; }
 .world-pane { text-align: center; }
@@ -1141,4 +1141,19 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     left: -44px;
     bottom: calc(100% + 22px);
     margin-left: 0;
+}
+
+/* ===== TOOLS / DIYGEAR: без внутренней рамки, влезает без скролла ===== */
+#telegramModal .constructor-panel {
+    border: 0;
+    border-image: none;
+    background: transparent;
+    padding: 0;
+}
+#telegramModal .tg-tab-content[data-content="diygear"] .page-content { padding: 8px 12px; }
+#telegramModal .constructor-title { margin-bottom: 12px; }
+#telegramModal .tshirt-preview {
+    /* высота подстраивается под окно, чтобы ничего не уезжало в скролл */
+    width: min(200px, 60vw, max(100px, calc(var(--tg-pane-h) - 205px)));
+    margin-bottom: 14px;
 }
