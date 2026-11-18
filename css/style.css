@@ -873,7 +873,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     right: max(14px, env(safe-area-inset-right));
     bottom: max(14px, env(safe-area-inset-bottom));
     z-index: 50;
-    width: 96px;
+    width: 84px;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -890,8 +890,8 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     color: var(--text-primary);
 }
 .zone-fab img {
-    width: 96px;
-    height: 96px;
+    width: 84px;
+    height: 84px;
     object-fit: contain;
     display: block;
     image-rendering: pixelated;
@@ -906,7 +906,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     flex-direction: column;
     align-items: center;
     gap: 22px;
-    width: 120px;
+    width: 104px;
 }
 .world-btn, .hub-small {
     padding: 0;
@@ -924,11 +924,11 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     letter-spacing: 1px;
     color: var(--text-primary);
 }
-.world-btn { width: 120px; }
-.world-btn img { width: 120px; height: 120px; }
+.world-btn { width: 104px; }
+.world-btn img { width: 104px; height: 104px; }
 .hub-small { width: 64px; }
 .hub-small img { width: 64px; height: 64px; }
-.hub-about { align-self: flex-start; }
+.hub-about { align-self: flex-start; margin-left: -18px; }
 .world-btn img, .hub-small img {
     display: block;
     object-fit: contain;
@@ -1052,4 +1052,44 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 @media (max-width: 768px) {
     .world-tabs { width: 52px; min-width: 52px; }
     .world-tab img { width: 30px; height: 30px; }
+}
+
+/* ===== RESUME внутри окошка ABOUT ===== */
+.about-resume {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto 16px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    font-family: var(--font-primary);
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+}
+.about-resume img {
+    width: 44px;
+    height: 44px;
+    display: block;
+    image-rendering: pixelated;
+    transition: transform .2s, filter .2s;
+}
+@media (hover: hover) { .about-resume:hover img { transform: scale(1.08); filter: brightness(1.15); } }
+.about-resume:active img { transform: scale(.94); }
+.about-tags { padding-bottom: 12px; }
+
+/* ===== WORLD: LinkedIn / YouTube ===== */
+.li-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
+.yt-wrap { position: relative; width: 100%; aspect-ratio: 16 / 9; }
+.yt-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.li-wrap .LI-simple-link {
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    font-size: 10px;
+    text-decoration: none;
 }

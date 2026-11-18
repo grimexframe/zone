@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Tiny5&display=swap" rel="stylesheet">
     <link rel="preload" href="assets/fonts/blocks.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="css/style.css?v=24">
+    <link rel="stylesheet" href="css/style.css?v=25">
 
     <!-- ===== Open Graph / Telegram / Discord ===== -->
     <meta property="og:type" content="website">
@@ -38,10 +38,6 @@
                 <img src="assets/world.png" alt="">
                 <span>SOCIALS</span>
             </button>
-            <button class="hub-small hub-resume" type="button" data-modal-trigger="resumeModal">
-                <img src="assets/itchio-pxl-retro-computer-icons-set-110-item38.png" alt="">
-                <span>RESUME</span>
-            </button>
         </div>
     </main>
 
@@ -52,6 +48,10 @@
             <button class="modal-close-btn about-close" type="button" id="aboutClose"><img src="assets/close.png" alt="close"></button>
         </div>
         <p class="about-tags">#dev #design #tattoo #diygear #barbering</p>
+        <button class="about-resume" type="button" id="aboutResume" data-modal-trigger="resumeModal">
+            <img src="assets/itchio-pxl-retro-computer-icons-set-110-item38.png" alt="">
+            <span>RESUME</span>
+        </button>
     </div>
 
     <!-- Кнопка внизу справа -> модалка ZONE (TXT / PAINT / DIYGEAR / GAME) -->
@@ -72,15 +72,29 @@
             <div class="modal-inner" style="padding:0;">
                 <div class="world-layout">
                     <div class="world-tabs" id="worldTabs" role="tablist">
+                        <button type="button" class="world-tab" data-tab="linkedin" role="tab" aria-label="LinkedIn"><img src="assets/LinkedIn.png" alt=""></button>
                         <button type="button" class="world-tab active" data-tab="threads" role="tab" aria-label="Threads"><img src="assets/threads_icon_bg.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="instagram" role="tab" aria-label="Instagram"><img src="assets/Instagram.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="telegram" role="tab" aria-label="Telegram"><img src="assets/Telegram.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="tiktok" role="tab" aria-label="TikTok"><img src="assets/TikTok.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="pinterest" role="tab" aria-label="Pinterest"><img src="assets/Pinterest.png" alt=""></button>
                         <button type="button" class="world-tab" data-tab="spotify" role="tab" aria-label="Spotify"><img src="assets/Spotify.png" alt=""></button>
+                        <button type="button" class="world-tab" data-tab="youtube" role="tab" aria-label="YouTube"><img src="assets/Youtube.png" alt=""></button>
                     </div>
 
                     <div class="world-content" id="worldContent">
+
+                        <!-- LINKEDIN: бейдж профиля (виден, если профиль публичный) -->
+                        <div class="world-pane world-pane-center" data-pane="linkedin">
+                            <div class="li-wrap">
+                                <div class="badge-base LI-profile-badge" data-locale="en_US" data-size="large" data-theme="dark" data-type="VERTICAL" data-vanity="grimexframe" data-version="v1">
+                                    <a class="badge-base__link LI-simple-link" href="https://www.linkedin.com/in/grimexframe?trk=profile-badge">grimexframe</a>
+                                </div>
+                                <a href="https://www.linkedin.com/in/grimexframe" target="_blank" rel="noopener noreferrer" class="universal-btn" style="text-decoration:none;">
+                                    <span class="btn-inner"><span>OPEN</span></span>
+                                </a>
+                            </div>
+                        </div>
 
                         <!-- THREADS (бывший twitter / дайджест) -->
                         <div class="world-pane active" data-pane="threads">
@@ -136,6 +150,16 @@
                         <!-- SPOTIFY -->
                         <div class="world-pane" data-pane="spotify">
                             <iframe style="border-radius:12px; display:block;" data-src="https://open.spotify.com/embed/playlist/0kMWW4ysJKIn3ilimBPotj?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                        </div>
+
+                        <!-- YOUTUBE -->
+                        <div class="world-pane" data-pane="youtube">
+                            <div class="yt-wrap">
+                                <iframe data-src="https://www.youtube.com/embed/videoseries?list=PLi1Z1_6srFOvdJ5HrgSMoGpMnpoTrx56_&rel=0&modestbranding=1"
+                                        title="YouTube playlist" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowfullscreen></iframe>
+                            </div>
                         </div>
 
                     </div>
@@ -272,7 +296,7 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=16"></script>
+    <script src="js/script.js?v=17"></script>
     <script src="js/cosmic-bg.js"></script>
 </body>
 

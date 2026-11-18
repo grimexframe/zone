@@ -672,6 +672,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.body.appendChild(sc);
                 }
                 if (name === 'pinterest') setTimeout(initWorldPins, 50);
+                if (name === 'linkedin') {
+                    const sc = document.createElement('script');
+                    sc.async = true;
+                    sc.src = 'https://platform.linkedin.com/badges/js/profile.js';
+                    document.body.appendChild(sc);
+                }
             }
             if (name === 'threads') renderTwitterTimeline(pane);
         }
@@ -723,6 +729,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         btn.addEventListener('click', e => { e.stopPropagation(); popup.hidden ? open() : close(); });
         document.getElementById('aboutClose')?.addEventListener('click', e => { e.stopPropagation(); close(); });
+        // RESUME открывает модалку: окошко просто прячем, без лишнего звука
+        document.getElementById('aboutResume')?.addEventListener('click', e => {
+            e.stopPropagation();
+            popup.hidden = true;
+            popup.classList.remove('glitch-in');
+            btn.setAttribute('aria-expanded', 'false');
+        });
         document.addEventListener('click', e => { if (!popup.hidden && !popup.contains(e.target)) close(); });
         document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
     })();
