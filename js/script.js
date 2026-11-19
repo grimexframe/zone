@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openModal(id) {
         const modal = document.getElementById(id);
         if (modal) {
+            if (!modal.classList.contains('active')) playUiMenuBlip(); // звук только при открытии
             modal.classList.add('active');
             modal.style.display = 'flex';
             if (id === 'twitterModal') renderTwitterTimeline(modal);
@@ -253,7 +254,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal-close-btn[data-modal]').forEach(b => b.addEventListener('click', () => {
         const id = b.dataset.modal;
         if (!id || b.classList.contains('closing')) return;
-        playUiMenuBlip();
         b.classList.add('closing');
         setTimeout(() => {
             b.classList.remove('closing');
@@ -717,6 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
             void popup.offsetWidth; // перезапуск анимации
             popup.classList.add('glitch-in');
             btn.setAttribute('aria-expanded', 'true');
+            window.playUiMenuBlip?.();
         }
         function close() {
             if (popup.hidden) return;
@@ -729,7 +730,6 @@ document.addEventListener('DOMContentLoaded', () => {
         aboutClose?.addEventListener('click', e => {
             e.stopPropagation();
             if (aboutClose.classList.contains('closing')) return;
-            playUiMenuBlip();
             aboutClose.classList.add('closing');
             setTimeout(() => { aboutClose.classList.remove('closing'); close(); }, 180);
         });
