@@ -1019,20 +1019,20 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 28px;
-    padding: 12px 0;
+    gap: 18px;
+    padding: 8px 0;
 }
 .dl-slot {
     --c: #777;
-    --l: 16px;
-    --t: 3px;
-    width: min(120px, 34vw);
+    --l: 11px;
+    --t: 2px;
+    width: min(76px, 22vw);
     aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-primary);
-    font-size: 18px;
+    font-size: 14px;
     letter-spacing: 1px;
     color: var(--c);
     background:
