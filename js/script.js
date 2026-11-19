@@ -239,7 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal && modal.classList.contains('active')) {
             modal.classList.remove('active');
             modal.style.display = 'none';
-            playUiMenuBlip(); // Звук только при закрытии
         }
     }
 
@@ -254,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.modal-close-btn[data-modal]').forEach(b => b.addEventListener('click', () => {
         const id = b.dataset.modal;
         if (!id || b.classList.contains('closing')) return;
+        playUiMenuBlip();
         b.classList.add('closing');
         setTimeout(() => {
             b.classList.remove('closing');
@@ -579,7 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (titleEl) titleEl.textContent = slide.title;
                 if (bodyEl) bodyEl.textContent = slide.body;
                 openModal('wellnessPopup');
-                window.playUiMenuBlip?.();
             });
 
             setTimeout(() => goTo(0), 50);
@@ -596,7 +595,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (activeContent) activeContent.classList.add('active');
                 if (tabName === 'wellness') setTimeout(initWellnessCarousel, 50);
                 if (tabName === 'tattoo') setTimeout(initPinterestWidget, 50);
-                window.playUiMenuBlip?.();
             });
         });
 
@@ -624,7 +622,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 tab.classList.add('active');
                 contents.forEach(c => c.classList.remove('active'));
                 document.querySelector(`#trashContent .tg-tab-content[data-content="${tab.dataset.tab}"]`)?.classList.add('active');
-                window.playUiMenuBlip?.();
             });
         });
     })();
@@ -692,7 +689,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tabs.forEach(tab => tab.addEventListener('click', () => {
             activate(tab.dataset.tab);
-            window.playUiMenuBlip?.();
         }));
 
         // Threads-виджет: embed.js грузим при первом открытии модалки (вкладка Threads открыта по умолчанию)
@@ -721,20 +717,19 @@ document.addEventListener('DOMContentLoaded', () => {
             void popup.offsetWidth; // перезапуск анимации
             popup.classList.add('glitch-in');
             btn.setAttribute('aria-expanded', 'true');
-            window.playUiMenuBlip?.();
         }
         function close() {
             if (popup.hidden) return;
             popup.hidden = true;
             popup.classList.remove('glitch-in');
             btn.setAttribute('aria-expanded', 'false');
-            window.playUiMenuBlip?.();
         }
         btn.addEventListener('click', e => { e.stopPropagation(); if (popup.hidden) open(); });
         const aboutClose = document.getElementById('aboutClose');
         aboutClose?.addEventListener('click', e => {
             e.stopPropagation();
             if (aboutClose.classList.contains('closing')) return;
+            playUiMenuBlip();
             aboutClose.classList.add('closing');
             setTimeout(() => { aboutClose.classList.remove('closing'); close(); }, 180);
         });
@@ -752,7 +747,6 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             const modalId = btn.dataset.modalTrigger;
             openModal(modalId);
-            window.playUiMenuBlip?.();
         });
     });
 
