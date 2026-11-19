@@ -19,7 +19,7 @@
     --accent-pink: #a84d6b;
     --muted-pink: #b97272;
     --bg-dark: #020204;
-    --font-primary: 'Press Start 2P', monospace;
+    --font-primary: 'Tiny5', monospace;
     --font-secondary: 'Tiny5', monospace;
     --text-primary: #a27791;
     --text-secondary: #8d8d8d;
@@ -144,7 +144,7 @@ a:focus:not(:focus-visible) {
     align-items: center;
     gap: 2cqw;
     font-family: var(--font-primary);
-    font-size: 4cqw;
+    font-size: 6cqw;
     letter-spacing: 0;
     white-space: nowrap;
     text-transform: lowercase;
@@ -304,8 +304,8 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     margin: 0 auto;
 }
 .constructor-title {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 10px;
+    font-family: var(--font-primary);
+    font-size: 15px;
     color: var(--text-primary);
     text-align: center;
     margin-bottom: 16px;
@@ -472,7 +472,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 }
 .modal-title-text {
     font-family: var(--font-primary);
-    font-size: 9px;
+    font-size: 14px;
     color: #fff;
     text-shadow: 2px 2px 0 #000;
 }
@@ -538,7 +538,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     justify-content: center;
     padding: 12px 22px;
 }
-.universal-btn .btn-inner span { font-size: 12px; letter-spacing: 1px; }
+.universal-btn .btn-inner span { font-size: 16px; letter-spacing: 1px; }
 .universal-btn:hover .btn-inner { background: #1a1a2a; color: #fff; }
 
 /* ===== 3D PRESS BUTTON (clear) — based on Uiverse.io by arthur_6104 ===== */
@@ -566,7 +566,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 }
 .box-button-face span {
     font-family: var(--font-primary);
-    font-size: 12px;
+    font-size: 16px;
     letter-spacing: 1px;
     color: #000;
 }
@@ -778,7 +778,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 #telegramModal .dev-tetris-label,
 #trashModal .dev-tetris-label {
     font-family: var(--font-primary);
-    font-size: 12px;
+    font-size: 16px;
     letter-spacing: 1px;
     color: var(--text-primary);
 }
@@ -824,11 +824,11 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     height: 52px;
 }
 #telegramModal .tg-tab-content[data-content="design"] .archive-label,
-#trashModal .tg-tab-content[data-content="design"] .archive-label { font-size: 14px; }
+#trashModal .tg-tab-content[data-content="design"] .archive-label { font-size: 18px; }
 #telegramModal .tg-tab-content[data-content="design"] .paint-cell,
 #trashModal .tg-tab-content[data-content="design"] .paint-cell { margin-top: 0; }
 #telegramModal .tg-tab-content[data-content="design"] .control-label,
-#trashModal .tg-tab-content[data-content="design"] .control-label { font-size: 14px; margin-top: 0; }
+#trashModal .tg-tab-content[data-content="design"] .control-label { font-size: 18px; margin-top: 0; }
 #telegramModal .tg-tab-content[data-content="design"] .art-feed-row,
 #trashModal .tg-tab-content[data-content="design"] .art-feed-row {
     display: grid;
@@ -984,7 +984,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
     font-family: var(--font-primary);
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
     color: var(--text-primary);
 }
@@ -1014,6 +1014,38 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 }
 .empty-modal-inner { min-height: 160px; }
 
+/* DOWNLOAD: слоты с серыми угловыми насечками под будущие айтемы */
+.dl-slots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    padding: 12px 0;
+}
+.dl-slot {
+    --c: #777;
+    --l: 16px;
+    --t: 3px;
+    width: min(120px, 34vw);
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--c);
+    background:
+        linear-gradient(var(--c), var(--c)) top left / var(--l) var(--t) no-repeat,
+        linear-gradient(var(--c), var(--c)) top left / var(--t) var(--l) no-repeat,
+        linear-gradient(var(--c), var(--c)) top right / var(--l) var(--t) no-repeat,
+        linear-gradient(var(--c), var(--c)) top right / var(--t) var(--l) no-repeat,
+        linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--t) no-repeat,
+        linear-gradient(var(--c), var(--c)) bottom left / var(--t) var(--l) no-repeat,
+        linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--t) no-repeat,
+        linear-gradient(var(--c), var(--c)) bottom right / var(--t) var(--l) no-repeat;
+}
+
 /* ===== HOME HUB: ABOUT / SOCIALS / RESUME ===== */
 .home-hub {
     display: flex;
@@ -1034,7 +1066,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
     font-family: var(--font-primary);
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
     color: var(--text-primary);
 }
@@ -1082,7 +1114,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     margin: 0;
     padding: 16px 14px 18px;
     font-family: var(--font-primary);
-    font-size: 10px;
+    font-size: 14px;
     line-height: 2;
     color: var(--text-primary);
     word-spacing: 6px;
@@ -1193,7 +1225,7 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     -webkit-appearance: none;
     -webkit-tap-highlight-color: transparent;
     font-family: var(--font-primary);
-    font-size: 8px;
+    font-size: 12px;
     letter-spacing: 1px;
     color: var(--text-primary);
 }

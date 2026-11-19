@@ -13,7 +13,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: 'Press Start 2P', monospace;
+    font-family: 'Tiny5', monospace;
     color: #fff;
 }
 
@@ -53,12 +53,12 @@ body {
     text-align: center;
 }
 .score-label {
-    font-size: 7px;
+    font-size: 10px;
     color: #a84d6b;
     margin-bottom: 2px;
 }
 .score-value {
-    font-size: 14px;
+    font-size: 18px;
     color: #fff;
 }
 
@@ -67,7 +67,7 @@ body {
     text-align: center;
 }
 .next-label {
-    font-size: 7px;
+    font-size: 10px;
     color: #a84d6b;
     margin-bottom: 2px;
 }
@@ -171,7 +171,7 @@ body {
     border-bottom: 2px solid #000;
 }
 .modal-title-text {
-    font-size: 9px;
+    font-size: 13px;
     color: #fff;
     text-shadow: 2px 2px 0 #000;
 }
@@ -206,7 +206,7 @@ body {
     text-align: center;
 }
 .modal-inner p {
-    font-size: 11px;
+    font-size: 15px;
     color: #000;
     margin-bottom: 12px;
 }
@@ -214,8 +214,8 @@ body {
     background: #000;
     border: 2px solid #a84d6b;
     color: #fff;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
+    font-family: 'Tiny5', monospace;
+    font-size: 13px;
     padding: 8px;
     width: 100%;
     text-align: center;
@@ -225,8 +225,8 @@ body {
     background: #000;
     color: #a84d6b;
     border: 2px solid #b97272;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
+    font-family: 'Tiny5', monospace;
+    font-size: 13px;
     padding: 8px 16px;
     cursor: pointer;
 }
