@@ -1322,3 +1322,16 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     width: min(200px, 60vw, max(100px, calc(var(--tg-pane-h) - 205px)));
     margin-bottom: 14px;
 }
+
+/* Запрет выделения текста/картинок и системного меню при долгом тапе (кроме полей ввода) */
+html, body, body * {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+}
+img { -webkit-user-drag: none; }
