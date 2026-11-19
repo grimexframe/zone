@@ -851,3 +851,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save initial state
     saveState();
 });
+
+// Запрет масштабирования жестами на iOS Safari (pinch игнорирует user-scalable=no)
+['gesturestart', 'gesturechange', 'gestureend'].forEach(t =>
+    document.addEventListener(t, e => e.preventDefault(), { passive: false }));

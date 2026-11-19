@@ -243,3 +243,6 @@ input, textarea, [contenteditable="true"] {
     -webkit-touch-callout: default;
 }
 img { -webkit-user-drag: none; }
+
+/* Запрет масштабирования (pinch / двойной тап) */
+html, body, body *:not(canvas) { touch-action: pan-x pan-y; }
