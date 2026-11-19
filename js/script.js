@@ -613,6 +613,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })();
 
+    // ===== TRASH MODAL: вкладки PAINT / GAME =====
+    (function () {
+        const tabs = document.querySelectorAll('#trashTabs .tg-forum-tab');
+        const contents = document.querySelectorAll('#trashContent .tg-tab-content');
+        if (!tabs.length) return;
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                contents.forEach(c => c.classList.remove('active'));
+                document.querySelector(`#trashContent .tg-tab-content[data-content="${tab.dataset.tab}"]`)?.classList.add('active');
+                window.playUiMenuBlip?.();
+            });
+        });
+    })();
+
     // ===== WORLD MODAL: вкладки-иконки =====
     (function () {
         const tabs = document.querySelectorAll('#worldTabs .world-tab');

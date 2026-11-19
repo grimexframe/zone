@@ -68,7 +68,7 @@
 
     <!-- Внизу справа: TRASH -> пустая модалка -->
     <button class="zone-fab" type="button" data-modal-trigger="trashModal" aria-label="Trash">
-        <img src="assets/recycle_bin_empty.png" alt="">
+        <img src="assets/recycle_bin_full.png" alt="">
         <span>TRASH</span>
     </button>
 
@@ -146,7 +146,7 @@
     </div>
 
 
-    <!-- ===== TOOLS modal: TXT / PAINT / DIYGEAR / GAME ===== -->
+    <!-- ===== TOOLS modal: TXT / DIYGEAR ===== -->
     <div id="telegramModal" class="modal-overlay">
         <div class="modal-content" style="max-width:600px;">
             <div class="modal-header">
@@ -157,9 +157,7 @@
                 <div style="display:flex; flex:1; min-height:0;">
                     <div class="tg-forum-tabs" id="tgForumTabs">
                         <div class="tg-forum-tab active" data-tab="garage" role="tab" aria-label="TXT"><img class="tab-ico" src="assets/itchio-pxl-retro-computer-icons-set-110-item93.png" alt=""></div>
-                        <div class="tg-forum-tab" data-tab="design" role="tab" aria-label="PAINT"><img class="tab-ico" src="assets/icons8-раскраска-по-номерам-48.png" alt=""></div>
                         <div class="tg-forum-tab" data-tab="diygear" role="tab" aria-label="DIYGEAR"><img class="tab-ico tab-ico-smooth tab-ico-shirt" src="assets/IMG_2069.png" alt=""></div>
-                        <div class="tg-forum-tab" data-tab="development" role="tab" aria-label="GAME"><img class="tab-ico tab-ico-smooth tab-ico-pad" src="assets/IMG_2046.png" alt=""></div>
                     </div>
 
                     <div class="tg-forum-content" id="tgForumContent">
@@ -170,25 +168,6 @@
                                 <div class="styler-embedded">
                                     <input type="text" id="garageFontInput" class="styler-input" placeholder="TYPE TEXT" autocomplete="off" spellcheck="false">
                                     <div class="styler-preview" id="garageStylerPreview"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- ===== PAINT: артборд + кнопка paint + feed ===== -->
-                        <div class="tg-tab-content" data-content="design">
-                            <div class="page-content" style="padding: 20px;">
-                                <div class="art-feed-row" style="display:grid; grid-template-columns:auto auto; grid-template-areas:'art feed' 'paint .'; align-items:center; justify-items:center; justify-content:center; gap:12px;">
-                                    <div class="art-block" style="grid-area:art;">
-                                        <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
-                                    </div>
-                                    <div class="archive-block text-primary" id="archiveBtn" style="grid-area:feed;">
-                                        <img src="assets/archive.png" alt="Archive" class="archive-img">
-                                        <span class="archive-label">feed</span>
-                                    </div>
-                                    <div class="paint-cell" style="grid-area:paint;">
-                                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
-                                        <span class="control-label text-primary">paint</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -215,6 +194,48 @@
                             </div>
                         </div>
 
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TRASH modal: PAINT / GAME ===== -->
+    <div id="trashModal" class="modal-overlay">
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <span class="modal-title-text">trash</span>
+                <button class="modal-close-btn" data-modal="trashModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
+                <div style="display:flex; flex:1; min-height:0;">
+                    <div class="tg-forum-tabs" id="trashTabs">
+                        <div class="tg-forum-tab active" data-tab="design" role="tab" aria-label="PAINT"><img class="tab-ico" src="assets/icons8-раскраска-по-номерам-48.png" alt=""></div>
+                        <div class="tg-forum-tab" data-tab="development" role="tab" aria-label="GAME"><img class="tab-ico tab-ico-smooth tab-ico-pad" src="assets/IMG_2046.png" alt=""></div>
+                    </div>
+
+                    <div class="tg-forum-content" id="trashContent">
+
+                        <!-- ===== PAINT: артборд + кнопка paint + feed ===== -->
+                        <div class="tg-tab-content active" data-content="design">
+                            <div class="page-content" style="padding: 20px;">
+                                <div class="art-feed-row" style="display:grid; grid-template-columns:auto auto; grid-template-areas:'art feed' 'paint .'; align-items:center; justify-items:center; justify-content:center; gap:12px;">
+                                    <div class="art-block" style="grid-area:art;">
+                                        <img id="currentArtPreview" src="assets/art.jpg" alt="Art">
+                                    </div>
+                                    <div class="archive-block text-primary" id="archiveBtn" style="grid-area:feed;">
+                                        <img src="assets/archive.png" alt="Archive" class="archive-img">
+                                        <span class="archive-label">feed</span>
+                                    </div>
+                                    <div class="paint-cell" style="grid-area:paint;">
+                                        <img src="assets/paint.png" alt="Paint" id="paintJournalBtn" class="paint-trigger-img">
+                                        <span class="control-label text-primary">paint</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- ===== GAME: топ тетриса + переход ===== -->
                         <div class="tg-tab-content" data-content="development">
                             <div class="dev-tab-inner">
@@ -232,17 +253,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- ===== TRASH modal (пустая) ===== -->
-    <div id="trashModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title-text">trash</span>
-                <button class="modal-close-btn" data-modal="trashModal"><img src="assets/close.png" alt="close"></button>
-            </div>
-            <div class="modal-inner empty-modal-inner"></div>
         </div>
     </div>
 
