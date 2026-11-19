@@ -1202,6 +1202,8 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 .world-pane .carousel-section, .world-pane iframe, .world-pane .pin-widget { width: 100%; }
 .world-pane { text-align: center; }
 .world-pane iframe { max-width: 100%; }
+/* Threads: у blockquote inline margin:1px перебивал центрирование, поэтому !important */
+.world-pane[data-pane="threads"].active > * { margin: auto !important; }
 .world-pane .pin-widget { display: flex; flex-direction: column; align-items: center; }
 .world-pane .pin-embed { width: 100%; display: flex; justify-content: center; overflow: hidden; }
 .world-pane .pin-embed[hidden] { display: none; }
