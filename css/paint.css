@@ -379,6 +379,38 @@ body {
     background: var(--accent-pink);
 }
 
+/* === MODAL CLOSE BUTTON (X) === */
+.modal-close-btn {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .1s ease-in-out;
+}
+.modal-close-btn img {
+    width: 28px;
+    height: 28px;
+    display: block;
+    image-rendering: pixelated;
+}
+.modal-close-btn:active { transform: scale(.78); opacity: .8; }
+.modal-close-btn.closing { animation: close-btn-pop .18s ease-in-out; }
+@keyframes close-btn-pop {
+    0%   { transform: scale(1) rotate(0); }
+    45%  { transform: scale(.7) rotate(90deg); }
+    100% { transform: scale(1.15) rotate(180deg); }
+}
+.layers-header { align-items: center; gap: 8px; }
+
 /* === TELEGRAM AUTH MODAL === */
 .auth-modal-overlay {
     position: fixed;

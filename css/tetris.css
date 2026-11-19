@@ -176,16 +176,30 @@ body {
     text-shadow: 2px 2px 0 #000;
 }
 .modal-close-btn {
-    background: #000;
-    color: #fff;
-    border: 2px solid #b97272;
+    background: transparent;
+    border: 0;
+    padding: 0;
     width: 28px;
     height: 28px;
-    font-size: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform .1s ease-in-out;
+}
+.modal-close-btn img {
+    width: 28px;
+    height: 28px;
+    display: block;
+    image-rendering: pixelated;
+}
+.modal-close-btn:active { transform: scale(.78); opacity: .8; }
+.modal-close-btn.closing { animation: close-btn-pop .18s ease-in-out; }
+@keyframes close-btn-pop {
+    0%   { transform: scale(1) rotate(0); }
+    45%  { transform: scale(.7) rotate(90deg); }
+    100% { transform: scale(1.15) rotate(180deg); }
 }
 .modal-inner {
     padding: 15px;

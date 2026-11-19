@@ -250,24 +250,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.querySelectorAll('.modal-close-btn').forEach(b => b.addEventListener('click', () => {
+    // Модалки закрываются ТОЛЬКО крестиком (без клика по фону и без Escape)
+    document.querySelectorAll('.modal-close-btn[data-modal]').forEach(b => b.addEventListener('click', () => {
         const id = b.dataset.modal;
-        if (id) closeModal(id);
+        if (!id || b.classList.contains('closing')) return;
+        b.classList.add('closing');
+        setTimeout(() => {
+            b.classList.remove('closing');
+            closeModal(id);
+        }, 180);
     }));
-    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => {
-        if (e.target === o) {
-            const modalId = o.id;
-            if (modalId) closeModal(modalId);
-        }
-    }));
-
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal-overlay.active').forEach(m => {
-                if (m.id) closeModal(m.id);
-            });
-        }
-    });
 
     // ===== CAROUSEL (twitter) =====
     const carousel = document.getElementById('mainCarousel');
@@ -722,8 +714,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.setAttribute('aria-expanded', 'false');
             window.playUiMenuBlip?.();
         }
-        btn.addEventListener('click', e => { e.stopPropagation(); popup.hidden ? open() : close(); });
-        document.getElementById('aboutClose')?.addEventListener('click', e => { e.stopPropagation(); close(); });
+        btn.addEventListener('click', e => { e.stopPropagation(); if (popup.hidden) open(); });
+        const aboutClose = document.getElementById('aboutClose');
+        aboutClose?.addEventListener('click', e => {
+            e.stopPropagation();
+            if (aboutClose.classList.contains('closing')) return;
+            aboutClose.classList.add('closing');
+            setTimeout(() => { aboutClose.classList.remove('closing'); close(); }, 180);
+        });
         // RESUME открывает модалку: окошко просто прячем, без лишнего звука
         document.getElementById('aboutResume')?.addEventListener('click', e => {
             e.stopPropagation();
@@ -731,8 +729,6 @@ document.addEventListener('DOMContentLoaded', () => {
             popup.classList.remove('glitch-in');
             btn.setAttribute('aria-expanded', 'false');
         });
-        document.addEventListener('click', e => { if (!popup.hidden && !popup.contains(e.target)) close(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
     })();
 
     // ===== GENERIC MODAL TRIGGER =====
@@ -780,19 +776,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
-    // ===== CLOSE MODALS =====
-    document.querySelectorAll('.modal-close-btn').forEach(b => b.addEventListener('click', () => {
-        const id = b.dataset.modal;
-        if (id) closeModal(id);
-    }));
-    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => {
-        if (e.target === o) o.classList.remove('active');
-    }));
-
-    // ===== ESCAPE =====
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-    });
+    // iOS: чтобы :active (нажатие кнопок) срабатывал при касании
+    document.addEventListener('touchstart', () => {}, { passive: true });
 
     // ===== DOUBLE-TAP ZOOM GUARD =====
     let lastTouchEnd = 0;

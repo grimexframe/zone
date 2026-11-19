@@ -396,7 +396,7 @@ function showScoreModal(score) {
         <div class="score-modal">
             <div class="modal-header">
                 <span class="modal-title-text">GAME OVER</span>
-                <button class="modal-close-btn" id="modalCloseBtn">✜</button>
+                <button class="modal-close-btn" id="modalCloseBtn"><img src="assets/close.png" alt="close"></button>
             </div>
             <div class="modal-inner">
                 <p>SCORE: ${score}</p>
@@ -416,9 +416,11 @@ function showScoreModal(score) {
         resetGame();
     };
 
-    closeBtn.onclick = closeModal;
-    modalDiv.onclick = (e) => {
-        if (e.target === modalDiv) closeModal();
+    // Закрывается только крестиком (с анимацией нажатия)
+    closeBtn.onclick = () => {
+        if (closeBtn.classList.contains('closing')) return;
+        closeBtn.classList.add('closing');
+        setTimeout(closeModal, 180);
     };
 
     saveBtn.onclick = async () => {

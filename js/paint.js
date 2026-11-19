@@ -647,15 +647,25 @@ document.addEventListener('DOMContentLoaded', () => {
     undoBtn.addEventListener('click', undo);
     redoBtn.addEventListener('click', redo);
 
+    // Все модалки закрываются ТОЛЬКО крестиком (с анимацией нажатия)
+    function bindModalClose(btn, modal, after) {
+        btn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (btn.classList.contains('closing')) return;
+            btn.classList.add('closing');
+            setTimeout(() => {
+                btn.classList.remove('closing');
+                modal.classList.remove('active');
+                after?.();
+            }, 180);
+        });
+    }
+
     layersBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        layersModal.classList.toggle('active');
+        layersModal.classList.add('active');
     });
-    document.addEventListener('click', (e) => {
-        if (!layersModal.contains(e.target) && e.target !== layersBtn) {
-            layersModal.classList.remove('active');
-        }
-    });
+    bindModalClose(document.getElementById('layersModalClose'), layersModal);
 
     
     // Layer event listeners
@@ -664,20 +674,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Settings modal event listeners
     settingsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        settingsModal.classList.toggle('active');
+        settingsModal.classList.add('active');
     });
     
-    settingsModalClose.addEventListener('click', () => settingsModal.classList.remove('active'));
-    
-    // Close settings modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!settingsModal.contains(e.target) && e.target !== settingsBtn) {
-            settingsModal.classList.remove('active');
-        }
-    });
+    bindModalClose(settingsModalClose, settingsModal);
     
     // Text modal event listeners
-    textModalClose.addEventListener('click', () => textModal.classList.remove('active'));
+    bindModalClose(textModalClose, textModal);
     confirmTextBtn.addEventListener('click', addText);
     canvasTextInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') addText();
@@ -686,35 +689,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Folder modal event listeners
     folderBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        fileModal.classList.toggle('active');
+        fileModal.classList.add('active');
     });
-    fileModalClose.addEventListener('click', () => fileModal.classList.remove('active'));
+    bindModalClose(fileModalClose, fileModal);
     modalLoadBtn.addEventListener('click', () => {
         fileInput.click();
         fileModal.classList.remove('active');
     });
     saveArtBtn?.addEventListener('click', handleSaveClick);
     
-    // Close file modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!fileModal.contains(e.target) && e.target !== folderBtn) {
-            fileModal.classList.remove('active');
-        }
-    });
-
-    telegramAuthModalClose?.addEventListener('click', closeAuthModal);
-    telegramAuthModal?.addEventListener('click', (e) => {
-        if (e.target === telegramAuthModal) {
-            closeAuthModal();
-        }
-    });
+    bindModalClose(telegramAuthModalClose, telegramAuthModal);
     
     // Tools modal event listeners
     toolsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        toolsModal.classList.toggle('active');
+        toolsModal.classList.add('active');
     });
-    toolsModalClose.addEventListener('click', () => toolsModal.classList.remove('active'));
+    bindModalClose(toolsModalClose, toolsModal);
     modalBrushBtn.addEventListener('click', () => {
         setTool('brush');
         toolsModal.classList.remove('active');
@@ -728,12 +719,6 @@ document.addEventListener('DOMContentLoaded', () => {
         toolsModal.classList.remove('active');
     });
     
-    // Close tools modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!toolsModal.contains(e.target) && e.target !== toolsBtn) {
-            toolsModal.classList.remove('active');
-        }
-    });
     
     // Effects modal with live preview
     let effectsOriginalData = null;
@@ -804,21 +789,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     effectsBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (effectsModal.classList.contains('active')) return;
         saveOriginalForEffects();
-        effectsModal.classList.toggle('active');
+        effectsModal.classList.add('active');
     });
-    effectsModalClose.addEventListener('click', () => {
-        restoreOriginalFromEffects();
-        effectsModal.classList.remove('active');
-    });
-    
-    // Close effects modal when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!effectsModal.contains(e.target) && e.target !== effectsBtn) {
-            restoreOriginalFromEffects();
-            effectsModal.classList.remove('active');
-        }
-    });
+    bindModalClose(effectsModalClose, effectsModal, restoreOriginalFromEffects);
     
     // Live threshold preview
     thresholdInput.addEventListener('input', () => {

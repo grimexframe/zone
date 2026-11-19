@@ -496,7 +496,14 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
     display: block;
     image-rendering: pixelated;
 }
-.modal-close-btn:active { opacity: .7; }
+.modal-close-btn { transition: transform .1s ease-in-out; }
+.modal-close-btn:active { transform: scale(.78); opacity: .8; }
+.modal-close-btn.closing { animation: close-btn-pop .18s ease-in-out; }
+@keyframes close-btn-pop {
+    0%   { transform: scale(1) rotate(0); }
+    45%  { transform: scale(.7) rotate(90deg); }
+    100% { transform: scale(1.15) rotate(180deg); }
+}
 .modal-inner {
     padding: 16px;
     text-align: center;
@@ -533,6 +540,41 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 }
 .universal-btn .btn-inner span { font-size: 12px; letter-spacing: 1px; }
 .universal-btn:hover .btn-inner { background: #1a1a2a; color: #fff; }
+
+/* ===== 3D PRESS BUTTON (clear) — based on Uiverse.io by arthur_6104 ===== */
+.box-button {
+    display: inline-block;
+    cursor: pointer;
+    border: 4px solid black;
+    background-color: gray;
+    padding: 0 0 10px;
+    margin: 0;
+    transition: 0.1s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    font: inherit;
+    color: #000;
+}
+.box-button-face {
+    display: block;
+    background-color: #dddddd;
+    border: 4px solid #fff;
+    padding: 3px 8px;
+}
+.box-button-face span {
+    font-family: var(--font-primary);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #000;
+}
+.box-button:active {
+    padding: 0;
+    margin-bottom: 10px;
+    transform: translateY(10px);
+}
 
 /* ===== CAROUSEL / TAGS ===== */
 .carousel-section { width: 100%; max-width: 320px; }
