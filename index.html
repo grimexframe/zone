@@ -54,10 +54,22 @@
         </button>
     </div>
 
-    <!-- Кнопка внизу справа -> модалка ZONE (TXT / PAINT / DIYGEAR / GAME) -->
-    <button class="zone-fab" type="button" data-modal-trigger="telegramModal" aria-label="Tools">
-        <img src="assets/recycle_bin_full.png" alt="">
+    <!-- Справа сверху: TOOLS -> модалка tools (TXT / PAINT / DIYGEAR / GAME) -->
+    <button class="zone-fab zone-fab-tools" type="button" data-modal-trigger="telegramModal" aria-label="Tools">
+        <img src="assets/tools.png" alt="">
         <span>TOOLS</span>
+    </button>
+
+    <!-- Слева снизу: DOWNLOAD -> пустая модалка -->
+    <button class="zone-fab zone-fab-download" type="button" data-modal-trigger="downloadModal" aria-label="Download">
+        <img src="assets/folder_closed.png" alt="">
+        <span>DOWNLOAD</span>
+    </button>
+
+    <!-- Внизу справа: TRASH -> пустая модалка -->
+    <button class="zone-fab" type="button" data-modal-trigger="trashModal" aria-label="Trash">
+        <img src="assets/recycle_bin_empty.png" alt="">
+        <span>TRASH</span>
     </button>
 
     <!-- ===== MODALS ===== -->
@@ -134,11 +146,11 @@
     </div>
 
 
-    <!-- ===== ZONE modal: TXT / PAINT / DIYGEAR / GAME ===== -->
+    <!-- ===== TOOLS modal: TXT / PAINT / DIYGEAR / GAME ===== -->
     <div id="telegramModal" class="modal-overlay">
         <div class="modal-content" style="max-width:600px;">
             <div class="modal-header">
-                <span class="modal-title-text">zone</span>
+                <span class="modal-title-text">tools</span>
                 <button class="modal-close-btn" data-modal="telegramModal"><img src="assets/close.png" alt="close"></button>
             </div>
             <div class="modal-inner" style="display:flex; flex-direction:column; padding:0; gap:0;">
@@ -220,6 +232,28 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== TRASH modal (пустая) ===== -->
+    <div id="trashModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">trash</span>
+                <button class="modal-close-btn" data-modal="trashModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner empty-modal-inner"></div>
+        </div>
+    </div>
+
+    <!-- ===== DOWNLOAD modal (пустая) ===== -->
+    <div id="downloadModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="modal-title-text">download</span>
+                <button class="modal-close-btn" data-modal="downloadModal"><img src="assets/close.png" alt="close"></button>
+            </div>
+            <div class="modal-inner empty-modal-inner"></div>
         </div>
     </div>
 

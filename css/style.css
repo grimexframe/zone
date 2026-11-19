@@ -941,6 +941,21 @@ body:has(.modal-overlay.active) .tv-dot { animation-play-state: paused; }
 }
 .zone-fab:hover img { transform: scale(1.08); filter: brightness(1.15); }
 .zone-fab:active img { transform: scale(.94); }
+.zone-fab span { white-space: nowrap; }
+/* TOOLS: справа, ~на 18% высоты экрана */
+.zone-fab-tools {
+    bottom: auto;
+    top: 18dvh;
+    right: max(26px, env(safe-area-inset-right));
+}
+/* DOWNLOAD: слева, ~на 75% высоты экрана */
+.zone-fab-download {
+    right: auto;
+    bottom: auto;
+    top: 75dvh;
+    left: max(30px, env(safe-area-inset-left));
+}
+.empty-modal-inner { min-height: 160px; }
 
 /* ===== HOME HUB: ABOUT / SOCIALS / RESUME ===== */
 .home-hub {
